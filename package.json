@@ -6,12 +6,15 @@
     "start": "next start"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^1.35.7",
     "next": "latest",
+    "probe-image-size": "^7.2.3",
     "react": "18.1.0",
     "react-dom": "18.1.0"
   },
   "devDependencies": {
     "@types/node": "17.0.35",
+    "@types/probe-image-size": "^7.2.0",
     "@types/react": "18.0.9",
     "@types/react-dom": "18.0.5",
     "autoprefixer": "^10.4.7",
