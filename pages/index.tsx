@@ -1,75 +1,86 @@
 import type { GetStaticProps, NextPage } from "next";
+import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@supabase/supabase-js";
 import { useState } from "react";
-import probe from "probe-image-size";
+import { createImgWithDimensions } from "../utils/createImgWithDimensions";
 
-interface ImageObject {
-  url: string;
+export const BASE_URL =
+  "https://dfphzeytrypxfhsoszzw.supabase.co/storage/v1/object/public/images/";
+
+export interface ImageWithDimensions extends ImageType {
   width: number;
   height: number;
 }
 
-const Home: NextPage<{ imageObjs: ImageObject[] }> = ({ imageObjs }) => {
+export interface ImageType {
+  name: string;
+  id: string;
+  url: string;
+}
+
+const Home: NextPage<{ images: ImageWithDimensions[] }> = ({ images }) => {
   return (
-    <div className="columns-2 space-y-8 gap-8 sm:gap-10 md:columns-3">
-      {imageObjs?.map((img, idx) => (
-        <div className="mb-8" key={idx}>
-          <Image
-            src={img.url}
-            width={img.width}
-            height={img.height}
-            alt="kat"
-            className="rounded-xl"
-          />
+    <>
+      {images.length === 0 && (
+        <p className="text-center">There are no images yet.</p>
+      )}
+      {images.length > 0 && (
+        <div className="columns-2 space-y-8 gap-8 sm:gap-10 md:columns-3">
+          {images.map((img, idx) => (
+            <div className="mb-8 cursor-pointer" key={img.id}>
+              <Link href={img.id}>
+                <a>
+                  <Image
+                    src={img.url}
+                    width={img.width}
+                    height={img.height}
+                    alt="kat"
+                    className="rounded-xl"
+                  />
+                </a>
+              </Link>
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
+      )}
+    </>
   );
 };
 
 export default Home;
-
-async function createImgObj(url: string) {
-  //get the width and height from the img url
-  let result = await probe(url);
-  return {
-    url: result.url,
-    width: result.width,
-    height: result.height,
-  };
-}
 
 export async function getStaticProps() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
   const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
   const supabase = createClient(supabaseUrl, supabaseKey);
 
-  let imageObjs: ImageObject[] = [];
+  let imagesWithDimension: ImageWithDimensions[] = [];
+  let images: ImageType[] = [];
 
-  //list of all the image in the bucker
-  const { data: images, error } = await supabase.storage.from("images").list();
+  //list of all the images in the storage bucket
+  let { data } = await supabase.storage.from("images").list();
 
-  let imageUrls: string[] = [];
-
-  if (images) {
-    const imageNames = images.map((item) => item.name);
-    imageUrls = imageNames.map((imageName) => {
-      const { data } = supabase.storage.from("images").getPublicUrl(imageName);
-      return data!.publicURL;
+  if (data && data.length >= 1) {
+    images = data.map((img) => {
+      return {
+        name: img.name,
+        id: img.id,
+        url: `${BASE_URL}${img.name}`,
+      };
     });
 
     //add the height and width to each url
-    imageObjs = await Promise.all(
-      imageUrls.map(async (url) => {
-        return await createImgObj(url);
+    imagesWithDimension = await Promise.all(
+      images.map(async (img) => {
+        return await createImgWithDimensions(img);
       })
     );
   }
 
   return {
     props: {
-      imageObjs,
+      images: imagesWithDimension,
     },
   };
 }
