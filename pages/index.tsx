@@ -43,15 +43,15 @@ const Home: NextPage<{ images: ImageWithDimensions[] }> = ({ images }) => {
             src={images.find((image) => image.id === router.query.imageId)!.url}
             layout="fill"
             alt="kat"
-            className="rounded-xl object-contain"
+            className="object-contain"
           />
         </Modal>
       )}
 
       {images.length > 0 && (
         <div className="columns-2 space-y-8 gap-8 sm:gap-10 md:columns-3">
-          {images.map((img, idx) => (
-            <div className="mb-8 cursor-pointer" key={img.id}>
+          {images.map((img) => (
+            <div  className="mb-8 cursor-pointer hover:opacity-95 hover:scale-105 transition-all duration-300" key={img.id}>
               <Link href={`/?imageId=${img.id}`}>
                 <a>
                   <Image

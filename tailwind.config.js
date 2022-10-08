@@ -20,8 +20,8 @@ module.exports = {
     },
     extend: {
       inset: {
-        '1/5': '20%',
-      }
+        '1/8': '12.5%',
+      },
     },
   },
   plugins: [],
