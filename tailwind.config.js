@@ -18,7 +18,11 @@ module.exports = {
       lg: "1440px",
       // => @media (min-width: 1440px) { ... }
     },
-    extend: {},
+    extend: {
+      inset: {
+        '1/5': '20%',
+      }
+    },
   },
   plugins: [],
 };

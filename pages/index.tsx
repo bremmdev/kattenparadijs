@@ -2,8 +2,10 @@ import type { GetStaticProps, NextPage } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@supabase/supabase-js";
-import { useState } from "react";
+import React, { useState } from "react";
 import { createImgWithDimensions } from "../utils/createImgWithDimensions";
+import { useRouter } from "next/router";
+import Modal from "../components/Modal";
 
 export const BASE_URL =
   "https://dfphzeytrypxfhsoszzw.supabase.co/storage/v1/object/public/images/";
@@ -20,16 +22,37 @@ export interface ImageType {
 }
 
 const Home: NextPage<{ images: ImageWithDimensions[] }> = ({ images }) => {
+  const router = useRouter();
+
+  const handleClose = (e: React.MouseEvent) => {
+    //only return to home if we click on the overlay
+    if ((e.target as HTMLElement).id === "modal_overlay") {
+      router.push("/");
+    }
+  };
+
   return (
     <>
       {images.length === 0 && (
         <p className="text-center">There are no images yet.</p>
       )}
+
+      {images.length > 0 && router.query.imageId && (
+        <Modal onClose={handleClose}>
+          <Image
+            src={images.find((image) => image.id === router.query.imageId)!.url}
+            layout="fill"
+            alt="kat"
+            className="rounded-xl object-contain"
+          />
+        </Modal>
+      )}
+
       {images.length > 0 && (
         <div className="columns-2 space-y-8 gap-8 sm:gap-10 md:columns-3">
           {images.map((img, idx) => (
             <div className="mb-8 cursor-pointer" key={img.id}>
-              <Link href={img.id}>
+              <Link href={`/?imageId=${img.id}`}>
                 <a>
                   <Image
                     src={img.url}

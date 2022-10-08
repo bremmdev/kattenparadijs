@@ -2,8 +2,10 @@ import { Html, Head, Main, NextScript } from "next/document";
 
 export default function Document() {
   return (
-    <Html>
+    <Html lang="nl">
       <Head>
+        <title>Kattenparadijs</title>
+        <meta name="description" content="Een mooie verzameling kattenfoto's"/>
         <link
           href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap"
           rel="stylesheet"

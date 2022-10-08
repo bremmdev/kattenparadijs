@@ -1,16 +1,16 @@
 import React from "react";
 
 type Props = {
-  children: React.ReactElement
-}
+  children: React.ReactElement;
+  onClose: (e: React.MouseEvent) => void 
+};
 
 const Modal = (props: Props) => {
   return (
-    <div className="fixed inset-0 bg-opacity-75 bg-black w-screen h-screen grid place-items-center">
-      <div className="relative flex items-center justify-center w-1/2">
-          {props.children}
+    <div id="modal_overlay"className="fixed z-10 inset-0 bg-opacity-80 bg-black w-screen h-screen flex justify-center items-center shrink" onClick={props.onClose}>
+      <div className="absolute inset-1/5 flex items-center justify-center">
+        {props.children}
       </div>
-    
     </div>
   );
 };
