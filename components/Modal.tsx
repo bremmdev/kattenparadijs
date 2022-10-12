@@ -3,12 +3,13 @@ import React, { useEffect, useRef } from "react";
 type Props = {
   children: React.ReactElement;
   onClose: (e: React.MouseEvent) => void;
-};
+}
 
-const Modal = (props: Props) => {
+const Modal = React.forwardRef((props: Props, ref: React.Ref<HTMLDivElement>) => {
   return (
     <div
       id="modal_overlay"
+      ref={ref}
       className="fixed z-10 inset-0 bg-opacity-80 bg-black w-screen h-screen flex justify-center items-center shrink"
       onClick={props.onClose}
     >
@@ -17,6 +18,6 @@ const Modal = (props: Props) => {
       </div>
     </div>
   );
-};
+});
 
 export default Modal;

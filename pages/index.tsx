@@ -2,8 +2,9 @@ import type { GetStaticProps, NextPage } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@supabase/supabase-js";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { createImgWithDimensions } from "../utils/createImgWithDimensions";
+import { getContainedSize } from "../utils/getContainedSize";
 import { useRouter } from "next/router";
 import Modal from "../components/Modal";
 
@@ -23,10 +24,26 @@ export interface ImageType {
 
 const Home: NextPage<{ images: ImageWithDimensions[] }> = ({ images }) => {
   const router = useRouter();
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  const activeImage = images.find((image) => image.id === router.query.imageId);
 
   const handleClose = (e: React.MouseEvent) => {
-    //only return to home if we click on the overlay
-    if ((e.target as HTMLElement).id === "modal_overlay") {
+    //image size can be altered because of object-fit, so we need the contained size of the image, not the 'full' size of the image
+    const [imageWidth, imageHeight] = getContainedSize(
+      modalRef.current?.querySelector("img")!
+    );
+    const viewport = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+
+    //we know the viewport size and the image size, so we can use pageX and pageY to determine if the user clicked outside the image
+    const hasClickedOutsideOfImage =
+      e.pageX < viewport / 2 - imageWidth / 2 ||
+      e.pageX > viewport / 2 + imageWidth / 2 ||
+      e.pageY < viewportHeight / 2 - imageHeight / 2 ||
+      e.pageY > viewportHeight / 2 + imageHeight / 2;
+
+    if (hasClickedOutsideOfImage) {
       router.push("/");
     }
   };
@@ -38,9 +55,9 @@ const Home: NextPage<{ images: ImageWithDimensions[] }> = ({ images }) => {
       )}
 
       {images.length > 0 && router.query.imageId && (
-        <Modal onClose={handleClose}>
+        <Modal ref={modalRef} onClose={handleClose}>
           <Image
-            src={images.find((image) => image.id === router.query.imageId)!.url}
+            src={activeImage!.url}
             layout="fill"
             alt="kat"
             className="object-contain"
@@ -51,7 +68,10 @@ const Home: NextPage<{ images: ImageWithDimensions[] }> = ({ images }) => {
       {images.length > 0 && (
         <div className="columns-2 space-y-8 gap-8 sm:gap-10 md:columns-3">
           {images.map((img) => (
-            <div  className="mb-8 cursor-pointer hover:opacity-95 hover:scale-105 transition-all duration-300" key={img.id}>
+            <div
+              className="mb-8 cursor-pointer hover:opacity-95 hover:scale-105 transition-all duration-300"
+              key={img.id}
+            >
               <Link href={`/?imageId=${img.id}`}>
                 <a>
                   <Image

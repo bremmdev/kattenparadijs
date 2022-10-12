@@ -22,6 +22,15 @@ module.exports = {
       inset: {
         '1/8': '12.5%',
       },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: 0 },
+          '100%': { opacity: 1},
+        }
+      },
+      animation: {
+        fade: 'fadeIn 3s ease-in-out',
+      }
     },
   },
   plugins: [],
