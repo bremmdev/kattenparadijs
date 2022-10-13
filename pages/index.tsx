@@ -26,7 +26,11 @@ const Home: NextPage<{ images: ImageWithDimensions[] }> = ({ images }) => {
   const router = useRouter();
   const modalRef = useRef<HTMLDivElement>(null);
 
-  const activeImage = images.find((image) => image.id === router.query.imageId);
+  let selectedImage: ImageWithDimensions | undefined;
+
+  if (router.query.imageId) {
+    selectedImage = images.find((image) => image.id === router.query.imageId);
+  }
 
   const handleClose = (e: React.MouseEvent) => {
     //image size can be altered because of object-fit, so we need the contained size of the image, not the 'full' size of the image
@@ -48,16 +52,28 @@ const Home: NextPage<{ images: ImageWithDimensions[] }> = ({ images }) => {
     }
   };
 
+  //handle invalid query param error
+  if (router.query.imageId && !selectedImage) {
+    return (
+      <div className="flex flex-col gap-8 items-center justify-center">
+        <p className="text-center text-red-500 font-bold">
+          Oops! The requested image cannot be found.
+        </p>
+        <Link href={"/"}><a className="transition-color bg-rose-500 text-white py-3 px-8 rounded-md font-bold hover:bg-rose-400">Home</a></Link>
+      </div>
+    );
+  }
+
   return (
     <>
       {images.length === 0 && (
         <p className="text-center">There are no images yet.</p>
       )}
 
-      {images.length > 0 && router.query.imageId && (
+      {images.length > 0 && router.query.imageId && selectedImage && (
         <Modal ref={modalRef} onClose={handleClose}>
           <Image
-            src={activeImage!.url}
+            src={selectedImage.url}
             layout="fill"
             alt="kat"
             className="object-contain"

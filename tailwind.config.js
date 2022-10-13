@@ -7,6 +7,7 @@ module.exports = {
   theme: {
     fontFamily: {
       handwriting: ["Dancing Script"],
+      'sans': ['nunito sans', 'ui-sans-serif'],
     },
     screens: {
       sm: "576px",
@@ -23,13 +24,13 @@ module.exports = {
         '1/8': '12.5%',
       },
       keyframes: {
-        fadeIn: {
+        fade: {
           '0%': { opacity: 0 },
           '100%': { opacity: 1},
         }
       },
       animation: {
-        fade: 'fadeIn 3s ease-in-out',
+        'fade': 'fade 1s ease-in-out',
       }
     },
   },

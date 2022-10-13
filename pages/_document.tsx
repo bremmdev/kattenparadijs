@@ -4,9 +4,10 @@ export default function Document() {
   return (
     <Html lang="nl">
       <Head>
-        <meta name="description" content="Een mooie verzameling kattenfoto's"/>
+        <meta name="description" content="Een mooie verzameling kattenfoto's" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Nunito+Sans:wght@400;700&display=swap"
           rel="stylesheet"
         />
       </Head>
