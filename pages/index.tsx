@@ -6,20 +6,23 @@ import { getContainedSize } from "../utils/getContainedSize";
 import { useRouter } from "next/router";
 import Modal from "../components/Modal";
 import { sanityClient } from "../sanity";
-import { groq } from 'next-sanity'
+import { groq } from "next-sanity";
+import { imageConfigDefault } from "next/dist/shared/lib/image-config";
 
-// export const BASE_URL =
-//   "https://dfphzeytrypxfhsoszzw.supabase.co/storage/v1/object/public/images/";
-
-const BASE_URL = "https://cdn.sanity.io/images/e991dsae/production/"
+export interface Cat {
+  name: string;
+  birthDate: string;
+  iconUrl: string;
+}
 
 export interface ImageWithDimensions {
+  cats: Cat[];
   width: number;
   height: number;
   id: string;
   url: string;
+  takenAt?: string;
 }
-
 
 const Home: NextPage<{ images: ImageWithDimensions[] }> = ({ images }) => {
   const router = useRouter();
@@ -58,7 +61,11 @@ const Home: NextPage<{ images: ImageWithDimensions[] }> = ({ images }) => {
         <p className="text-center text-red-500 font-bold">
           Oops! The requested image cannot be found.
         </p>
-        <Link href={"/"}><a className="transition-color bg-rose-500 text-white py-3 px-8 rounded-md font-bold hover:bg-rose-400">Home</a></Link>
+        <Link href={"/"}>
+          <a className="transition-color bg-rose-500 text-white py-3 px-8 rounded-md font-bold hover:bg-rose-400">
+            Home
+          </a>
+        </Link>
       </div>
     );
   }
@@ -108,14 +115,19 @@ const Home: NextPage<{ images: ImageWithDimensions[] }> = ({ images }) => {
 
 export default Home;
 
-export async function getStaticProps() {
-
- const images: ImageWithDimensions = await sanityClient.fetch(groq`*[_type == "catimage"]{
-  "id": _id,
+const query = groq`*[_type == "catimage"]{
+  "cats": cat[]->{name, birthDate, "iconUrl": icon.asset->url},
+  "id":_id,
   "url": img.asset->url,
   "width": img.asset->metadata.dimensions.width,
   "height": img.asset->metadata.dimensions.height
-}`)
+}`;
+
+export async function getStaticProps() {
+  const images: ImageWithDimensions[] = await sanityClient.fetch(query);
+
+  images.forEach(img => console.log(img.cats))
+  console.log(images);
 
   return {
     props: {
