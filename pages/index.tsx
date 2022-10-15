@@ -1,26 +1,25 @@
 import type { GetStaticProps, NextPage } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { createClient } from "@supabase/supabase-js";
-import React, { useState, useRef } from "react";
-import { createImgWithDimensions } from "../utils/createImgWithDimensions";
+import React, { useRef } from "react";
 import { getContainedSize } from "../utils/getContainedSize";
 import { useRouter } from "next/router";
 import Modal from "../components/Modal";
+import { sanityClient } from "../sanity";
+import { groq } from 'next-sanity'
 
-export const BASE_URL =
-  "https://dfphzeytrypxfhsoszzw.supabase.co/storage/v1/object/public/images/";
+// export const BASE_URL =
+//   "https://dfphzeytrypxfhsoszzw.supabase.co/storage/v1/object/public/images/";
 
-export interface ImageWithDimensions extends ImageType {
+const BASE_URL = "https://cdn.sanity.io/images/e991dsae/production/"
+
+export interface ImageWithDimensions {
   width: number;
   height: number;
-}
-
-export interface ImageType {
-  name: string;
   id: string;
   url: string;
 }
+
 
 const Home: NextPage<{ images: ImageWithDimensions[] }> = ({ images }) => {
   const router = useRouter();
@@ -110,36 +109,17 @@ const Home: NextPage<{ images: ImageWithDimensions[] }> = ({ images }) => {
 export default Home;
 
 export async function getStaticProps() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
-  const supabase = createClient(supabaseUrl, supabaseKey);
 
-  let imagesWithDimension: ImageWithDimensions[] = [];
-  let images: ImageType[] = [];
-
-  //list of all the images in the storage bucket
-  let { data } = await supabase.storage.from("images").list();
-
-  if (data && data.length >= 1) {
-    images = data.map((img) => {
-      return {
-        name: img.name,
-        id: img.id,
-        url: `${BASE_URL}${img.name}`,
-      };
-    });
-
-    //add the height and width to each url
-    imagesWithDimension = await Promise.all(
-      images.map(async (img) => {
-        return await createImgWithDimensions(img);
-      })
-    );
-  }
+ const images: ImageWithDimensions = await sanityClient.fetch(groq`*[_type == "catimage"]{
+  "id": _id,
+  "url": img.asset->url,
+  "width": img.asset->metadata.dimensions.width,
+  "height": img.asset->metadata.dimensions.height
+}`)
 
   return {
     props: {
-      images: imagesWithDimension,
+      images,
     },
   };
 }
