@@ -1,18 +1,29 @@
 import React from "react";
-import Avatar from "./Avatar";
+import Image from "next/image";
+import Link from "next/link";
 
 const avatars = [
-  { url: "/avatar/daantje.svg" },
-  { url: "/avatar/flynn.svg" },
-  { url: "/avatar/moos.svg" },
-  { url: "/avatar/norris.svg" },
+  { src: "/avatar/daantje.svg", path: "/daantje" },
+  { src: "/avatar/flynn.svg", path: "/flynn" },
+  { src: "/avatar/moos.svg", path: "/moos" },
+  { src: "/avatar/norris.svg", path: "/norris" },
+  { src: "/avatar/cats.svg", path: "/all" },
 ];
 
 const Avatars = () => {
   return (
-    <div className="flex gap-2 justify-center my-2 sm:my-0 sm:ml-auto">
+    <div className="flex gap-3 justify-center my-2 sm:my-0 sm:ml-auto">
       {avatars.map((avatar, idx) => (
-        <Avatar key={idx} url={avatar.url} />
+        <Link key={idx} href={avatar.path}>
+          <a>
+            <img
+              className="transition-all duration-300 cursor-pointer hover:scale-110 hover:brightness-105"
+              src={avatar.src}
+              width="42"
+              height="42"
+            />
+          </a>
+        </Link>
       ))}
     </div>
   );

@@ -10,8 +10,8 @@ module.exports = {
       'sans': ['nunito sans', 'ui-sans-serif'],
     },
     screens: {
-      sm: "576px",
-      // => @media (min-width: 576px) { ... }
+      sm: "640px",
+      // => @media (min-width: 640px) { ... }
 
       md: "960px",
       // => @media (min-width: 960px) { ... }

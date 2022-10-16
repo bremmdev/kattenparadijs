@@ -115,7 +115,7 @@ const Home: NextPage<{ images: ImageWithDimensions[] }> = ({ images }) => {
 
 export default Home;
 
-const query = groq`*[_type == "catimage"]{
+const query = groq`*[_type == "catimage"] | order(_createdAt desc) {
   "cats": cat[]->{name, birthDate, "iconUrl": icon.asset->url},
   "id":_id,
   "url": img.asset->url,
@@ -126,7 +126,7 @@ const query = groq`*[_type == "catimage"]{
 export async function getStaticProps() {
   const images: ImageWithDimensions[] = await sanityClient.fetch(query);
 
-  images.forEach(img => console.log(img.cats))
+  images.forEach((img) => console.log(img.cats));
   console.log(images);
 
   return {

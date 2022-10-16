@@ -8,8 +8,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <header className="border-b-2 border-rose-300 bg-white">
         <div className="flex flex-col max-w-6xl mx-auto px-8 py-4 sm:px-12 sm:flex-row">
           <div className="flex justify-center">
-            <Image src={logo} alt="logo" width={42} height={42} />
-            <h1 className="font-handwriting text-rose-500 text-3xl tracking-wider ml-6">
+            <Image src={logo} alt="logo" width={36} height={36} />
+            <h1 className="font-handwriting text-rose-500 text-3xl tracking-wider ml-4 translate-y-1">
               Kattenparadijs
             </h1>
           </div>
