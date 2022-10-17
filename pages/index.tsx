@@ -8,6 +8,8 @@ import Modal from "../components/Modal";
 import { sanityClient } from "../sanity";
 import { groq } from "next-sanity";
 import { imageConfigDefault } from "next/dist/shared/lib/image-config";
+import Gallery from "../components/Gallery/Gallery";
+import ImageNotFound from "../components/UI/ImageNotFound";
 
 export interface Cat {
   name: string;
@@ -56,18 +58,9 @@ const Home: NextPage<{ images: ImageWithDimensions[] }> = ({ images }) => {
 
   //handle invalid query param error
   if (router.query.imageId && !selectedImage) {
-    return (
-      <div className="flex flex-col gap-8 items-center justify-center">
-        <p className="text-center text-red-500 font-bold">
-          Oops! The requested image cannot be found.
-        </p>
-        <Link href={"/"}>
-          <a className="transition-color bg-rose-500 text-white py-3 px-8 rounded-md font-bold hover:bg-rose-400">
-            Home
-          </a>
-        </Link>
-      </div>
-    );
+    if (router.query.imageId && !selectedImage) {
+      return <ImageNotFound returnPath={"/"} />;
+    }
   }
 
   return (
@@ -87,28 +80,7 @@ const Home: NextPage<{ images: ImageWithDimensions[] }> = ({ images }) => {
         </Modal>
       )}
 
-      {images.length > 0 && (
-        <div className="columns-2 space-y-8 gap-8 sm:gap-10 md:columns-3">
-          {images.map((img) => (
-            <div
-              className="mb-8 cursor-pointer hover:opacity-95 hover:scale-105 transition-all duration-300"
-              key={img.id}
-            >
-              <Link href={`/?imageId=${img.id}`}>
-                <a>
-                  <Image
-                    src={img.url}
-                    width={img.width}
-                    height={img.height}
-                    alt="kat"
-                    className="rounded-xl"
-                  />
-                </a>
-              </Link>
-            </div>
-          ))}
-        </div>
-      )}
+      {images.length > 0 && <Gallery images={images} />}
     </>
   );
 };

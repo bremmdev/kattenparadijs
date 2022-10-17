@@ -3,6 +3,13 @@ import { useRouter } from "next/router";
 import { sanityClient } from "../sanity";
 import { groq } from "next-sanity";
 import { ImageWithDimensions } from "./index";
+import Link from "next/link";
+import Image from "next/image";
+import Gallery from "../components/Gallery/Gallery";
+import { useRef } from "react";
+import { getContainedSize } from "../utils/getContainedSize";
+import Modal from "../components/Modal";
+import ImageNotFound from '../components/UI/ImageNotFound'
 
 interface CatName {
   name: string;
@@ -10,10 +17,62 @@ interface CatName {
 
 const Cat: NextPage<{ images: ImageWithDimensions[] }> = ({ images }) => {
   const router = useRouter();
+  const modalRef = useRef<HTMLDivElement>(null);
+  console.log(router)
 
-  // console.log(router.query);
+  let selectedImage: ImageWithDimensions | undefined;
+  let returnPath = ''
 
-  return <div>{router.query.cat}</div>;
+  if (router.query.imageId) {
+    selectedImage = images.find((image) => image.id === router.query.imageId);
+    returnPath = router.query.cat as string
+  }
+
+  const handleClose = (e: React.MouseEvent) => {
+    //image size can be altered because of object-fit, so we need the contained size of the image, not the 'full' size of the image
+    const [imageWidth, imageHeight] = getContainedSize(
+      modalRef.current?.querySelector("img")!
+    );
+    const viewport = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+
+    //we know the viewport size and the image size, so we can use pageX and pageY to determine if the user clicked outside the image
+    const hasClickedOutsideOfImage =
+      e.pageX < viewport / 2 - imageWidth / 2 ||
+      e.pageX > viewport / 2 + imageWidth / 2 ||
+      e.pageY < viewportHeight / 2 - imageHeight / 2 ||
+      e.pageY > viewportHeight / 2 + imageHeight / 2;
+
+    if (hasClickedOutsideOfImage) {
+      router.push(router.query.cat as string);
+    }
+  };
+
+  //handle invalid query param error
+  if (router.query.imageId && !selectedImage) {
+    return <ImageNotFound returnPath={returnPath}/>
+  }
+
+  return (
+    <>
+      {images.length === 0 && (
+        <p className="text-center">There are no images yet.</p>
+      )}
+
+      {images.length > 0 && router.query.imageId && selectedImage && (
+        <Modal ref={modalRef} onClose={handleClose}>
+          <Image
+            src={selectedImage.url}
+            layout="fill"
+            alt="kat"
+            className="object-contain"
+          />
+        </Modal>
+      )}
+
+      {images.length > 0 && <Gallery path={router.asPath} images={images} />}
+    </>
+  );
 };
 
 export default Cat;
@@ -56,7 +115,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   }`;
 
   const images: ImageWithDimensions[] = await sanityClient.fetch(query);
-  console.log(images);
+  // console.log(images);
 
   return {
     props: {
