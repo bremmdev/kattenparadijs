@@ -3,29 +3,36 @@ import { useRouter } from "next/router";
 import { sanityClient } from "../sanity";
 import { groq } from "next-sanity";
 import { ImageWithDimensions } from "./index";
-import Link from "next/link";
 import Image from "next/image";
 import Gallery from "../components/Gallery/Gallery";
 import { useRef } from "react";
 import { getContainedSize } from "../utils/getContainedSize";
 import Modal from "../components/Modal";
-import ImageNotFound from '../components/UI/ImageNotFound'
+import ImageNotFound from "../components/UI/ImageNotFound";
+import { Cat } from "./index";
+import {
+  differenceInYears,
+  differenceInDays,
+  intervalToDuration,
+} from "date-fns";
 
 interface CatName {
   name: string;
 }
 
-const Cat: NextPage<{ images: ImageWithDimensions[] }> = ({ images }) => {
+const Cat: NextPage<{
+  images: ImageWithDimensions[];
+  cat: Cat | undefined;
+}> = ({ images, cat }) => {
   const router = useRouter();
   const modalRef = useRef<HTMLDivElement>(null);
-  console.log(router)
 
   let selectedImage: ImageWithDimensions | undefined;
-  let returnPath = ''
+  let returnPath = "";
 
   if (router.query.imageId) {
     selectedImage = images.find((image) => image.id === router.query.imageId);
-    returnPath = router.query.cat as string
+    returnPath = router.query.cat as string;
   }
 
   const handleClose = (e: React.MouseEvent) => {
@@ -50,11 +57,45 @@ const Cat: NextPage<{ images: ImageWithDimensions[] }> = ({ images }) => {
 
   //handle invalid query param error
   if (router.query.imageId && !selectedImage) {
-    return <ImageNotFound returnPath={returnPath}/>
+    return <ImageNotFound returnPath={returnPath} />;
   }
+
+  const [year, month, day] = cat?.birthDate.split("-") ?? [];
+  const formattedBirthDate = `${day}-${month}-${year}`;
+
+  const { years, months } = intervalToDuration({
+    start: cat ? Date.parse(cat.birthDate) : new Date(),
+    end: new Date(),
+  });
+
 
   return (
     <>
+      {cat && (
+        <div className="hidden max-w-xl text-center mx-auto bg-rose-50 rounded-lg p-3 mb-10 sm:flex flex-col justify-center">
+          <div className="flex justify-center items-center gap-2 border-b border-b-rose-300 pb-4">
+            <Image src={cat.iconUrl} alt="logo" width={36} height={36} />
+            <h2 className="font-handwriting text-3xl tracking-wider text-center text-rose-500 capitalize translate-y-1">
+              {cat.name}
+            </h2>
+          </div>
+          <div className="py-2">
+            <div className="flex flex-col justify-between gap-2 font-medium my-2 text-sm">
+              <h3>Geboortedatum</h3>
+              <span className="font-normal">{formattedBirthDate}</span>
+            </div>
+            <div className="flex flex-col justify-between gap-2 font-medium my-2 text-sm">
+              <h3>Leeftijd</h3>
+              <span className="font-normal">{`${years} jaar, ${months} maanden`}</span>
+            </div>
+            <div className="flex flex-col justify-between gap-2 mt-2 font-medium text-sm">
+              <h3>Bijnaam</h3> 
+              <span className="font-normal">...</span>
+            </div>
+          </div>
+        </div>
+      )}
+
       {images.length === 0 && (
         <p className="text-center">There are no images yet.</p>
       )}
@@ -95,14 +136,13 @@ export async function getStaticPaths() {
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const cat = context?.params?.cat;
-  console.log(cat);
+  const catParam = context?.params?.cat as string;
 
   //query for pictures with single cat
-  let queryFilter = `"${cat}" in cat[]->name && length(cat) == 1`;
+  let queryFilter = `"${catParam}" in cat[]->name && length(cat) == 1`;
 
   //query for pictures with multiple cats
-  if (cat === "all") {
+  if (catParam === "all") {
     queryFilter = `length(cat) > 1`;
   }
 
@@ -115,11 +155,22 @@ export const getStaticProps: GetStaticProps = async (context) => {
   }`;
 
   const images: ImageWithDimensions[] = await sanityClient.fetch(query);
-  // console.log(images);
+
+  const cats: Cat[] =
+    (await sanityClient.fetch(groq`*[_type == "cat"]{
+    name,
+    birthDate,
+    "iconUrl": icon.asset->url
+  }`)) ?? [];
+
+  //get cat bases on query param
+  const selectedCat = cats.find((cat) => cat.name === catParam) ?? null;
+  console.log(selectedCat);
 
   return {
     props: {
       images,
+      cat: selectedCat,
     },
   };
 };

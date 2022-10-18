@@ -99,7 +99,7 @@ export async function getStaticProps() {
   const images: ImageWithDimensions[] = await sanityClient.fetch(query);
 
   images.forEach((img) => console.log(img.cats));
-  console.log(images);
+  // console.log(images);
 
   return {
     props: {

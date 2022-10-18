@@ -26,7 +26,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto py-12 px-8 sm:px-12">{children}</main>
+      <main className="max-w-6xl mx-auto py-10 px-8 sm:px-12">{children}</main>
     </div>
   );
 }

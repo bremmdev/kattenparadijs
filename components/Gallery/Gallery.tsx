@@ -11,7 +11,6 @@ type Props = {
 const Gallery = (props: Props) => {
 
   const { images, path } = props
-  console.log(path)
 
   return (
     <div className="columns-2 space-y-8 gap-8 sm:gap-10 md:columns-3">
