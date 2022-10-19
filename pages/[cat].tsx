@@ -10,17 +10,13 @@ import { getContainedSize } from "../utils/getContainedSize";
 import Modal from "../components/Modal";
 import ImageNotFound from "../components/UI/ImageNotFound";
 import { Cat } from "./index";
-import {
-  differenceInYears,
-  differenceInDays,
-  intervalToDuration,
-} from "date-fns";
+import Bio from '../components/Cat/Bio'
 
 interface CatName {
   name: string;
 }
 
-const Cat: NextPage<{
+const CatPage: NextPage<{
   images: ImageWithDimensions[];
   cat: Cat | undefined;
 }> = ({ images, cat }) => {
@@ -60,42 +56,9 @@ const Cat: NextPage<{
     return <ImageNotFound returnPath={returnPath} />;
   }
 
-  const [year, month, day] = cat?.birthDate.split("-") ?? [];
-  const formattedBirthDate = `${day}-${month}-${year}`;
-
-  const { years, months } = intervalToDuration({
-    start: cat ? Date.parse(cat.birthDate) : new Date(),
-    end: new Date(),
-  });
-
-  const formattedNicknames = cat?.nicknames.join(', ')
-
   return (
     <>
-      {cat && (
-        <div className="hidden max-w-xl text-center mx-auto bg-rose-50 rounded-lg p-3 mb-10 sm:flex flex-col justify-center">
-          <div className="flex justify-center items-center gap-2 border-b border-b-rose-300 pb-4">
-            <Image src={cat.iconUrl} alt="logo" width={36} height={36} />
-            <h2 className="font-handwriting text-3xl tracking-wider text-center text-rose-500 capitalize translate-y-1">
-              {cat.name}
-            </h2>
-          </div>
-          <div className="py-2">
-            <div className="flex flex-col justify-between gap-2 font-medium my-2 text-sm">
-              <h3>Geboortedatum</h3>
-              <span className="font-normal">{formattedBirthDate}</span>
-            </div>
-            <div className="flex flex-col justify-between gap-2 font-medium my-2 text-sm">
-              <h3>Leeftijd</h3>
-              <span className="font-normal">{`${years} jaar, ${months} maanden`}</span>
-            </div>
-            <div className="flex flex-col justify-between gap-2 mt-2 font-medium text-sm">
-              <h3>Bijnaam</h3> 
-              <span className="font-normal">{formattedNicknames}</span>
-            </div>
-          </div>
-        </div>
-      )}
+      {cat && <Bio cat={cat} />}
 
       {images.length === 0 && (
         <p className="text-center">There are no images yet.</p>
@@ -117,7 +80,7 @@ const Cat: NextPage<{
   );
 };
 
-export default Cat;
+export default CatPage;
 
 export async function getStaticPaths() {
   const catNames: CatName[] = await sanityClient.fetch(
