@@ -15,6 +15,7 @@ export interface Cat {
   name: string;
   birthDate: string;
   iconUrl: string;
+  nicknames: string[]
 }
 
 export interface ImageWithDimensions {
@@ -88,7 +89,7 @@ const Home: NextPage<{ images: ImageWithDimensions[] }> = ({ images }) => {
 export default Home;
 
 const query = groq`*[_type == "catimage"] | order(_createdAt desc) {
-  "cats": cat[]->{name, birthDate, "iconUrl": icon.asset->url},
+  "cats": cat[]->{name, birthDate, "iconUrl": icon.asset->url, nicknames},
   "id":_id,
   "url": img.asset->url,
   "width": img.asset->metadata.dimensions.width,
@@ -99,7 +100,7 @@ export async function getStaticProps() {
   const images: ImageWithDimensions[] = await sanityClient.fetch(query);
 
   images.forEach((img) => console.log(img.cats));
-  // console.log(images);
+  // console.log('xxx', images);
 
   return {
     props: {

@@ -68,6 +68,7 @@ const Cat: NextPage<{
     end: new Date(),
   });
 
+  const formattedNicknames = cat?.nicknames.join(', ')
 
   return (
     <>
@@ -90,7 +91,7 @@ const Cat: NextPage<{
             </div>
             <div className="flex flex-col justify-between gap-2 mt-2 font-medium text-sm">
               <h3>Bijnaam</h3> 
-              <span className="font-normal">...</span>
+              <span className="font-normal">{formattedNicknames}</span>
             </div>
           </div>
         </div>
@@ -160,7 +161,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
     (await sanityClient.fetch(groq`*[_type == "cat"]{
     name,
     birthDate,
-    "iconUrl": icon.asset->url
+    "iconUrl": icon.asset->url,
+    nicknames
   }`)) ?? [];
 
   //get cat bases on query param
