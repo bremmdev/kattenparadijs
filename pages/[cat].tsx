@@ -137,5 +137,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
       images,
       cat: selectedCat,
     },
+    revalidate: 60
   };
 };
