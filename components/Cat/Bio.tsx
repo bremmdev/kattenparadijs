@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { intervalToDuration } from "date-fns";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface Cat {
   name: string;
@@ -23,11 +23,6 @@ const Bio = ({ cat }: Props) => {
     start: Date.parse(cat.birthDate),
     end: new Date(),
   });
-
-  //close the bio if we go to another cat page
-  useEffect(() => {
-    setIsExpanded(false)
-  }, [cat])
 
   const formattedNicknames = cat.nicknames.join(", ");
   return (

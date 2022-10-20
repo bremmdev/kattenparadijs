@@ -58,7 +58,7 @@ const CatPage: NextPage<{
 
   return (
     <>
-      {cat && <Bio cat={cat} />}
+      {cat && <Bio cat={cat} key={cat.name} />}
 
       {images.length === 0 && (
         <p className="text-center">There are no images yet.</p>
