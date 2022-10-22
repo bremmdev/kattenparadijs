@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ImageWithDimensions } from "../../pages";
+import styles from './Gallery.module.css'
 
 type Props = {
   images: ImageWithDimensions[];
@@ -13,10 +14,10 @@ const Gallery = (props: Props) => {
   const { images, path } = props
 
   return (
-    <div className="columns-2 space-y-8 gap-8 sm:gap-10 md:columns-3">
+    <div className="columns-2 space-y-4 gap-6 sm:columns-3 md:columns-4">
       {images.map((img) => (
         <div
-          className="mb-8 cursor-pointer hover:opacity-95 hover:scale-105 transition-all duration-300"
+          className="cursor-pointer hover:opacity-95 hover:scale-105 transition-all duration-300"
           key={img.id}
         >
           <Link href={`${path ?? ''}/?imageId=${img.id}`}>
@@ -30,7 +31,7 @@ const Gallery = (props: Props) => {
               />
             </a>
           </Link>
-        </div>
+        </div> 
       ))}
     </div>
   );

@@ -7,7 +7,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="border-b-2 border-rose-300 bg-white">
-        <div className="flex flex-col max-w-6xl mx-auto px-8 py-4 sm:px-12 sm:flex-row">
+        <div className="flex flex-col max-w-6xl mx-auto px-8 py-2 sm:px-12 sm:py-4 sm:flex-row">
           <div className="flex justify-center">
             <Link href="/">
               <a>
@@ -26,7 +26,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto py-10 px-8 sm:px-12">{children}</main>
+      <main className="max-w-6xl mx-auto py-6 px-8 sm:px-12 sm:py-8">{children}</main>
     </div>
   );
 }
