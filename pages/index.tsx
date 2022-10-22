@@ -25,6 +25,7 @@ export interface ImageWithDimensions {
   id: string;
   url: string;
   takenAt?: string;
+  blurData: string;
 }
 
 const Home: NextPage<{ images: ImageWithDimensions[] }> = ({ images }) => {
@@ -93,13 +94,14 @@ const query = groq`*[_type == "catimage"] | order(_createdAt desc) {
   "id":_id,
   "url": img.asset->url,
   "width": img.asset->metadata.dimensions.width,
-  "height": img.asset->metadata.dimensions.height
+  "height": img.asset->metadata.dimensions.height,
+  "blurData": img.asset->metadata.lqip
 }`;
 
 export async function getStaticProps() {
   const images: ImageWithDimensions[] = await sanityClient.fetch(query);
 
-  images.forEach((img) => console.log(img.cats));
+  // images.forEach((img) => console.log(img.cats));
   // console.log('xxx', images);
 
   return {

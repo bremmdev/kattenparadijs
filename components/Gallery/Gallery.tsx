@@ -24,10 +24,12 @@ const Gallery = (props: Props) => {
             <a>
               <Image
                 src={img.url}
-                width={img.width}
-                height={img.height}
+                width={img.width / 2}
+                height={img.height / 2}
                 alt="kat"
                 className="rounded-xl"
+                placeholder="blur"
+                blurDataURL={img.blurData}
               />
             </a>
           </Link>

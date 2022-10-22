@@ -44,15 +44,15 @@ const Bio = ({ cat }: Props) => {
       </div>
       {isExpanded && (
         <div className="py-1">
-          <div className="text-xs my-1 flex flex-col justify-between gap-2 font-medium sm:my-2 sm:text-sm">
+          <div className="text-xs my-1 flex flex-col justify-between gap-1 font-medium sm:my-2 sm:gap-2 sm:text-sm">
             <h3>Geboortedatum</h3>
             <span className="font-normal">{formattedBirthDate}</span>
           </div>
-          <div className="text-xs my-1 flex flex-col justify-between gap-2 font-medium sm:my-2 sm:text-sm">
+          <div className="text-xs my-1 flex flex-col justify-between gap-1 font-medium sm:my-2 sm:gap-2 sm:text-sm">
             <h3>Leeftijd</h3>
             <span className="font-normal">{`${years} jaar, ${months} maanden`}</span>
           </div>
-          <div className="text-xs my-1 flex flex-col justify-between gap-2 font-medium sm:my-2 sm:text-sm">
+          <div className="text-xs my-1 flex flex-col justify-between gap-1 font-medium sm:my-2 sm:gap-2 sm:text-sm">
             <h3>Bijnaam</h3>
             <span className="font-normal">{formattedNicknames}</span>
           </div>

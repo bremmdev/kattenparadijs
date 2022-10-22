@@ -71,6 +71,8 @@ const CatPage: NextPage<{
             layout="fill"
             alt="kat"
             className="object-contain"
+            placeholder="blur"
+            blurDataURL={selectedImage.blurData}
           />
         </Modal>
       )}
@@ -115,7 +117,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
     "id":_id,
     "url": img.asset->url,
     "width": img.asset->metadata.dimensions.width,
-    "height": img.asset->metadata.dimensions.height
+    "height": img.asset->metadata.dimensions.height,
+    "blurData": img.asset->metadata.lqip
   }`;
 
   const images: ImageWithDimensions[] = await sanityClient.fetch(query);
