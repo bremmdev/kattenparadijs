@@ -71,8 +71,6 @@ const CatPage: NextPage<{
             layout="fill"
             alt="kat"
             className="object-contain"
-            placeholder="blur"
-            blurDataURL={selectedImage.blurData}
           />
         </Modal>
       )}
