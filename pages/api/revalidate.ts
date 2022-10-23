@@ -14,14 +14,23 @@ export default async function handler(
 
   try {
     const {
-      body: { type, name },
+      body: { type, cat },
     } = req;
 
     switch (type) {
-      case "cat":
+      case "catimage":
+        //always revalidate main page when an image is added
         await res.revalidate(`/`);
-        await res.revalidate(`/${name}`);
-        return res.json({ message: `Revalidated page for ${name}` });
+
+        //check length of 'cats'
+        if (cat.length > 1) {
+          await res.revalidate(`/all`);
+          return res.json({ message: `Revalidated page for all cats` });
+        }
+
+        //revalidate page for specific cat
+        await res.revalidate(`/${cat[0]}`);
+        return res.json({ message: `Revalidated page for ${cat[0]}` });
     }
 
     return res.json({ message: "Incorrect type" });
