@@ -14,10 +14,10 @@ export default async function handler(
 
   try {
     const {
-      body: { type, cat },
+      body: { _type, cat },
     } = req;
 
-    switch (type) {
+    switch (_type) {
       case "catimage":
         //always revalidate main page when an image is added
         await res.revalidate(`/`);
