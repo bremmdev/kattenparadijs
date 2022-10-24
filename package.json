@@ -6,6 +6,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@sanity/webhook": "^2.0.0",
     "date-fns": "^2.29.3",
     "next": "latest",
     "next-sanity": "^1.0.0",

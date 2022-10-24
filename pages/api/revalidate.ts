@@ -1,16 +1,15 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import { isValidSignature } from "@sanity/webhook";
+
+const secret = process.env.SANITY_WEBHOOK_SECRET;
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  // if (req.method !== "POST" || '') {
-  //   return res.status(401).json({ message: "Must be a POST request" });
-  // }
-
-  // if (req.query.secret !== process.env.MY_SECRET_TOKEN) {
-  //   return res.status(401).json({ message: "Invalid token" });
-  // }
+  if (req.query.secret !== process.env.MY_SECRET_TOKEN) {
+    return res.status(401).json({ message: "Invalid token" });
+  }
 
   try {
     const {
