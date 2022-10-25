@@ -15,7 +15,7 @@ export interface Cat {
   name: string;
   birthDate: string;
   iconUrl: string;
-  nicknames: string[]
+  nicknames: string[];
 }
 
 export interface ImageWithDimensions {
@@ -95,7 +95,8 @@ const query = groq`*[_type == "catimage"] | order(_createdAt desc) {
   "url": img.asset->url,
   "width": img.asset->metadata.dimensions.width,
   "height": img.asset->metadata.dimensions.height,
-  "blurData": img.asset->metadata.lqip
+  "blurData": img.asset->metadata.lqip,
+  takenAt
 }`;
 
 export async function getStaticProps() {

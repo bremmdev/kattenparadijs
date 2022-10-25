@@ -116,7 +116,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
     "url": img.asset->url,
     "width": img.asset->metadata.dimensions.width,
     "height": img.asset->metadata.dimensions.height,
-    "blurData": img.asset->metadata.lqip
+    "blurData": img.asset->metadata.lqip,
+    takenAt
   }`;
 
   const images: ImageWithDimensions[] = await sanityClient.fetch(query);
