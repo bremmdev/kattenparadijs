@@ -22,7 +22,7 @@ const ExtraInfo = (props: Props) => {
   const formattedAge = `${years} jaar, ${months} maanden`;
 
   return (
-    <div className="flex flex-col items-center z-10 absolute bottom-6 left-4 right-4 ">
+    <div className="hidden sm:flex flex-col items-center z-10 absolute bottom-6 left-4 right-4 ">
       {showInfo && (
         <div className="animate-fade flex flex-col text-xs w-full text-center bg-white bg-opacity-70 mb-2 py-2 font-medium rounded-md">
           <span>Datum: {formattedTakenAt}</span>
@@ -31,13 +31,13 @@ const ExtraInfo = (props: Props) => {
       )}
 
       <div
-        className="transition-all flex items-center justify-center w-8 h-8 rounded-full bg-white bg-opacity-50 hover:scale-105"
+        className="transition-all flex items-center justify-center w-10 h-10 rounded-full bg-white bg-opacity-50 hover:scale-105"
         onClick={() => setShowInfo((prev) => !prev)}
       >
         {showInfo ? (
-          <img src="/close-icon.svg" alt="close" width="24px" height="24px" />
+          <img src="/close-icon.svg" alt="close" width="28px" height="28px" />
         ) : (
-          <img src="/info-icon.svg" alt="info" width="20px" height="20px" />
+          <img src="/info-icon.svg" alt="info" width="24px" height="24px" />
         )}
       </div>
     </div>
