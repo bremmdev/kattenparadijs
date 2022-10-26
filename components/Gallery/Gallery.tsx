@@ -1,8 +1,4 @@
-import React from "react";
-import Link from "next/link";
-import Image from "next/image";
 import { ImageWithDimensions } from "../../pages";
-import styles from "./Gallery.module.css";
 import GalleryItem from "./GalleryItem";
 
 type Props = {

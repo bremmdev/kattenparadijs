@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { intervalToDuration } from "date-fns";
 
 type Props = {
@@ -11,9 +11,22 @@ const ExtraInfo = (props: Props) => {
 
   const [showInfo, setShowInfo] = useState<boolean>(false);
 
+  //hide info after 3 seconds
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (showInfo) {
+      timer = setTimeout(() => {
+        setShowInfo(false);
+      }, 3000);
+    }
+    return () => clearTimeout(timer);
+  }, [showInfo]);
+
+  //format date
   const [year, month, day] = takenAt.split("-") || [];
   const formattedTakenAt = `${day}-${month}-${year}`;
 
+  //determine the age of the cat using the birthdate and the takenAt date
   const { years, months } = intervalToDuration({
     start: Date.parse(birthDate),
     end: Date.parse(takenAt),

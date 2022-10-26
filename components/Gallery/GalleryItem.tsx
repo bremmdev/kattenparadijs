@@ -12,16 +12,15 @@ type Props = {
 const GalleryItem = (props: Props) => {
   const { img, path } = props;
 
-  //only show extra info if image has takenAt property and there is only one cat
-  const hasTakenAtInfo = Boolean(img.takenAt) && img.cats.length === 1;
+  //only show extra info if image has takenAt property and there is only one cat in the image
+  const hasExtraInfo = Boolean(img.takenAt) && img.cats.length === 1;
 
   return (
     <div
       className="relative cursor-pointer hover:opacity-95 hover:scale-105 transition-all duration-300"
       key={img.id}
-      onClick={() => console.log("test")}
     >
-      {hasTakenAtInfo && (
+      {hasExtraInfo && (
         <ExtraInfo
           birthDate={img.cats[0].birthDate}
           takenAt={img.takenAt as string}

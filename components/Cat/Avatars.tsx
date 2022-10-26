@@ -19,6 +19,7 @@ const Avatars = () => {
             <img
               className="transition-all duration-300 cursor-pointer hover:scale-110 hover:brightness-105"
               src={avatar.src}
+              alt="cat avatar"
               width="42"
               height="42"
             />
