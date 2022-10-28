@@ -47,7 +47,9 @@ const CatPage: NextPage<{
       e.pageY > viewportHeight / 2 + imageHeight / 2;
 
     if (hasClickedOutsideOfImage) {
-      router.push(router.query.cat as string);
+      router.push({
+        pathname: router.query.cat as string
+      }, undefined, { scroll: false });
     }
   };
 

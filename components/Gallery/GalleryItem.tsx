@@ -27,7 +27,7 @@ const GalleryItem = (props: Props) => {
         />
       )}
 
-      <Link href={`${path ?? ""}/?imageId=${img.id}`}>
+      <Link href={`${path ?? ""}/?imageId=${img.id}`} scroll={false}>
         <a>
           <Image
             src={img.url}

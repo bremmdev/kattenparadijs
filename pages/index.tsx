@@ -54,7 +54,9 @@ const Home: NextPage<{ images: ImageWithDimensions[] }> = ({ images }) => {
       e.pageY > viewportHeight / 2 + imageHeight / 2;
 
     if (hasClickedOutsideOfImage) {
-      router.push("/");
+      router.push({
+        pathname: '/',
+      }, undefined, { scroll: false });
     }
   };
 
