@@ -10,6 +10,7 @@ import { groq } from "next-sanity";
 import { imageConfigDefault } from "next/dist/shared/lib/image-config";
 import Gallery from "../components/Gallery/Gallery";
 import ImageNotFound from "../components/UI/ImageNotFound";
+import SelectRandomCat from "../components/Gallery/SelectRandomCat";
 
 export interface Cat {
   name: string;
@@ -38,6 +39,8 @@ const Home: NextPage<{ images: ImageWithDimensions[] }> = ({ images }) => {
     selectedImage = images.find((image) => image.id === router.query.imageId);
   }
 
+  
+
   const handleClose = (e: React.MouseEvent) => {
     //image size can be altered because of object-fit, so we need the contained size of the image, not the 'full' size of the image
     const [imageWidth, imageHeight] = getContainedSize(
@@ -54,9 +57,13 @@ const Home: NextPage<{ images: ImageWithDimensions[] }> = ({ images }) => {
       e.pageY > viewportHeight / 2 + imageHeight / 2;
 
     if (hasClickedOutsideOfImage) {
-      router.push({
-        pathname: '/',
-      }, undefined, { scroll: false });
+      router.push(
+        {
+          pathname: "/",
+        },
+        undefined,
+        { scroll: false }
+      );
     }
   };
 
@@ -84,7 +91,12 @@ const Home: NextPage<{ images: ImageWithDimensions[] }> = ({ images }) => {
         </Modal>
       )}
 
-      {images.length > 0 && <Gallery images={images} />}
+      {images.length > 0 && (
+        <>
+          <SelectRandomCat images={images} />
+          <Gallery images={images} />
+        </>
+      )}
     </>
   );
 };
