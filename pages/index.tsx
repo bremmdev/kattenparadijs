@@ -39,8 +39,6 @@ const Home: NextPage<{ images: ImageWithDimensions[] }> = ({ images }) => {
     selectedImage = images.find((image) => image.id === router.query.imageId);
   }
 
-  
-
   const handleClose = (e: React.MouseEvent) => {
     //image size can be altered because of object-fit, so we need the contained size of the image, not the 'full' size of the image
     const [imageWidth, imageHeight] = getContainedSize(
