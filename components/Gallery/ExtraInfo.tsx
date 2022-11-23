@@ -1,9 +1,30 @@
 import { useState, useEffect } from "react";
 import { intervalToDuration } from "date-fns";
+import { differenceInCalendarDays } from "date-fns";
 
 type Props = {
   takenAt: string;
   birthDate: string;
+};
+
+//determine the age of the cat using the birthdate and the takenAt date
+const determineAge = (takenAt: string, birthDate: string) => {
+  const { years, months } = intervalToDuration({
+    start: Date.parse(birthDate),
+    end: Date.parse(takenAt),
+  });
+
+  //calculate age in weeks when younger than 3 months
+  if (years === 0 && months && months < 3) {
+    const ageInDays =
+      differenceInCalendarDays(Date.parse(takenAt), Date.parse(birthDate)) + 1;
+    const ageInWeeks = Math.floor(ageInDays / 7);
+    return `${ageInWeeks} weken`;
+  }
+
+  //return age in months and years when older than 3 months
+  const numberOfYears = years && years > 0 ? `${years} jaar, ` : "";
+  return `${numberOfYears}${months} ${months === 1 ? "maand" : "maanden"}`;
 };
 
 const ExtraInfo = (props: Props) => {
@@ -25,14 +46,7 @@ const ExtraInfo = (props: Props) => {
   //format date
   const [year, month, day] = takenAt.split("-") || [];
   const formattedTakenAt = `${day}-${month}-${year}`;
-
-  //determine the age of the cat using the birthdate and the takenAt date
-  const { years, months } = intervalToDuration({
-    start: Date.parse(birthDate),
-    end: Date.parse(takenAt),
-  });
-
-  const formattedAge = `${years} jaar, ${months} maanden`;
+  const formattedAge = determineAge(takenAt, birthDate);
 
   return (
     <div className="hidden sm:flex flex-col items-center z-10 absolute bottom-6 left-4 right-4 ">

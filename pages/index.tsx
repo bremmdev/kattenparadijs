@@ -114,9 +114,6 @@ const query = groq`*[_type == "catimage"] | order(_createdAt desc) {
 export async function getStaticProps() {
   const images: ImageWithDimensions[] = await sanityClient.fetch(query);
 
-  // images.forEach((img) => console.log(img.cats));
-  // console.log('xxx', images);
-
   return {
     props: {
       images,

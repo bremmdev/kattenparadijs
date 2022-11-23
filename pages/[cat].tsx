@@ -10,7 +10,7 @@ import { getContainedSize } from "../utils/getContainedSize";
 import Modal from "../components/Modal";
 import ImageNotFound from "../components/UI/ImageNotFound";
 import { Cat } from "./index";
-import Bio from '../components/Cat/Bio'
+import Bio from "../components/Cat/Bio";
 
 interface CatName {
   name: string;
@@ -47,9 +47,13 @@ const CatPage: NextPage<{
       e.pageY > viewportHeight / 2 + imageHeight / 2;
 
     if (hasClickedOutsideOfImage) {
-      router.push({
-        pathname: router.query.cat as string
-      }, undefined, { scroll: false });
+      router.push(
+        {
+          pathname: router.query.cat as string,
+        },
+        undefined,
+        { scroll: false }
+      );
     }
   };
 
@@ -134,7 +138,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   //get cat bases on query param
   const selectedCat = cats.find((cat) => cat.name === catParam) ?? null;
-  console.log(selectedCat);
 
   return {
     props: {
