@@ -11,6 +11,10 @@ import Modal from "../components/Modal";
 import ImageNotFound from "../components/UI/ImageNotFound";
 import { Cat } from "./index";
 import Bio from "../components/Cat/Bio";
+import Confetti from "react-confetti";
+import useWindowSize from "../hooks/useWindowSize";
+import React from "react";
+import { checkBirthday } from "../utils/checkBirthday";
 
 interface CatName {
   name: string;
@@ -20,6 +24,9 @@ const CatPage: NextPage<{
   images: ImageWithDimensions[];
   cat: Cat | undefined;
 }> = ({ images, cat }) => {
+  const { width: windowWidth, height: windowHeight } = useWindowSize();
+  const [showConfetti, setShowConfetti] = React.useState(false);
+
   const router = useRouter();
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -62,8 +69,19 @@ const CatPage: NextPage<{
     return <ImageNotFound returnPath={returnPath} />;
   }
 
+  React.useEffect(() => {
+    const istBirthday = checkBirthday(cat?.birthDate);
+
+    if (istBirthday) {
+      setShowConfetti(true);
+    } else {
+      setShowConfetti(false);
+    }
+  }, [cat]);
+
   return (
     <>
+      {showConfetti && <Confetti width={windowWidth} height={windowHeight} />}
       {cat && <Bio cat={cat} key={cat.name} />}
 
       {images.length === 0 && (
