@@ -1,27 +1,19 @@
-# Next.js + Tailwind CSS Example
+# Kattenparadijs
 
-This example shows how to use [Tailwind CSS](https://tailwindcss.com/) [(v3.0)](https://tailwindcss.com/blog/tailwindcss-v3) with Next.js. It follows the steps outlined in the official [Tailwind docs](https://tailwindcss.com/docs/guides/nextjs).
+A cat image gallery built with Next.js, TypeScript, TailwindCSS and Sanity.io.
 
-## Deploy your own
+## Tech
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example) or preview live with [StackBlitz](https://stackblitz.com/github/vercel/next.js/tree/canary/examples/with-tailwindcss)
+- Next.js
+- TypeScript
+- TailwindCSS for styling
+- Sanity.io as CMS
+- Vercel for deployment
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-tailwindcss&project-name=with-tailwindcss&repository-name=with-tailwindcss)
+## Description
 
-## How to use
+This project is inspired by my love of cats. The project contains an image gallery of my own cats. It also has a dynamic route to give each of the cats its own personal page. For rendering it uses Next.js SSG (Static Site Generation) to optimize loading times. To allow updates to the statically generated pages I also use on-demand ISR (Incremental Static Regeneration). Adding, removing or changing a picture in Sanity CMS will trigger a revalidation of the affected pages, so the pages will be build again with the fresh data. The combination of SSG and ISR allows me to optimize loading times by statically generating the pages but also allows updates to the content when the application is live. 
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init), [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/), or [pnpm](https://pnpm.io) to bootstrap the example:
+## Screenshots
 
-```bash
-npx create-next-app --example with-tailwindcss with-tailwindcss-app
-```
-
-```bash
-yarn create next-app --example with-tailwindcss with-tailwindcss-app
-```
-
-```bash
-pnpm create next-app --example with-tailwindcss with-tailwindcss-app
-```
-
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+![kattenparadijs](https://user-images.githubusercontent.com/76665118/210135017-7d48fad3-49db-47da-9ac3-d45d5b358174.png)
