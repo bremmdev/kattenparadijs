@@ -40,9 +40,7 @@ const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
 
   //handle invalid query param error
   if (router.query.imageId && !selectedImage) {
-    if (router.query.imageId && !selectedImage) {
-      return <ImageNotFound returnPath={"/"} />;
-    }
+    return <ImageNotFound returnPath={"/"} />;
   }
 
   return (

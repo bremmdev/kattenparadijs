@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
-
-import { ImageWithDimensions } from "../../pages";
+import { ImageWithDimensions } from "../../types/types";
 
 const SelectRandomCat = ({ images }: { images: ImageWithDimensions[] }) => {
   const router = useRouter();

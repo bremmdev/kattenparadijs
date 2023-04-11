@@ -1,4 +1,4 @@
-import { ImageWithDimensions } from "../../pages";
+import { ImageWithDimensions } from "../../types/types";
 import GalleryItem from "./GalleryItem";
 
 type Props = {
