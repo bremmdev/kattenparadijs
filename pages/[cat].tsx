@@ -139,7 +139,7 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
   }`)) ?? [];
 
   //get cat based on query param
-  const selectedCat = cats.find((cat) => cat.name === catParam);
+  const selectedCat = cats.find((cat) => cat.name === catParam) || null;
 
   return {
     props: {
