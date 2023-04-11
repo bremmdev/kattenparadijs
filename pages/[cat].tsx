@@ -1,29 +1,24 @@
-import { GetStaticProps, NextPage } from "next";
+import { GetStaticPropsContext, InferGetStaticPropsType, NextPage } from "next";
 import { useRouter } from "next/router";
 import { sanityClient } from "../sanity";
 import { groq } from "next-sanity";
-import { ImageWithDimensions } from "./index";
+import type { ImageWithDimensions, Cat } from "../types/types";
 import Image from "next/image";
 import Gallery from "../components/Gallery/Gallery";
 import { useRef } from "react";
-import { getContainedSize } from "../utils/getContainedSize";
 import Modal from "../components/Modal";
 import ImageNotFound from "../components/UI/ImageNotFound";
-import { Cat } from "./index";
 import Bio from "../components/Cat/Bio";
 import Confetti from "react-confetti";
 import useWindowSize from "../hooks/useWindowSize";
 import React from "react";
 import { checkBirthday } from "../utils/checkBirthday";
+import useHandleClickOutsideImage from "../hooks/useHandleClickOutsideImage";
 
-interface CatName {
-  name: string;
-}
-
-const CatPage: NextPage<{
-  images: ImageWithDimensions[];
-  cat: Cat | undefined;
-}> = ({ images, cat }) => {
+const CatPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
+  images,
+  cat,
+}) => {
   const { width: windowWidth, height: windowHeight } = useWindowSize();
   const [showConfetti, setShowConfetti] = React.useState(false);
 
@@ -39,19 +34,8 @@ const CatPage: NextPage<{
   }
 
   const handleClose = (e: React.MouseEvent) => {
-    //image size can be altered because of object-fit, so we need the contained size of the image, not the 'full' size of the image
-    const [imageWidth, imageHeight] = getContainedSize(
-      modalRef.current?.querySelector("img")!
-    );
-    const viewport = window.innerWidth;
-    const viewportHeight = window.innerHeight;
-
-    //we know the viewport size and the image size, so we can use pageX and pageY to determine if the user clicked outside the image
-    const hasClickedOutsideOfImage =
-      e.pageX < viewport / 2 - imageWidth / 2 ||
-      e.pageX > viewport / 2 + imageWidth / 2 ||
-      e.pageY < viewportHeight / 2 - imageHeight / 2 ||
-      e.pageY > viewportHeight / 2 + imageHeight / 2;
+    const img = modalRef.current?.querySelector("img")!;
+    const hasClickedOutsideOfImage = useHandleClickOutsideImage(e, img);
 
     if (hasClickedOutsideOfImage) {
       router.push(
@@ -64,11 +48,6 @@ const CatPage: NextPage<{
     }
   };
 
-  //handle invalid query param error
-  if (router.query.imageId && !selectedImage) {
-    return <ImageNotFound returnPath={returnPath} />;
-  }
-
   React.useEffect(() => {
     const istBirthday = checkBirthday(cat?.birthDate);
 
@@ -78,6 +57,11 @@ const CatPage: NextPage<{
       setShowConfetti(false);
     }
   }, [cat]);
+
+  //handle invalid query param error
+  if (router.query.imageId && !selectedImage) {
+    return <ImageNotFound returnPath={returnPath} />;
+  }
 
   return (
     <>
@@ -107,7 +91,7 @@ const CatPage: NextPage<{
 export default CatPage;
 
 export async function getStaticPaths() {
-  const catNames: CatName[] = await sanityClient.fetch(
+  const catNames: Array<Pick<Cat, "name">> = await sanityClient.fetch(
     groq`*[_type == "cat"]{ name }`
   );
 
@@ -123,7 +107,7 @@ export async function getStaticPaths() {
   };
 }
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getStaticProps = async (context: GetStaticPropsContext) => {
   const catParam = context?.params?.cat as string;
 
   //query for pictures with single cat
@@ -154,8 +138,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
     nicknames
   }`)) ?? [];
 
-  //get cat bases on query param
-  const selectedCat = cats.find((cat) => cat.name === catParam) ?? null;
+  //get cat based on query param
+  const selectedCat = cats.find((cat) => cat.name === catParam);
 
   return {
     props: {
