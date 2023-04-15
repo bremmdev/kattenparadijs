@@ -27,7 +27,6 @@ const GalleryItem = (props: Props) => {
       )}
 
       <Link href={`${path ?? ""}/?imageId=${img.id}`} scroll={false}>
-        <a ref={img.id}>
           <Image
             src={img.url}
             width={img.width / 2}
@@ -37,7 +36,6 @@ const GalleryItem = (props: Props) => {
             placeholder="blur"
             blurDataURL={img.blurData}
           />
-        </a>
       </Link>
     </div>
   );

@@ -76,7 +76,7 @@ const CatPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
         <Modal ref={modalRef} onClose={handleClose}>
           <Image
             src={selectedImage.url}
-            layout="fill"
+            fill
             alt="kat"
             className="object-contain"
           />

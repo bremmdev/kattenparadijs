@@ -13,7 +13,6 @@ const Avatars = () => {
     <div className="flex gap-3 justify-center my-2 sm:my-0 sm:ml-auto">
       {avatars.map((avatar, idx) => (
         <Link key={idx} href={avatar.path}>
-          <a>
             <img
               className="transition-all duration-300 cursor-pointer hover:scale-110 hover:brightness-105"
               src={avatar.src}
@@ -21,7 +20,6 @@ const Avatars = () => {
               width="42"
               height="42"
             />
-          </a>
         </Link>
       ))}
     </div>

@@ -6,8 +6,8 @@ module.exports = {
   ],
   theme: {
     fontFamily: {
-      handwriting: ["Dancing Script"],
-      'sans': ['Poppins', 'ui-sans-serif'],
+      handwriting: ['var(--font-dancing-script)'],
+      sans: ['var(--font-poppins)'],
     },
     screens: {
       sm: "640px",

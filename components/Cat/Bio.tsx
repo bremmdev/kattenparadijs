@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { intervalToDuration } from "date-fns";
 import { useState } from "react";
+import { dancing_script } from "../Layout/Layout";
 
 interface Cat {
   name: string;
@@ -38,7 +39,9 @@ const Bio = ({ cat }: Props) => {
       />
       <div className="flex justify-center items-center gap-2 border-b border-b-rose-300 pb-4">
         <Image src={cat.iconUrl} alt="logo" width={32} height={32} />
-        <h2 className="font-handwriting tracking-wider text-center text-rose-500 capitalize translate-y-1 text-2xl">
+        <h2
+          className={`${dancing_script.variable} font-handwriting tracking-wider text-center text-rose-500 capitalize translate-y-1 text-2xl`}
+        >
           {cat.name}
         </h2>
       </div>
