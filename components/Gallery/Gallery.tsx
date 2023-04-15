@@ -2,7 +2,7 @@ import { ImageWithDimensions } from "../../types/types";
 import GalleryItem from "./GalleryItem";
 
 type Props = {
-  images: ImageWithDimensions[];
+  images: Array<ImageWithDimensions>;
   path?: string;
 };
 

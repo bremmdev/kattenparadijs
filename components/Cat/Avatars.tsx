@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const avatars = [
   { src: "/avatar/daantje.svg", path: "/daantje" },
@@ -13,7 +14,7 @@ const Avatars = () => {
     <div className="flex gap-3 justify-center my-2 sm:my-0 sm:ml-auto">
       {avatars.map((avatar, idx) => (
         <Link key={idx} href={avatar.path}>
-            <img
+            <Image
               className="transition-all duration-300 cursor-pointer hover:scale-110 hover:brightness-105"
               src={avatar.src}
               alt="cat avatar"

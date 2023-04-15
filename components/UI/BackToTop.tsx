@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 const BackToTop = () => {
   const scrollToTop = () => {
     window.scrollTo({
@@ -9,11 +11,12 @@ const BackToTop = () => {
 
   return (
     <div className="flex justify-center" onClick={scrollToTop}>
-      <img
+      <Image
         src="chevron-double-up.svg"
-        width="52px"
-        height="52px"
+        width="52"
+        height="52"
         className="transition-all duration-300 rounded-full p-1 bg-rose-100 opacity-80 hover:scale-110"
+        alt="back to top"
       />
     </div>
   );

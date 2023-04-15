@@ -3,7 +3,7 @@ import Link from "next/link";
 const NotFound = () => {
   return (
     <div className="flex flex-col gap-8 items-center justify-center">
-      <p className="text-center text-red-500 font-bold">
+      <p className="text-center text-rose-500 text-sm sm:text-base font-bold">
         Oops! The requested page cannot be found.
       </p>
       <Link

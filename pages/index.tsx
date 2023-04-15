@@ -10,6 +10,7 @@ import Gallery from "../components/Gallery/Gallery";
 import ImageNotFound from "../components/UI/ImageNotFound";
 import SelectRandomCat from "../components/Gallery/SelectRandomCat";
 import type { ImageWithDimensions, Cat } from "../types/types";
+import Head from "next/head";
 
 const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   images,
@@ -45,6 +46,9 @@ const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
 
   return (
     <>
+      <Head>
+        <title>Kattenparadijs</title>
+      </Head>
       {images.length === 0 && (
         <p className="text-center">There are no images yet.</p>
       )}
@@ -83,7 +87,7 @@ const query = groq`*[_type == "catimage"] | order(_createdAt desc) {
 }`;
 
 export async function getStaticProps() {
-  const images: ImageWithDimensions[] = await sanityClient.fetch(query);
+  const images: Array<ImageWithDimensions> = await sanityClient.fetch(query);
 
   return {
     props: {

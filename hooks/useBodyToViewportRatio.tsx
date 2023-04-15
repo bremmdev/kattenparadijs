@@ -1,5 +1,5 @@
 import React from "react";
-import throttle from "../components/utils/throttle";
+import throttle from "../utils/throttle";
 
 //this hook determines the ratio between the body height and the viewport height
 //accepts a dependency to re-run on change

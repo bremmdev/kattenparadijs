@@ -21,15 +21,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   //only show back to top button when the body is longer than the viewport
   //we use the router.asPath as a dependency to make sure the hook is called again when the page changes
-  const { bodyToViewportRatio } = useBodyToViewportRatio(
-    router.asPath
-  );
+  const { bodyToViewportRatio } = useBodyToViewportRatio(router.asPath);
   const showBackToTop = bodyToViewportRatio && bodyToViewportRatio > 1.2;
 
   return (
     <>
       <Head>
-        <title>Kattenparadijs</title>
+        <meta name="description" content="Een mooie verzameling kattenfoto's" />
         <link rel="shortcut icon" href="/favicon.ico" />
         <link
           rel="apple-touch-icon"

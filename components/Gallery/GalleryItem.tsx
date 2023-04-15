@@ -17,7 +17,6 @@ const GalleryItem = (props: Props) => {
   return (
     <div
       className="relative cursor-pointer hover:opacity-95 hover:scale-105 transition-all duration-300"
-      key={img.id}
     >
       {hasExtraInfo && (
         <ExtraInfo

@@ -14,6 +14,7 @@ import useWindowSize from "../hooks/useWindowSize";
 import React from "react";
 import { checkBirthday } from "../utils/checkBirthday";
 import useHandleClickOutsideImage from "../hooks/useHandleClickOutsideImage";
+import Head from "next/head";
 
 const CatPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   images,
@@ -63,8 +64,18 @@ const CatPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
     return <ImageNotFound returnPath={returnPath} />;
   }
 
+  const pageTitle =
+    cat?.name && typeof cat.name === "string"
+      ? `Kattenparadijs | ${cat.name.slice(0, 1).toUpperCase()}${cat.name.slice(
+          1
+        )}`
+      : "Kattenparadijs | Alle Katten";
+
   return (
     <>
+      <Head>
+        <title>{pageTitle}</title>
+      </Head>
       {showConfetti && <Confetti width={windowWidth} height={windowHeight} />}
       {cat && <Bio cat={cat} key={cat.name} />}
 
@@ -128,9 +139,9 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
     takenAt
   }`;
 
-  const images: ImageWithDimensions[] = await sanityClient.fetch(query);
+  const images: Array<ImageWithDimensions> = await sanityClient.fetch(query);
 
-  const cats: Cat[] =
+  const cats: Array<Cat> =
     (await sanityClient.fetch(groq`*[_type == "cat"]{
     name,
     birthDate,

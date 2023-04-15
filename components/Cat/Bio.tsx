@@ -2,13 +2,7 @@ import Image from "next/image";
 import { intervalToDuration } from "date-fns";
 import { useState } from "react";
 import { dancing_script } from "../Layout/Layout";
-
-interface Cat {
-  name: string;
-  birthDate: string;
-  iconUrl: string;
-  nicknames: string[];
-}
+import { Cat } from "../../types/types";
 
 type Props = {
   cat: Cat;
@@ -26,6 +20,7 @@ const Bio = ({ cat }: Props) => {
   });
 
   const formattedNicknames = cat.nicknames.join(", ");
+
   return (
     <div className="flex flex-col justify-center relative max-w-xl p-2 mb-6 text-center mx-auto bg-rose-50 rounded-lg sm:p-3 sm:mb-10">
       <img
