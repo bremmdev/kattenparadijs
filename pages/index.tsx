@@ -50,7 +50,7 @@ const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
         <title>Kattenparadijs</title>
         <meta
           property="og:image"
-          content="https://raw.githubusercontent.com/bremmdev/kattenparadijs/main/public/og-home.png"
+          content="https://user-images.githubusercontent.com/76665118/210135017-7d48fad3-49db-47da-9ac3-d45d5b358174.png"
         />
       </Head>
       {images.length === 0 && (

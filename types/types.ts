@@ -14,3 +14,5 @@ export interface ImageWithDimensions {
   takenAt?: string;
   blurData: string;
 }
+
+export type CatName = "moos" | "norris" | "daantje" | "flynn"
