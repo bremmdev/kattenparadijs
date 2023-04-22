@@ -1,15 +1,15 @@
 import type { InferGetStaticPropsType, NextPage } from "next";
 import Image from "next/image";
 import React, { useRef } from "react";
-import useHandleClickOutsideImage from "../hooks/useHandleClickOutsideImage";
+import useHandleClickOutsideImage from "@/hooks/useHandleClickOutsideImage";
 import { useRouter } from "next/router";
-import Modal from "../components/Modal";
-import { sanityClient } from "../sanity";
+import Modal from "@/components/Modal";
+import { sanityClient } from "@/sanity";
 import { groq } from "next-sanity";
-import Gallery from "../components/Gallery/Gallery";
-import ImageNotFound from "../components/UI/ImageNotFound";
-import SelectRandomCat from "../components/Gallery/SelectRandomCat";
-import type { ImageWithDimensions, Cat } from "../types/types";
+import Gallery from "@/components/Gallery/Gallery";
+import ImageNotFound from "@/components/UI/ImageNotFound";
+import SelectRandomCat from "@/components/Gallery/SelectRandomCat";
+import type { ImageWithDimensions, Cat } from "@/types/types";
 import Head from "next/head";
 
 const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({

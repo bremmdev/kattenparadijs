@@ -1,4 +1,4 @@
-import { ImageWithDimensions } from "../../types/types";
+import { ImageWithDimensions } from "@/types/types";
 import Image from "next/image";
 import Link from "next/link";
 import ExtraInfo from "./ExtraInfo";

@@ -1,8 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
-import Avatars from "../Cat/Avatars";
-import logo from "../../public/logo.svg";
-import { dancing_script } from "../Layout/Layout";
+import Avatars from "@/components/Cat/Avatars";
+import logo from "@/public/logo.svg";
+import { dancing_script } from "@/components/Layout/Layout";
 
 const Header = () => {
   return (

@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { intervalToDuration } from "date-fns";
 import { useState } from "react";
-import { dancing_script } from "../Layout/Layout";
-import { Cat } from "../../types/types";
+import { dancing_script } from "@/components/Layout/Layout";
+import { Cat } from "@/types/types";
 
 type Props = {
   cat: Cat;

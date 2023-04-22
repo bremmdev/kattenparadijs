@@ -1,5 +1,5 @@
 import React from "react";
-import { getContainedSize } from "../utils/getContainedSize";
+import { getContainedSize } from "@/utils/getContainedSize";
 
 const useHandleClickOutsideImage = (
   e: React.MouseEvent,

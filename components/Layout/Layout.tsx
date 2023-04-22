@@ -1,9 +1,9 @@
 import Header from "./Header";
-import BackToTop from "../UI/BackToTop";
+import BackToTop from "@/components//UI/BackToTop";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { Poppins, Dancing_Script } from "next/font/google";
-import useBodyToViewportRatio from "../../hooks/useBodyToViewportRatio";
+import useBodyToViewportRatio from "@/hooks/useBodyToViewportRatio";
 
 const poppins = Poppins({
   subsets: ["latin"],
