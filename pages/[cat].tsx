@@ -2,19 +2,14 @@ import { GetStaticPropsContext, InferGetStaticPropsType, NextPage } from "next";
 import { useRouter } from "next/router";
 import { sanityClient } from "@/sanity";
 import { groq } from "next-sanity";
-import type { ImageWithDimensions, Cat, CatName } from "@/types/types";
-import Image from "next/image";
 import Gallery from "@/components/Gallery/Gallery";
-import { useRef } from "react";
-import Modal from "@/components/Modal";
-import ImageNotFound from "@/components/UI/ImageNotFound";
 import Bio from "@/components/Cat/Bio";
 import Confetti from "react-confetti";
 import useWindowSize from "@/hooks/useWindowSize";
 import React from "react";
 import { checkBirthday } from "@/utils/checkBirthday";
-import useHandleClickOutsideImage from "@/hooks/useHandleClickOutsideImage";
 import Head from "next/head";
+import { Cat, CatName, ImageWithDimensions } from "@/types/types";
 
 const CatPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   images,

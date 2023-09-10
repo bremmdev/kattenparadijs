@@ -7,10 +7,11 @@ type Props = {
   setSelectedImage: React.Dispatch<
     React.SetStateAction<ImageWithDimensions | null>
   >;
+  hasPriority?: boolean;
 };
 
 const GalleryItem = (props: Props) => {
-  const { img, setSelectedImage } = props;
+  const { img, setSelectedImage, hasPriority } = props;
 
   const handleImageClick = () => {
     setSelectedImage(img);
@@ -37,6 +38,7 @@ const GalleryItem = (props: Props) => {
           className="rounded-xl"
           placeholder="blur"
           blurDataURL={img.blurData}
+          priority={hasPriority}
         />
       </button>
     </div>
