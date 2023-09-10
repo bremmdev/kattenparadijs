@@ -14,8 +14,8 @@ const useHandleClickOutsideImage = (
   const hasClickedOutsideOfImage =
     e.pageX < viewport / 2 - imageWidth / 2 ||
     e.pageX > viewport / 2 + imageWidth / 2 ||
-    e.pageY < viewportHeight / 2 - imageHeight / 2 ||
-    e.pageY > viewportHeight / 2 + imageHeight / 2;
+    (e.pageY - window.scrollY) < viewportHeight / 2 - imageHeight / 2 ||
+    (e.pageY - window.scrollY) > viewportHeight / 2 + imageHeight / 2;
 
   return hasClickedOutsideOfImage;
 };

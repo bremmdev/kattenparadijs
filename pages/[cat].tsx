@@ -19,36 +19,12 @@ import Head from "next/head";
 const CatPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   images,
   cat,
-  ogImage
+  ogImage,
 }) => {
   const { width: windowWidth, height: windowHeight } = useWindowSize();
   const [showConfetti, setShowConfetti] = React.useState(false);
 
   const router = useRouter();
-  const modalRef = useRef<HTMLDivElement>(null);
-
-  let selectedImage: ImageWithDimensions | undefined;
-  let returnPath = "";
-
-  if (router.query.imageId) {
-    selectedImage = images.find((image) => image.id === router.query.imageId);
-    returnPath = router.query.cat as string;
-  }
-
-  const handleClose = (e: React.MouseEvent) => {
-    const img = modalRef.current?.querySelector("img")!;
-    const hasClickedOutsideOfImage = useHandleClickOutsideImage(e, img);
-
-    if (hasClickedOutsideOfImage) {
-      router.push(
-        {
-          pathname: router.query.cat as string,
-        },
-        undefined,
-        { scroll: false }
-      );
-    }
-  };
 
   React.useEffect(() => {
     const istBirthday = checkBirthday(cat?.birthDate);
@@ -59,11 +35,6 @@ const CatPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
       setShowConfetti(false);
     }
   }, [cat]);
-
-  //handle invalid query param error
-  if (router.query.imageId && !selectedImage) {
-    return <ImageNotFound returnPath={returnPath} />;
-  }
 
   const pageTitle =
     cat?.name && typeof cat.name === "string"
@@ -76,28 +47,10 @@ const CatPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
     <>
       <Head>
         <title>{pageTitle}</title>
-        <meta
-          property="og:image"
-          content={ogImage}
-        />
+        <meta property="og:image" content={ogImage} />
       </Head>
       {showConfetti && <Confetti width={windowWidth} height={windowHeight} />}
       {cat && <Bio cat={cat} key={cat.name} />}
-
-      {images.length === 0 && (
-        <p className="text-center">There are no images yet.</p>
-      )}
-
-      {images.length > 0 && router.query.imageId && selectedImage && (
-        <Modal ref={modalRef} onClose={handleClose}>
-          <Image
-            src={selectedImage.url}
-            fill
-            alt="kat"
-            className="object-contain"
-          />
-        </Modal>
-      )}
 
       {images.length > 0 && <Gallery path={router.asPath} images={images} />}
     </>
@@ -124,12 +77,15 @@ export async function getStaticPaths() {
 }
 
 //og images for social media
-const ogImages: Record<CatName | "all", string>= {
+const ogImages: Record<CatName | "all", string> = {
   all: "https://user-images.githubusercontent.com/76665118/210135017-7d48fad3-49db-47da-9ac3-d45d5b358174.png",
-  norris: "https://kattenparadijs.bremm.dev/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fe991dsae%2Fproduction%2F92e0eeeeea41b32476afc39d5da4d4362617b51e-1200x1600.jpg&w=640&q=75",
+  norris:
+    "https://kattenparadijs.bremm.dev/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fe991dsae%2Fproduction%2F92e0eeeeea41b32476afc39d5da4d4362617b51e-1200x1600.jpg&w=640&q=75",
   moos: "https://kattenparadijs.bremm.dev/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fe991dsae%2Fproduction%2Fb28bb4b619123c5d657fb5e01204b6ac1cb8efd4-1536x2048.jpg&w=828&q=75",
-  daantje: "https://kattenparadijs.bremm.dev/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fe991dsae%2Fproduction%2F28fa09b34211bda594d0c8d51a18e6282ebe23cb-1200x1600.jpg&w=640&q=75",
-  flynn: "https://kattenparadijs.bremm.dev/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fe991dsae%2Fproduction%2F5b9fc1c4970fa7ce993d1f9b1352e30ce4c2eae1-1536x2048.jpg&w=828&q=75"
+  daantje:
+    "https://kattenparadijs.bremm.dev/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fe991dsae%2Fproduction%2F28fa09b34211bda594d0c8d51a18e6282ebe23cb-1200x1600.jpg&w=640&q=75",
+  flynn:
+    "https://kattenparadijs.bremm.dev/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fe991dsae%2Fproduction%2F5b9fc1c4970fa7ce993d1f9b1352e30ce4c2eae1-1536x2048.jpg&w=828&q=75",
 };
 
 export const getStaticProps = async (context: GetStaticPropsContext) => {
@@ -170,7 +126,7 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
     props: {
       images,
       cat: selectedCat,
-      ogImage: ogImages[catParam as CatName | "all"]
+      ogImage: ogImages[catParam as CatName | "all"],
     },
   };
 };

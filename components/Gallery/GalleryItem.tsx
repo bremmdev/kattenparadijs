@@ -1,23 +1,26 @@
 import { ImageWithDimensions } from "@/types/types";
 import Image from "next/image";
-import Link from "next/link";
 import ExtraInfo from "./ExtraInfo";
 
 type Props = {
   img: ImageWithDimensions;
-  path?: string;
+  setSelectedImage: React.Dispatch<
+    React.SetStateAction<ImageWithDimensions | null>
+  >;
 };
 
 const GalleryItem = (props: Props) => {
-  const { img, path } = props;
+  const { img, setSelectedImage } = props;
+
+  const handleImageClick = () => {
+    setSelectedImage(img);
+  };
 
   //only show extra info if image has takenAt property and there is only one cat in the image
   const hasExtraInfo = Boolean(img.takenAt) && img.cats.length === 1;
 
   return (
-    <div
-      className="relative cursor-pointer hover:opacity-95 hover:scale-105 transition-all duration-300"
-    >
+    <div className="break-inside-avoid relative cursor-pointer hover:opacity-95 hover:scale-105 transition-all duration-300">
       {hasExtraInfo && (
         <ExtraInfo
           birthDate={img.cats[0].birthDate}
@@ -25,17 +28,17 @@ const GalleryItem = (props: Props) => {
         />
       )}
 
-      <Link href={`${path ?? ""}/?imageId=${img.id}`} scroll={false}>
-          <Image
-            src={img.url}
-            width={img.width / 2}
-            height={img.height / 2}
-            alt="kat"
-            className="rounded-xl"
-            placeholder="blur"
-            blurDataURL={img.blurData}
-          />
-      </Link>
+      <button onClick={handleImageClick}>
+        <Image
+          src={img.url}
+          width={img.width / 2}
+          height={img.height / 2}
+          alt="kat"
+          className="rounded-xl"
+          placeholder="blur"
+          blurDataURL={img.blurData}
+        />
+      </button>
     </div>
   );
 };

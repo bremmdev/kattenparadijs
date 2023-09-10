@@ -1,48 +1,16 @@
 import type { InferGetStaticPropsType, NextPage } from "next";
-import Image from "next/image";
 import React, { useRef } from "react";
-import useHandleClickOutsideImage from "@/hooks/useHandleClickOutsideImage";
-import { useRouter } from "next/router";
-import Modal from "@/components/Modal";
 import { sanityClient } from "@/sanity";
 import { groq } from "next-sanity";
 import Gallery from "@/components/Gallery/Gallery";
-import ImageNotFound from "@/components/UI/ImageNotFound";
-import SelectRandomCat from "@/components/Gallery/SelectRandomCat";
-import type { ImageWithDimensions, Cat } from "@/types/types";
 import Head from "next/head";
+import { QueryClient, dehydrate } from "@tanstack/react-query";
+import { PAGE_SIZE, useImages } from "@/hooks/useImages";
+import Spinner from "@/components/UI/Spinner";
 
-const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
-  images,
-}) => {
-  const router = useRouter();
-  const modalRef = useRef<HTMLDivElement>(null);
-
-  let selectedImage: ImageWithDimensions | undefined;
-
-  if (router.query.imageId) {
-    selectedImage = images.find((image) => image.id === router.query.imageId);
-  }
-
-  const handleClose = (e: React.MouseEvent) => {
-    const img = modalRef.current?.querySelector("img")!;
-    const hasClickedOutsideOfImage = useHandleClickOutsideImage(e, img);
-
-    if (hasClickedOutsideOfImage) {
-      router.push(
-        {
-          pathname: "/",
-        },
-        undefined,
-        { scroll: false }
-      );
-    }
-  };
-
-  //handle invalid query param error
-  if (router.query.imageId && !selectedImage) {
-    return <ImageNotFound returnPath={"/"} />;
-  }
+const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({}) => {
+  const { data, isFetching, error, fetchNextPage, hasNextPage } = useImages();
+  const images = data?.pages.flat() ?? [];
 
   return (
     <>
@@ -53,49 +21,51 @@ const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
           content="https://user-images.githubusercontent.com/76665118/210135017-7d48fad3-49db-47da-9ac3-d45d5b358174.png"
         />
       </Head>
-      {images.length === 0 && (
-        <p className="text-center">There are no images yet.</p>
-      )}
 
-      {images.length > 0 && router.query.imageId && selectedImage && (
-        <Modal ref={modalRef} onClose={handleClose}>
-          <Image
-            src={selectedImage.url}
-            fill
-            alt="kat"
-            className="object-contain"
-          />
-        </Modal>
-      )}
-
-      {images.length > 0 && (
-        <>
-          <SelectRandomCat images={images} />
-          <Gallery images={images} />
-        </>
-      )}
+      <>
+        <Gallery images={images} />
+        {hasNextPage && (
+          <div className="flex justify-center my-6">
+            <button
+              className="flex gap-2 cursor-pointer rounded-xl text-slate-950 border-2 border-slate-600 bg-white py-[10px] px-5 transition-colors duration-300 hover:bg-slate-50 md:text-base"
+              onClick={() => fetchNextPage()}
+              disabled={isFetching}
+            >
+              {isFetching ? "Loading..." : "Load more"}
+              {isFetching && <Spinner />}
+            </button>
+          </div>
+        )}
+      </>
     </>
   );
 };
 
 export default Home;
 
-const query = groq`*[_type == "catimage"] | order(_createdAt desc) {
-  "cats": cat[]->{name, birthDate, "iconUrl": icon.asset->url, nicknames},
-  "id":_id,
-  "url": img.asset->url,
-  "width": img.asset->metadata.dimensions.width,
-  "height": img.asset->metadata.dimensions.height,
-  "blurData": img.asset->metadata.lqip,
-  takenAt
-}`;
-
 export async function getStaticProps() {
-  const images: Array<ImageWithDimensions> = await sanityClient.fetch(query);
+  const query = groq`*[_type == "catimage"] | order(_createdAt desc) {
+    "cats": cat[]->{name, birthDate, "iconUrl": icon.asset->url, nicknames},
+    "id":_id,
+    "url": img.asset->url,
+    "width": img.asset->metadata.dimensions.width,
+    "height": img.asset->metadata.dimensions.height,
+    "blurData": img.asset->metadata.lqip,
+    takenAt
+  }[0...${PAGE_SIZE}]`;
+
+  const queryClient = new QueryClient();
+
+  //prefetch the first page of images
+  await queryClient.prefetchInfiniteQuery({
+    queryKey: ["images"],
+    queryFn: async () => await sanityClient.fetch(query),
+    staleTime: 1000 * 60 * 5,
+  });
 
   return {
     props: {
-      images,
+      dehydratedState: JSON.parse(JSON.stringify(dehydrate(queryClient))),
     },
   };
 }
