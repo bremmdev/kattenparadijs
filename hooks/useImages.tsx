@@ -17,8 +17,7 @@ export const useImages = () => {
 };
 
 async function getImages(page: number = 0) {
-  const baseUrl = process.env.NEXT_PUBLIC_URL || "http://localhost:3000";
-  const res = await fetch(`${baseUrl}/api/images?page=${page}`);
+  const res = await fetch(`/api/images?page=${page}`);
   const json = await res.json();
   return json;
 }
