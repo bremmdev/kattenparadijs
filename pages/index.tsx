@@ -9,7 +9,7 @@ import { PAGE_SIZE, useImages } from "@/hooks/useImages";
 import Spinner from "@/components/UI/Spinner";
 
 const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({}) => {
-  const { data, isFetching, error, fetchNextPage, hasNextPage } = useImages();
+  const { data, isFetching, isFetchingNextPage, fetchNextPage, hasNextPage } = useImages();
   const images = data?.pages.flat() ?? [];
 
   return (
@@ -31,8 +31,8 @@ const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({}) => {
               onClick={() => fetchNextPage()}
               disabled={isFetching}
             >
-              {isFetching ? "Loading..." : "Load more"}
-              {isFetching && <Spinner />}
+              {isFetchingNextPage ? "Loading..." : "Load more"}
+              {isFetchingNextPage && <Spinner />}
             </button>
           </div>
         )}
