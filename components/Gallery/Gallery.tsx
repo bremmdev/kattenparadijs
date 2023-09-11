@@ -6,38 +6,27 @@ import { useRouter } from "next/router";
 import SelectRandomCat from "./SelectRandomCat";
 import Image from "next/image";
 import useHandleClickOutsideImage from "@/hooks/useHandleClickOutsideImage";
+import { sortImagesIntoColumns } from "@/utils/sortImagesIntoColumns";
+import { useColumns } from "@/hooks/useColumns";
 
 type Props = {
   images: Array<ImageWithDimensions>;
-  path?: string;
-};
-
-const sortImagesIntoColumns = (
-  images: Array<ImageWithDimensions>,
-  columnCount: number
-) => {
-  //divide images into columns for masonry layout
-  const columns: Array<Array<ImageWithDimensions>> = [[], [], [], []];
-
-  images.forEach((img, idx) => {
-    columns[idx % columnCount].push(img);
-  });
-
-  return columns;
 };
 
 const Gallery = (props: Props) => {
   const { images } = props;
 
-  const isIndexPage = useRouter().pathname === "/";
-
+  /* STATE */
   const [selectedImage, setSelectedImage] =
     React.useState<ImageWithDimensions | null>(null);
   const [columns, setColumns] = React.useState<
     Array<Array<ImageWithDimensions>>
   >(() => sortImagesIntoColumns(images, 4));
-  const [columnCount, setColumnCount] = React.useState<number>(4);
 
+  //determine how many columns to display based on screen width
+  const columnCount = useColumns();
+
+  const isIndexPage = useRouter().pathname === "/";
   const modalRef = React.useRef<HTMLDivElement>(null);
 
   const handleClose = (e: React.MouseEvent) => {
@@ -48,36 +37,6 @@ const Gallery = (props: Props) => {
       setSelectedImage(null);
     }
   };
-
-  const onSelectRandom = () => {
-    const rndIdx = Math.floor(Math.random() * images.length);
-    const randomImg = images[rndIdx];
-    setSelectedImage(randomImg);
-  };
-
-  React.useEffect(() => {
-    //resize handler
-    const handleResize = () => {
-      const width = window.innerWidth;
-
-      if (width < 640) {
-        setColumnCount(2);
-        return;
-      }
-      if (width < 960) {
-        setColumnCount(3);
-        return;
-      }
-      setColumnCount(4);
-    };
-
-    window.addEventListener("resize", handleResize);
-    handleResize();
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
 
   React.useEffect(() => {
     const columns = sortImagesIntoColumns(images, columnCount);
@@ -97,13 +56,18 @@ const Gallery = (props: Props) => {
         </Modal>
       )}
 
-      {isIndexPage && <SelectRandomCat onClick={onSelectRandom} />}
+      {isIndexPage && (
+        <SelectRandomCat images={images} setSelectedImage={setSelectedImage} />
+      )}
 
       {/*each column is an array of images that should be displayed as a flex column, 
       so we can use break-inside-avoid to prevent images from being taken out of their column*/}
-      <div className="columns-2 space-y-4 gap-5 sm:columns-3 md:columns-4">
+      <div className="columns-2 gap-5 sm:columns-3 md:columns-4">
         {columns.map((column, idx) => (
-          <div key={idx} className="flex flex-col gap-5 break-inside-avoid">
+          <div
+            key={idx}
+            className="flex flex-col gap-3 items-center break-inside-avoid"
+          >
             {column.map((img, idx) => (
               <GalleryItem
                 hasPriority={idx < 3}

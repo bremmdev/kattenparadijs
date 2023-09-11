@@ -1,5 +1,4 @@
 import { GetStaticPropsContext, InferGetStaticPropsType, NextPage } from "next";
-import { useRouter } from "next/router";
 import { sanityClient } from "@/sanity";
 import { groq } from "next-sanity";
 import Gallery from "@/components/Gallery/Gallery";
@@ -10,16 +9,22 @@ import React from "react";
 import { checkBirthday } from "@/utils/checkBirthday";
 import Head from "next/head";
 import { Cat, CatName, ImageWithDimensions } from "@/types/types";
+import { QueryClient, dehydrate } from "@tanstack/react-query";
+import { catGroqQuery, imageGroqQuery } from "@/utils/queries";
+import { useImages } from "@/hooks/useImages";
+import FetchMoreBtn from "@/components/Gallery/FetchMoreBtn";
 
 const CatPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
-  images,
+  // images,
   cat,
   ogImage,
 }) => {
   const { width: windowWidth, height: windowHeight } = useWindowSize();
   const [showConfetti, setShowConfetti] = React.useState(false);
 
-  const router = useRouter();
+  const { data, isFetching, isFetchingNextPage, fetchNextPage, hasNextPage } =
+    useImages(cat?.name ?? "all");
+  const images = data?.pages.flat() ?? [];
 
   React.useEffect(() => {
     const istBirthday = checkBirthday(cat?.birthDate);
@@ -47,7 +52,14 @@ const CatPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
       {showConfetti && <Confetti width={windowWidth} height={windowHeight} />}
       {cat && <Bio cat={cat} key={cat.name} />}
 
-      {images.length > 0 && <Gallery path={router.asPath} images={images} />}
+      <Gallery images={images} />
+      {hasNextPage && (
+        <FetchMoreBtn
+          isFetching={isFetching}
+          isFetchingNextPage={isFetchingNextPage}
+          fetchNextPage={fetchNextPage}
+        />
+      )}
     </>
   );
 };
@@ -84,6 +96,7 @@ const ogImages: Record<CatName | "all", string> = {
 };
 
 export const getStaticProps = async (context: GetStaticPropsContext) => {
+  const queryClient = new QueryClient();
   const catParam = context?.params?.cat as string;
 
   //query for pictures with single cat
@@ -94,32 +107,24 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
     queryFilter = `length(cat) > 1`;
   }
 
-  const query = groq`*[_type == "catimage" && ${queryFilter}] | order(_createdAt desc) {
-    "cats": cat[]->{name, birthDate, "iconUrl": icon.asset->url},
-    "id":_id,
-    "url": img.asset->url,
-    "width": img.asset->metadata.dimensions.width,
-    "height": img.asset->metadata.dimensions.height,
-    "blurData": img.asset->metadata.lqip,
-    takenAt
-  }`;
+  const query = imageGroqQuery({ filter: queryFilter, page: 0 });
 
-  const images: Array<ImageWithDimensions> = await sanityClient.fetch(query);
+  //prefetch the first page of images
+  await queryClient.prefetchInfiniteQuery({
+    queryKey: ["images", { cat: catParam }],
+    queryFn: async () => await sanityClient.fetch(query),
+    staleTime: 1000 * 60 * 5,
+  });
 
-  const cats: Array<Cat> =
-    (await sanityClient.fetch(groq`*[_type == "cat"]{
-    name,
-    birthDate,
-    "iconUrl": icon.asset->url,
-    nicknames
-  }`)) ?? [];
+  //query for cats
+  const cats: Array<Cat> = (await sanityClient.fetch(catGroqQuery)) ?? [];
 
   //get cat based on query param
   const selectedCat = cats.find((cat) => cat.name === catParam) || null;
 
   return {
     props: {
-      images,
+      dehydratedState: JSON.parse(JSON.stringify(dehydrate(queryClient))),
       cat: selectedCat,
       ogImage: ogImages[catParam as CatName | "all"],
     },

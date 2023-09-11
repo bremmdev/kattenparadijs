@@ -21,7 +21,7 @@ const GalleryItem = (props: Props) => {
   const hasExtraInfo = Boolean(img.takenAt) && img.cats.length === 1;
 
   return (
-    <div className="break-inside-avoid relative cursor-pointer hover:opacity-95 hover:scale-105 transition-all duration-300">
+    <div className="relative cursor-pointer hover:opacity-95 hover:scale-105 transition-all duration-300">
       {hasExtraInfo && (
         <ExtraInfo
           birthDate={img.cats[0].birthDate}
