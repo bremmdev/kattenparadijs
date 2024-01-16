@@ -44,11 +44,12 @@ export async function getStaticProps() {
     queryKey: ["images", {}],
     queryFn: async () => await sanityClient.fetch(query),
     staleTime: 1000 * 60 * 5,
+    initialPageParam: 0,
   });
 
   return {
     props: {
-      dehydratedState: JSON.parse(JSON.stringify(dehydrate(queryClient))),
+      dehydratedState: dehydrate(queryClient),
     },
   };
 }

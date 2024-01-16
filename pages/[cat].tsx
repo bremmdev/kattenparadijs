@@ -114,6 +114,7 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
     queryKey: ["images", { cat: catParam }],
     queryFn: async () => await sanityClient.fetch(query),
     staleTime: 1000 * 60 * 5,
+    initialPageParam: 0,
   });
 
   //query for cats
@@ -124,7 +125,7 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
 
   return {
     props: {
-      dehydratedState: JSON.parse(JSON.stringify(dehydrate(queryClient))),
+      dehydratedState: dehydrate(queryClient),
       cat: selectedCat,
       ogImage: ogImages[catParam as CatName | "all"],
     },
