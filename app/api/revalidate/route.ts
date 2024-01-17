@@ -1,21 +1,16 @@
 export const dynamic = "force-dynamic";
 import { revalidatePath } from "next/cache";
 import { type NextRequest } from "next/server";
-import {parseBody} from 'next-sanity/webhook'
+import { parseBody } from "next-sanity/webhook";
 
 const secret = process.env.SANITY_WEBHOOK_SECRET as string;
 
 export async function POST(request: NextRequest) {
-  const {isValidSignature, body} = await parseBody<{_type, cat}>(
-    request,
-    secret
-  )
-    console.log(body)
+  const { isValidSignature, body } = await parseBody<{
+    _type: string;
+    cat: string;
+  }>(request, secret);
 
-  // const body = await request.json();
-  // const isValid = await isValidSignature(body, signature as string, secret);
-
-  // Validate signature
   if (!isValidSignature) {
     return Response.json(
       { success: false, message: "Invalid signature" },
@@ -24,7 +19,8 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    if(!body?._type || !body?.cat) return Response.json({ message: "Incorrect type" });
+    if (!body?._type || !body?.cat)
+      return Response.json({ message: "Incorrect type" });
 
     const { _type, cat } = body;
 
