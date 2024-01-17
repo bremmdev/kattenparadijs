@@ -1,4 +1,6 @@
-import { NextApiRequest, NextApiResponse } from "next";
+export const dynamic = 'force-dynamic'
+
+import { type NextRequest } from "next/server";
 import { sanityClient } from "@/sanity";
 import type { ImageWithDimensions } from "@/types/types";
 import { imageGroqQuery } from "@/utils/queries";
@@ -11,12 +13,10 @@ function getQueryFilter(cat?: string) {
   return `"${cat}" in cat[]->name && length(cat) == 1`;
 }
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  const page = Number(req.query.page) || 0;
-  const cat = req.query.cat as string | undefined;
+export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams;
+  const page = Number(searchParams.get('page')) || 0;
+  const cat = searchParams.get('cat') as string | undefined;
 
   //query for [cat].tsx
   let queryFilter = getQueryFilter(cat);
@@ -25,5 +25,5 @@ export default async function handler(
 
   const images: Array<ImageWithDimensions> = await sanityClient.fetch(query);
 
-  return res.json(images);
+  return Response.json(images);
 }

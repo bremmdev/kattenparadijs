@@ -1,29 +1,25 @@
+export const dynamic = "force-dynamic";
 import { isValidSignature, SIGNATURE_HEADER_NAME } from "@sanity/webhook";
-import { parseBody } from "next-sanity/webhook";
 import { revalidatePath } from "next/cache";
-import { NextResponse, type NextRequest } from "next/server";
+import { type NextRequest } from "next/server";
 
 const secret = process.env.SANITY_WEBHOOK_SECRET as string;
 
 export async function POST(request: NextRequest) {
+  const signature = request.headers.get(SIGNATURE_HEADER_NAME);
+  const body = await request.json();
+  const isValid = await isValidSignature(body, signature as string, secret);
 
+  // Validate signature
+  if (!isValid) {
+    return Response.json(
+      { success: false, message: "Invalid signature" },
+      { status: 401 }
+    );
+  }
 
-  // const { isValidSignature, body } = await parseBody<{ _type: string, cat: string }>(
-  //   request,
-  //   process.env.SANITY_REVALIDATE_SECRET
-  // );
-
-  // console.log(body)
-
-  // // Validate signature
-  // if (!isValidSignature) {
-  //   return Response.json({ success: false, message: "Invalid signature" });
-  // }
   try {
-
-    const body = await request.json()
-
-    const { _type, cat } = body
+    const { _type, cat } = body;
 
     switch (_type) {
       case "catimage":
