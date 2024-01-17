@@ -9,7 +9,7 @@ export const useImages = (cat?: string) => {
     queryFn: ({ pageParam }) => getImages(pageParam as number, cat),
     getNextPageParam: (lastPage, pages) => {
       if (lastPage.length < PAGE_SIZE) {
-        return false;
+        return undefined;
       }
       return pages.length;
     },
@@ -23,4 +23,12 @@ async function getImages(page: number = 0, cat?: string) {
   const res = await fetch(`/api/images?${params}`);
   const json = await res.json();
   return json;
+}
+
+function getQueryFilter(cat?: string) {
+  if (!cat) return undefined;
+  if (cat === "all") {
+    return `length(cat) > 1`;
+  }
+  return `"${cat}" in cat[]->name && length(cat) == 1`;
 }

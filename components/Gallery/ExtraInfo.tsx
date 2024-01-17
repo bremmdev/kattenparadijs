@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect } from "react";
 import { intervalToDuration } from "date-fns";
 import { differenceInCalendarDays } from "date-fns";

@@ -1,20 +1,35 @@
+"use client";
+
 import { ImageWithDimensions } from "@/types/types";
 import GalleryItem from "./GalleryItem";
 import React from "react";
 import Modal from "../Modal";
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 import SelectRandomCat from "./SelectRandomCat";
 import Image from "next/image";
 import useHandleClickOutsideImage from "@/hooks/useHandleClickOutsideImage";
 import { sortImagesIntoColumns } from "@/utils/sortImagesIntoColumns";
 import { useColumns } from "@/hooks/useColumns";
+import { useImages } from "@/hooks/useImages";
+import FetchMoreBtn from "./FetchMoreBtn";
+import { Cat } from "@/types/types";
 
 type Props = {
-  images: Array<ImageWithDimensions>;
+  cat: Cat | null;
+  isDetail?: boolean;
 };
 
-const Gallery = (props: Props) => {
-  const { images } = props;
+const Gallery = ({ cat, isDetail }: Props) => {
+  //Determine if we should fetch all images or only images of a specific cat
+  let queryArg = undefined;
+  if (isDetail) {
+    queryArg = cat?.name ?? "all";
+  }
+
+  const { data, isFetching, isFetchingNextPage, fetchNextPage, hasNextPage } =
+    useImages(queryArg);
+  const images = data?.pages.flat() ?? [];
+  const pathname = usePathname();
 
   /* STATE */
   const [selectedImage, setSelectedImage] =
@@ -26,7 +41,7 @@ const Gallery = (props: Props) => {
   //determine how many columns to display based on screen width
   const columnCount = useColumns();
 
-  const isIndexPage = useRouter().pathname === "/";
+  const isIndexPage = pathname === "/";
   const modalRef = React.useRef<HTMLDivElement>(null);
 
   const handleClose = (e: React.MouseEvent) => {
@@ -41,7 +56,7 @@ const Gallery = (props: Props) => {
   React.useEffect(() => {
     const columns = sortImagesIntoColumns(images, columnCount);
     setColumns(columns);
-  }, [images, columnCount]);
+  }, [data, columnCount]);
 
   return (
     <>
@@ -79,6 +94,13 @@ const Gallery = (props: Props) => {
           </div>
         ))}
       </div>
+      {hasNextPage && (
+        <FetchMoreBtn
+          isFetching={isFetching}
+          isFetchingNextPage={isFetchingNextPage}
+          fetchNextPage={fetchNextPage}
+        />
+      )}
     </>
   );
 };

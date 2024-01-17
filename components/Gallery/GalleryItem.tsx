@@ -1,3 +1,5 @@
+'use client';
+
 import { ImageWithDimensions } from "@/types/types";
 import Image from "next/image";
 import ExtraInfo from "./ExtraInfo";

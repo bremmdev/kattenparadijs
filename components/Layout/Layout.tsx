@@ -1,6 +1,8 @@
+"use client";
+
 import Header from "./Header";
 import BackToTop from "@/components//UI/BackToTop";
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 import Head from "next/head";
 import { Poppins, Dancing_Script } from "next/font/google";
 import useBodyToViewportRatio from "@/hooks/useBodyToViewportRatio";
@@ -17,11 +19,11 @@ export const dancing_script = Dancing_Script({
 });
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const router = useRouter();
+  const pathname = usePathname();
 
   //only show back to top button when the body is longer than the viewport
   //we use the router.asPath as a dependency to make sure the hook is called again when the page changes
-  const { bodyToViewportRatio } = useBodyToViewportRatio(router.asPath);
+  const { bodyToViewportRatio } = useBodyToViewportRatio(pathname);
   const showBackToTop = bodyToViewportRatio && bodyToViewportRatio > 1.2;
 
   return (

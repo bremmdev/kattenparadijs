@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { isValidSignature, SIGNATURE_HEADER_NAME } from '@sanity/webhook';
+import { revalidatePath } from "next/cache";
 
 const secret = process.env.SANITY_WEBHOOK_SECRET as string;
 
@@ -23,16 +24,19 @@ export default async function handler(
     switch (_type) {
       case "catimage":
         //always revalidate main page when an image is added
-        await res.revalidate(`/`);
+        // await res.revalidate(`/`);
+        revalidatePath(`/`);
 
         //check length of 'cats'
         if (cat.length > 1) {
-          await res.revalidate(`/all`);
+          // await res.revalidate(`/all`);
+          revalidatePath(`/all`);
           return res.json({ message: `Revalidated page for all cats` });
         }
 
         //revalidate page for specific cat
-        await res.revalidate(`/${cat[0]}`);
+        // await res.revalidate(`/${cat[0]}`);
+        revalidatePath(`/${cat[0]}`);
         return res.json({ message: `Revalidated page for ${cat[0]}` });
     }
 
