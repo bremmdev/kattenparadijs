@@ -39,6 +39,9 @@ export async function POST(request: NextRequest) {
         //revalidate page for specific cat
         revalidatePath(`/${cat[0]}`);
         return Response.json({ message: `Revalidated page for ${cat[0]}` });
+      case "catvideo":
+        revalidatePath(`/videos`);
+        return Response.json({ message: `Revalidated page for videos` });
     }
 
     return Response.json({ message: "Incorrect type" });
