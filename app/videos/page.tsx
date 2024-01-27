@@ -8,6 +8,11 @@ import {
 } from "@tanstack/react-query";
 import { sanityClient } from "@/sanity";
 import VideosOverview from "./VideosOverview";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Kattenparadijs | Videos",
+};
 
 export default async function VideosPage() {
   const queryClient = new QueryClient();

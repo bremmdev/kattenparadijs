@@ -7,6 +7,7 @@ const avatars = [
   { src: "/avatar/moos.svg", path: "/moos" },
   { src: "/avatar/norris.svg", path: "/norris" },
   { src: "/avatar/cats.svg", path: "/all" },
+  { src: "/avatar/cats-videos.svg", path: "/videos" },
 ];
 
 const Avatars = () => {
