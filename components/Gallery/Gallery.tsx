@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 import SelectRandomCat from "./SelectRandomCat";
 import Image from "next/image";
 import useHandleClickOutsideImage from "@/hooks/useHandleClickOutsideImage";
-import { sortImagesIntoColumns } from "@/utils/sortImagesIntoColumns";
+import { sortImagesIntoColumns } from "@/utils/sortIntoColumns";
 import { useColumns } from "@/hooks/useColumns";
 import { useImages } from "@/hooks/useImages";
 import FetchMoreBtn from "./FetchMoreBtn";
@@ -39,7 +39,7 @@ const Gallery = ({ cat, isDetail }: Props) => {
   >(() => sortImagesIntoColumns(images, 4));
 
   //determine how many columns to display based on screen width
-  const columnCount = useColumns();
+  const columnCount = useColumns("images");
 
   const isIndexPage = pathname === "/";
   const modalRef = React.useRef<HTMLDivElement>(null);

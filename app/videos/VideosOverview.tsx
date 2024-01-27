@@ -2,8 +2,10 @@
 
 import React from "react";
 import { useVideos } from "@/hooks/useVideos";
-import { Video } from "@/types/types";
 import FetchMoreBtn from "@/components/Gallery/FetchMoreBtn";
+import { sortVideosIntoColumns } from "@/utils/sortIntoColumns";
+import { useColumns } from "@/hooks/useColumns";
+import { Video } from "@/types/types";
 
 const VideosOverview = () => {
   const { data, isFetching, isFetchingNextPage, fetchNextPage, hasNextPage } =
@@ -11,34 +13,39 @@ const VideosOverview = () => {
 
   const videos = data?.pages.flat() ?? [];
 
-  /* STATE */
-  //divide images into columns for masonry layout
-  const columns: Array<Array<Video>> = [[], []];
+  const [columns, setColumns] = React.useState<Array<Array<Video>>>(() =>
+    sortVideosIntoColumns(videos, 3)
+  );
 
-  videos.forEach((video, idx) => {
-    columns[idx % 2].push(video);
-  });
+  //determine how many columns to display based on screen width
+  const columnCount = useColumns("videos");
+
+  React.useEffect(() => {
+    const columns = sortVideosIntoColumns(videos, columnCount);
+    setColumns(columns);
+  }, [data, columnCount]);
 
   return (
     <>
       {/*each column is an array of videos that should be displayed as a flex column, 
       so we can use break-inside-avoid to prevent videos from being taken out of their column*/}
-      <div className="columns-2 gap-5">
+      <div className="columns-1 gap-5 sm:columns-2 md:columns-3">
         {columns.map((column, idx) => (
           <div
             key={idx}
             className="flex flex-col gap-3 items-center break-inside-avoid"
           >
             {column.map((video, idx) => (
-              <video
-                className="rounded-lg"
-                key={video.id}
-                controls
-                width={video.width}
-                height={video.height}
-              >
-                <source src={video.url} type="video/mp4" />
-              </video>
+              <div key={video.id}>
+                <video
+                  width={video.width}
+                  height={video.height}
+                  controls
+                  className="rounded-xl"
+                >
+                  <source src={video.url} type="video/mp4" />
+                </video>
+              </div>
             ))}
           </div>
         ))}
