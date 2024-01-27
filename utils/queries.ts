@@ -31,4 +31,22 @@ export const catGroqQuery = groq`*[_type == "cat"]{
   birthDate,
   "iconUrl": icon.asset->url,
   nicknames
-}`
+}`;
+
+export const videoGroqQuery = (args: GroqArgs) => {
+  const { page } = args;
+
+  const range =
+    page || page === 0
+      ? `[${page * PAGE_SIZE}...${(page + 1) * PAGE_SIZE}]`
+      : "";
+
+  return groq`*[_type == "catvideo"] | order(_createdAt desc) {
+    "cats": cat[]->{name, birthDate, "iconUrl": icon.asset->url, nicknames},
+    "id":_id,
+    "url":video.asset->url,
+    width,
+    height,
+    takenAt
+  }${range}`;
+};

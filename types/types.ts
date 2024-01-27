@@ -15,4 +15,13 @@ export interface ImageWithDimensions {
   blurData: string;
 }
 
-export type CatName = "moos" | "norris" | "daantje" | "flynn"
+export interface Video {
+  cats: Array<Cat>;
+  id: string;
+  url: string;
+  width: number;
+  height: number;
+  takenAt?: string;
+}
+
+export type CatName = "moos" | "norris" | "daantje" | "flynn";
