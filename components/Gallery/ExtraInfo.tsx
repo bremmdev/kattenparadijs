@@ -6,7 +6,8 @@ import { differenceInCalendarDays } from "date-fns";
 
 type Props = {
   takenAt: string;
-  birthDate: string;
+  birthDate?: string;
+  isVideo?: boolean;
 };
 
 //determine the age of the cat using the birthdate and the takenAt date
@@ -45,17 +46,24 @@ const ExtraInfo = (props: Props) => {
     return () => clearTimeout(timer);
   }, [showInfo]);
 
-  //format date
+  //format date)
   const [year, month, day] = takenAt.split("-") || [];
   const formattedTakenAt = `${day}-${month}-${year}`;
-  const formattedAge = determineAge(takenAt, birthDate);
+  const formattedAge = determineAge(takenAt, birthDate || "");
+
+  const resourceType = props.isVideo ? "video" : "image";
+
+  const position = {
+    "image": "absolute bottom-6 left-4 right-4",
+    "video": "absolute bottom-12 left-4 right-4",
+  }
 
   return (
-    <div className="hidden sm:flex flex-col items-center z-10 absolute bottom-6 left-4 right-4 ">
+    <div className={`hidden sm:flex flex-col items-center z-10 ${position[resourceType]}`}>
       {showInfo && (
         <div className="animate-fade flex flex-col text-xs w-full text-center bg-white bg-opacity-70 mb-2 py-2 font-medium rounded-md">
           <span>Datum: {formattedTakenAt}</span>
-          <span>Leeftijd: {formattedAge}</span>
+          {birthDate && <span>Leeftijd: {formattedAge}</span>}
         </div>
       )}
 
