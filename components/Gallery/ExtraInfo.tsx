@@ -12,7 +12,7 @@ type Props = {
 
 //determine the age of the cat using the birthdate and the takenAt date
 const determineAge = (takenAt: string, birthDate: string) => {
-  const { years, months } = intervalToDuration({
+  const { years, months = 0 } = intervalToDuration({
     start: Date.parse(birthDate),
     end: Date.parse(takenAt),
   });
