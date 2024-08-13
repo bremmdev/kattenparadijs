@@ -5,6 +5,7 @@ import { intervalToDuration } from "date-fns";
 import { useState } from "react";
 import { dancing_script } from "@/components/Layout/Layout";
 import { Cat } from "@/types/types";
+import PassingIcon from "./PassingIcon";
 
 type Props = {
   cat: Cat;
@@ -16,9 +17,16 @@ const Bio = ({ cat }: Props) => {
   const [year, month, day] = cat.birthDate.split("-");
   const formattedBirthDate = `${day}-${month}-${year}`;
 
+  let formattedPassingDate = "";
+  if (cat.passingDate) {
+    const [year, month, day] = cat.passingDate.split("-");
+    formattedPassingDate = `${day}-${month}-${year}`;
+  }
+
+  //calculate age based on birthdate and passing date if available
   const { years, months } = intervalToDuration({
     start: Date.parse(cat.birthDate),
-    end: new Date(),
+    end: cat.passingDate ? Date.parse(cat.passingDate) : new Date(),
   });
 
   const formattedNicknames = cat.nicknames.join(", ");
@@ -37,9 +45,10 @@ const Bio = ({ cat }: Props) => {
       <div className="flex justify-center items-center gap-2 border-b border-b-rose-300 pb-4">
         <Image src={cat.iconUrl} alt="logo" width={32} height={32} />
         <h2
-          className={`${dancing_script.variable} font-handwriting tracking-wider text-center text-rose-500 capitalize translate-y-1 text-2xl`}
+          className={`${dancing_script.variable} font-handwriting tracking-wider text-center text-rose-500 capitalize translate-y-1 text-2xl flex gap-1 items-center`}
         >
           {cat.name}
+          {cat.passingDate && <PassingIcon />}
         </h2>
       </div>
       {isExpanded && (
@@ -48,9 +57,18 @@ const Bio = ({ cat }: Props) => {
             <h3>Geboortedatum</h3>
             <span className="font-normal">{formattedBirthDate}</span>
           </div>
+          {cat.passingDate && (
+            <div className="text-xs my-1 flex flex-col justify-between gap-1 font-medium sm:my-2 sm:gap-2 sm:text-sm">
+              <h3>Overlijdensdatum</h3>
+              <span className="font-normal flex gap-1 justify-center items-center">
+                {formattedPassingDate}
+                <PassingIcon />
+              </span>
+            </div>
+          )}
           <div className="text-xs my-1 flex flex-col justify-between gap-1 font-medium sm:my-2 sm:gap-2 sm:text-sm">
             <h3>Leeftijd</h3>
-            <span className="font-normal">{`${years} jaar, ${months} maanden`}</span>
+            <span className="font-normal">{`${years} jaar, ${months} ${months === 1 ? "maand" : "maanden"}`}</span>
           </div>
           <div className="text-xs my-1 flex flex-col justify-between gap-1 font-medium sm:my-2 sm:gap-2 sm:text-sm">
             <h3>Bijnaam</h3>

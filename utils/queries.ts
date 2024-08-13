@@ -16,7 +16,7 @@ export const imageGroqQuery = (args: GroqArgs) => {
       : "";
 
   return groq`*[${queryFilter}] | order(_createdAt desc) {
-    "cats": cat[]->{name, birthDate, "iconUrl": icon.asset->url, nicknames},
+    "cats": cat[]->{name, birthDate, passingDate, "iconUrl": icon.asset->url, nicknames},
     "id":_id,
     "url": img.asset->url,
     "width": img.asset->metadata.dimensions.width,
@@ -29,6 +29,7 @@ export const imageGroqQuery = (args: GroqArgs) => {
 export const catGroqQuery = groq`*[_type == "cat"]{
   name,
   birthDate,
+  passingDate,
   "iconUrl": icon.asset->url,
   nicknames
 }`;

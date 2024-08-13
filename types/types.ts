@@ -1,6 +1,7 @@
 export interface Cat {
   name: string;
   birthDate: string;
+  passingDate?: string;
   iconUrl: string;
   nicknames: Array<string>;
 }
