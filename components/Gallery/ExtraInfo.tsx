@@ -6,7 +6,7 @@ import { differenceInCalendarDays } from "date-fns";
 
 type Props = {
   takenAt: string;
-  birthDate?: string;
+  birthDate: string | null;
   isVideo?: boolean;
 };
 
@@ -46,7 +46,8 @@ const ExtraInfo = (props: Props) => {
     return () => clearTimeout(timer);
   }, [showInfo]);
 
-  //format date)
+  //format date and determine age
+  //formattedAge is bogus when birthDate is null but it's not used in that case
   const [year, month, day] = takenAt.split("-") || [];
   const formattedTakenAt = `${day}-${month}-${year}`;
   const formattedAge = determineAge(takenAt, birthDate || "");

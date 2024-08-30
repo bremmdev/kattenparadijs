@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { ImageWithDimensions } from "@/types/types";
 import Image from "next/image";
@@ -19,14 +19,15 @@ const GalleryItem = (props: Props) => {
     setSelectedImage(img);
   };
 
-  //only show extra info if image has takenAt property and there is only one cat in the image
-  const hasExtraInfo = Boolean(img.takenAt) && img.cats.length === 1;
+  //only show age at takenAt date if image has takenAt property and there is only one cat in the image
+  const hasExtraInfo = Boolean(img.takenAt);
+  const hasMultipleCats = img.cats.length > 1;
 
   return (
     <div className="relative cursor-pointer hover:opacity-95 hover:scale-105 transition-all duration-300">
       {hasExtraInfo && (
         <ExtraInfo
-          birthDate={img.cats[0].birthDate}
+          birthDate={hasMultipleCats ? null : img.cats[0].birthDate}
           takenAt={img.takenAt as string}
         />
       )}
