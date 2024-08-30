@@ -27,7 +27,7 @@ const GalleryItem = (props: Props) => {
     <div className="relative cursor-pointer hover:opacity-95 hover:scale-105 transition-all duration-300">
       {hasExtraInfo && (
         <ExtraInfo
-          birthDate={hasMultipleCats ? null : img.cats[0].birthDate}
+          birthDate={hasMultipleCats ? undefined : img.cats[0].birthDate}
           takenAt={img.takenAt as string}
         />
       )}

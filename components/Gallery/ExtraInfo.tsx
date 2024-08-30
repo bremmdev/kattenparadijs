@@ -6,7 +6,7 @@ import { differenceInCalendarDays } from "date-fns";
 
 type Props = {
   takenAt: string;
-  birthDate: string | null;
+  birthDate?: string;
   isVideo?: boolean;
 };
 
