@@ -18,15 +18,13 @@ import type { Metadata, ResolvingMetadata } from "next";
 import { CatName } from "@/types/types";
 
 type Props = {
-  params: { cat: string };
-  searchParams: { [key: string]: string | string[] | undefined };
+  params: Promise<{ cat: string }>;
 };
 
-export async function generateMetadata(
-  { params, searchParams }: Props,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
-  const cat = params.cat;
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const awaitedParams = await params;
+
+  const cat = awaitedParams?.cat as string;
 
   //og images for social media
   const ogImages: Record<CatName | "all", string> = {
@@ -55,13 +53,11 @@ export async function generateMetadata(
   };
 }
 
-export default async function CatDetailPage({
-  params,
-}: {
-  params: { cat: string };
-}) {
+export default async function CatDetailPage({ params }: Props) {
   const queryClient = new QueryClient();
-  const catParam = params?.cat as string;
+  const awaitedParams = await params;
+
+  const catParam = awaitedParams?.cat as string;
 
   //query for pictures with single cat
   let queryFilter = `"${catParam}" in cat[]->name && length(cat) == 1`;
