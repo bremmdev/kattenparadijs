@@ -2,6 +2,7 @@
 
 import React from "react";
 import { ImageWithDimensions } from "@/types/types";
+import { flushSync } from "react-dom";
 
 type Props = {
   images: Array<ImageWithDimensions>;
@@ -19,7 +20,8 @@ const SelectRandomCat = (props: Props) => {
 
     if ("startViewTransition" in document) {
       document.startViewTransition(() => {
-        setSelectedImage(randomImg);
+        document.getElementById("bio-content")?.classList.add("disable-viewtransition");
+        flushSync(() => setSelectedImage(randomImg));
       });
     } else {
       setSelectedImage(randomImg);

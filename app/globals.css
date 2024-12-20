@@ -1,3 +1,52 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.disable-viewtransition {
+  view-transition-name: none !important;
+}
+
+#bio-content {
+  view-transition-name: bio;
+}
+
+::view-transition-new(bio) {
+  animation: slide-down 0.3s ease-out;
+}
+
+::view-transition-old(bio) {
+  animation: slide-up 0.3s ease-out;
+}
+
+::view-transition-new(modal) ::view-transition-group(bio) {
+  animation: none;
+}
+
+@keyframes slide-up {
+  0% {
+    height: 100%;
+    opacity: 1
+  }
+  25% {
+    opacity: 0;
+  }
+  100% {
+    height: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes slide-down {
+  0% {
+    height: 0;
+    opacity: 0;
+  }
+  50% {
+    height: 50%;
+    opacity: 0;
+  }
+  100% {
+    height: 100%;
+    opacity: 1;
+  }
+}

@@ -3,6 +3,7 @@
 import { ImageWithDimensions } from "@/types/types";
 import Image from "next/image";
 import ExtraInfo from "./ExtraInfo";
+import { flushSync } from "react-dom";
 
 type Props = {
   img: ImageWithDimensions;
@@ -18,7 +19,8 @@ const GalleryItem = (props: Props) => {
   const handleImageClick = () => {
     if ("startViewTransition" in document) {
       document.startViewTransition(() => {
-        setSelectedImage(img);
+        document.getElementById("bio-content")?.classList.add("disable-viewtransition");
+        flushSync(() => setSelectedImage(img));
       });
     } else {
       setSelectedImage(img);
