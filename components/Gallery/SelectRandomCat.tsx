@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React from "react";
 import { ImageWithDimensions } from "@/types/types";
@@ -16,7 +16,14 @@ const SelectRandomCat = (props: Props) => {
   const handleOnClick = () => {
     const rndIdx = Math.floor(Math.random() * images.length);
     const randomImg = images[rndIdx];
-    setSelectedImage(randomImg);
+
+    if ("startViewTransition" in document) {
+      document.startViewTransition(() => {
+        setSelectedImage(randomImg);
+      });
+    } else {
+      setSelectedImage(randomImg);
+    }
   };
 
   return (

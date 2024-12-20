@@ -16,7 +16,13 @@ const GalleryItem = (props: Props) => {
   const { img, setSelectedImage, hasPriority } = props;
 
   const handleImageClick = () => {
-    setSelectedImage(img);
+    if ("startViewTransition" in document) {
+      document.startViewTransition(() => {
+        setSelectedImage(img);
+      });
+    } else {
+      setSelectedImage(img);
+    }
   };
 
   //only show age at takenAt date if image has takenAt property and there is only one cat in the image
