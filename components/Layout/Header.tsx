@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Avatars from "@/components/Cat/Avatars";
 import logo from "@/public/logo.svg";
-import { dancing_script } from "@/components/Layout/Layout";
+import { dancing_script } from "@/app/fonts";
 
 const Header = () => {
   return (
@@ -13,7 +13,7 @@ const Header = () => {
           <Image src={logo} alt="logo" width={36} height={36} />
         </Link>
         <Link href="/">
-          <h1 className={`${dancing_script.variable} font-handwriting text-rose-500 text-3xl tracking-wider ml-4 translate-y-1`}>
+          <h1 className={`${dancing_script.className} font-handwriting text-rose-500 text-3xl tracking-wider ml-4 translate-y-1`}>
             Kattenparadijs
           </h1>
         </Link>

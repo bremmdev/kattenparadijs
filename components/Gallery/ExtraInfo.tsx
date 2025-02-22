@@ -62,14 +62,14 @@ const ExtraInfo = (props: Props) => {
   return (
     <div className={`hidden sm:flex flex-col items-center z-10 ${position[resourceType]}`}>
       {showInfo && (
-        <div className="animate-fade flex flex-col text-xs w-full text-center bg-white bg-opacity-70 mb-2 py-2 font-medium rounded-md">
+        <div className="animate-fade flex flex-col text-xs w-full text-center bg-white/70 mb-2 py-2 font-medium rounded-md">
           <span>Datum: {formattedTakenAt}</span>
           {birthDate && <span>Leeftijd: {formattedAge}</span>}
         </div>
       )}
 
       <div
-        className="transition-all flex items-center justify-center w-10 h-10 rounded-full bg-white bg-opacity-50 hover:scale-105"
+        className="transition-all flex items-center justify-center w-10 h-10 rounded-full bg-white/50 hover:scale-105"
         onClick={() => setShowInfo((prev) => !prev)}
       >
         {showInfo ? (

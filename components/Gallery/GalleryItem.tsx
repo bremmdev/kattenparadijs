@@ -47,7 +47,6 @@ const GalleryItem = (props: Props) => {
           height={img.height / 2}
           alt="kat"
           className="rounded-xl"
-          placeholder="blur"
           blurDataURL={img.blurData}
           priority={hasPriority}
         />

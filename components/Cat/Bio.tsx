@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { intervalToDuration } from "date-fns";
 import { useState } from "react";
-import { dancing_script } from "@/components/Layout/Layout";
+import { dancing_script } from "@/app/fonts";
 import { Cat } from "@/types/types";
 import PassingIcon from "./PassingIcon";
 import { flushSync } from "react-dom";
@@ -56,7 +56,7 @@ const Bio = ({ cat }: Props) => {
       <div className="flex justify-center items-center gap-2 border-b border-b-rose-300 pb-4">
         <Image src={cat.iconUrl} alt="logo" width={32} height={32} />
         <h2
-          className={`${dancing_script.variable} font-handwriting tracking-wider text-center text-rose-500 capitalize translate-y-1 text-2xl flex gap-1 items-center`}
+          className={`${dancing_script.className} tracking-wider text-center text-rose-500 capitalize translate-y-1 text-2xl flex gap-1 items-center`}
         >
           {cat.name}
           {cat.passingDate && <PassingIcon />}

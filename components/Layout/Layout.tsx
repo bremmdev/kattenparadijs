@@ -4,19 +4,9 @@ import Header from "./Header";
 import BackToTop from "@/components//UI/BackToTop";
 import { usePathname } from "next/navigation";
 import Head from "next/head";
-import { Poppins, Dancing_Script } from "next/font/google";
 import useBodyToViewportRatio from "@/hooks/useBodyToViewportRatio";
+import { poppins } from "@/app/fonts";
 
-const poppins = Poppins({
-  subsets: ["latin"],
-  variable: "--font-poppins",
-  weight: ["300", "400", "500", "700"],
-});
-
-export const dancing_script = Dancing_Script({
-  subsets: ["latin"],
-  variable: "--font-dancing-script",
-});
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -50,7 +40,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         />
       </Head>
       <div
-        className={`${poppins.variable} font-sans min-h-screen bg-gray-50 pb-8`}
+        className={`${poppins.className} font-sans min-h-screen bg-gray-50 pb-8`}
       >
         <Header />
         <main className="max-w-6xl mx-auto py-6 px-8 sm:px-12 sm:py-8">

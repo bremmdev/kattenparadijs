@@ -7,11 +7,12 @@
   },
   "dependencies": {
     "@sanity/webhook": "^4.0.0",
+    "@tailwindcss/postcss": "^4.0.8",
     "@tanstack/react-query": "^5.17.15",
     "@tanstack/react-query-devtools": "^5.17.15",
     "date-fns": "^3.2.0",
     "next": "^15.1.0",
-    "next-sanity": "^7.0.10",
+    "next-sanity": "^9.8.59",
     "react": "^19.0.0",
     "react-confetti": "^6.1.0",
     "react-dom": "^19.0.0"
@@ -23,7 +24,7 @@
     "@types/react-dom": "^19.0.2",
     "autoprefixer": "^10.4.7",
     "postcss": "^8.4.14",
-    "tailwindcss": "^3.1.2",
+    "tailwindcss": "^4.0.8",
     "typescript": "^5.2.2"
   }
 }
