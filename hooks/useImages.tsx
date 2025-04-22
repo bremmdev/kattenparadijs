@@ -1,7 +1,7 @@
 import { ImageWithDimensions } from "@/types/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
-export const PAGE_SIZE = 36;
+export const PAGE_SIZE = 48;
 
 export const useImages = (cat?: string) => {
   return useInfiniteQuery<Array<ImageWithDimensions>>({

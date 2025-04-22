@@ -1,7 +1,7 @@
 import { Video } from "@/types/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
-export const PAGE_SIZE = 36;
+export const PAGE_SIZE = 48;
 
 export const useVideos = () => {
   return useInfiniteQuery<Array<Video>>({

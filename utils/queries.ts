@@ -1,5 +1,5 @@
 import groq from "groq";
-const PAGE_SIZE = 36;
+const PAGE_SIZE = 48;
 
 type GroqArgs = {
   filter?: string;
