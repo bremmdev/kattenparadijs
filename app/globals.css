@@ -1,4 +1,4 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @theme {
   --font-*: initial;
@@ -9,6 +9,10 @@
   --breakpoint-sm: 640px;
   --breakpoint-md: 960px;
   --breakpoint-lg: 1200px;
+
+  --color-theme: oklch(64.5% 0.246 16.439); /* rose-500 */
+  --color-theme-light: oklch(81% 0.117 11.638); /* rose-300 */
+  --color-theme-lightest: oklch(96.9% 0.015 12.422); /* rose-50 */
 
   --inset-1\/8: 12.5%;
 
@@ -71,7 +75,7 @@ button {
 @keyframes slide-up {
   0% {
     height: 100%;
-    opacity: 1
+    opacity: 1;
   }
   25% {
     opacity: 0;

@@ -43,7 +43,7 @@ const Bio = ({ cat }: Props) => {
   }
 
   return (
-    <div className="flex flex-col justify-center relative max-w-xl p-2 mb-6 text-center mx-auto bg-rose-50 rounded-lg sm:p-3 sm:mb-10">
+    <div className="flex flex-col justify-center relative max-w-xl p-2 mb-6 text-center mx-auto bg-theme-lightest rounded-lg sm:p-3 sm:mb-10">
       <img
         src="chevron.svg"
         width="20px"
@@ -53,10 +53,10 @@ const Bio = ({ cat }: Props) => {
         } hover:scale-105 hover:brightness-105 sm:top-6 sm:translate-y-0`}
         onClick={toggleExpanded}
       />
-      <div className="flex justify-center items-center gap-2 border-b border-b-rose-300 pb-4">
+      <div className="flex justify-center items-center gap-2 border-b border-b-theme-light pb-4">
         <Image src={cat.iconUrl} alt="logo" width={32} height={32} />
         <h2
-          className={`${dancing_script.className} tracking-wider text-center text-rose-500 capitalize translate-y-1 text-2xl flex gap-1 items-center`}
+          className={`${dancing_script.className} tracking-wider text-center text-theme capitalize translate-y-1 text-2xl flex gap-1 items-center`}
         >
           {cat.name}
           {cat.passingDate && <PassingIcon />}

@@ -1,4 +1,4 @@
-import Image from "next/image";
+import ChevronUp from "../Icons/ChevronUp";
 
 const BackToTop = () => {
   const scrollToTop = () => {
@@ -10,15 +10,13 @@ const BackToTop = () => {
   };
 
   return (
-    <div className="flex justify-center" onClick={scrollToTop}>
-      <Image
-        src="chevron-double-up.svg"
-        width="52"
-        height="52"
-        className="transition-all duration-300 rounded-full p-1 bg-rose-100 opacity-80 hover:scale-110"
-        alt="back to top"
-      />
-    </div>
+    <button
+      onClick={scrollToTop}
+      className="mx-auto grid place-items-center size-12 transition-all duration-300 rounded-full p-1 bg-radial from-theme-lightest to-theme-light hover:scale-110"
+      aria-label="back to top"
+    >
+      <ChevronUp />
+    </button>
   );
 };
 
