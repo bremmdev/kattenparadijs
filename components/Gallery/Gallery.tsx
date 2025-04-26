@@ -62,7 +62,7 @@ const Gallery = ({ cat, isDetail }: Props) => {
   return (
     <>
       {selectedImage && (
-        <ViewTransition default="modal">
+        <ViewTransition enter="fade-in">
         <Modal ref={modalRef} onClose={handleClose}>
           <Image
             src={selectedImage.url}

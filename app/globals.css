@@ -60,15 +60,15 @@ button {
   view-transition-name: bio;
 }
 
-::view-transition-new(.slide) {
+::view-transition-new(.slide-down) {
   animation: slide-down 0.3s ease-out;
 }
 
-::view-transition-old(.slide) {
+::view-transition-old(.slide-up) {
   animation: slide-up 0.3s ease-out;
 }
 
-::view-transition-new(.modal) {
+::view-transition-new(.fade-in) {
   animation: fade-in 0.5s ease-out;
 }
 

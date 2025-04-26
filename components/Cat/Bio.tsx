@@ -59,7 +59,7 @@ const Bio = ({ cat }: Props) => {
         </h2>
       </div>
       {isExpanded && (
-        <ViewTransition default="slide">
+        <ViewTransition enter="slide-down" exit="slide-up">
           <div id="bio-content" className="py-1">
             <div className="text-xs my-1 flex flex-col justify-between gap-1 font-medium sm:my-2 sm:gap-2 sm:text-sm">
               <h3>Geboortedatum</h3>
