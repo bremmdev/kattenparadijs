@@ -56,10 +56,6 @@ button {
   view-transition-name: none !important;
 }
 
-#bio-content {
-  view-transition-name: bio;
-}
-
 ::view-transition-new(.slide-down) {
   animation: slide-down 0.3s ease-out;
 }
