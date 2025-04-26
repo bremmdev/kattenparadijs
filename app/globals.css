@@ -60,16 +60,29 @@ button {
   view-transition-name: bio;
 }
 
-::view-transition-new(bio) {
+::view-transition-new(.slide) {
   animation: slide-down 0.3s ease-out;
 }
 
-::view-transition-old(bio) {
+::view-transition-old(.slide) {
   animation: slide-up 0.3s ease-out;
 }
 
-::view-transition-new(modal) ::view-transition-group(bio) {
-  animation: none;
+
+::view-transition-new(.modal) {
+  animation: scale-fade-in 0.5s ease-out;
+}
+
+@keyframes scale-fade-in {
+  0% {
+    opacity: 0;
+    transform: scale(1.2);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 @keyframes slide-up {

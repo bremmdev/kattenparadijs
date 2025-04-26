@@ -12,7 +12,6 @@ const Modal = React.forwardRef((props: Props, ref: React.Ref<HTMLDivElement>) =>
       ref={ref}
       className="fixed z-50 inset-0 bg-black/80 w-screen h-screen flex justify-center items-center shrink"
       onClick={props.onClose}
-      style={{viewTransitionName: "modal"}}
     >
       <div className="absolute inset-1/8 flex items-center justify-center">
         {props.children}

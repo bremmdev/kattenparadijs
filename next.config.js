@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
+  experimental: {
+    viewTransition: true,
+  },
   reactStrictMode: true,
   images: {
     remotePatterns: [
@@ -11,3 +14,4 @@ module.exports = {
     ],
   },
 };
+

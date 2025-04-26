@@ -1,12 +1,12 @@
 "use client";
 
+import React, { unstable_ViewTransition as ViewTransition } from "react";
 import Image from "next/image";
 import { intervalToDuration } from "date-fns";
 import { useState } from "react";
 import { dancing_script } from "@/app/fonts";
 import { Cat } from "@/types/types";
 import PassingIcon from "./PassingIcon";
-import { flushSync } from "react-dom";
 
 type Props = {
   cat: Cat;
@@ -33,13 +33,9 @@ const Bio = ({ cat }: Props) => {
   const formattedNicknames = cat.nicknames.join(", ");
 
   function toggleExpanded() {
-    if ("startViewTransition" in document) {
-      document.startViewTransition(() => {
-        flushSync(() => setIsExpanded((prev) => !prev));
-      });
-    } else {
+    React.startTransition(() => {
       setIsExpanded((prev) => !prev);
-    }
+    });
   }
 
   return (
@@ -63,31 +59,33 @@ const Bio = ({ cat }: Props) => {
         </h2>
       </div>
       {isExpanded && (
-        <div id="bio-content" className="py-1">
-          <div className="text-xs my-1 flex flex-col justify-between gap-1 font-medium sm:my-2 sm:gap-2 sm:text-sm">
-            <h3>Geboortedatum</h3>
-            <span className="font-normal">{formattedBirthDate}</span>
-          </div>
-          {cat.passingDate && (
+        <ViewTransition default="slide">
+          <div id="bio-content" className="py-1">
             <div className="text-xs my-1 flex flex-col justify-between gap-1 font-medium sm:my-2 sm:gap-2 sm:text-sm">
-              <h3>Overlijdensdatum</h3>
-              <span className="font-normal flex gap-1 justify-center items-center">
-                {formattedPassingDate}
-                <PassingIcon />
-              </span>
+              <h3>Geboortedatum</h3>
+              <span className="font-normal">{formattedBirthDate}</span>
             </div>
-          )}
-          <div className="text-xs my-1 flex flex-col justify-between gap-1 font-medium sm:my-2 sm:gap-2 sm:text-sm">
-            <h3>Leeftijd</h3>
-            <span className="font-normal">{`${years} jaar, ${months} ${
-              months === 1 ? "maand" : "maanden"
-            }`}</span>
+            {cat.passingDate && (
+              <div className="text-xs my-1 flex flex-col justify-between gap-1 font-medium sm:my-2 sm:gap-2 sm:text-sm">
+                <h3>Overlijdensdatum</h3>
+                <span className="font-normal flex gap-1 justify-center items-center">
+                  {formattedPassingDate}
+                  <PassingIcon />
+                </span>
+              </div>
+            )}
+            <div className="text-xs my-1 flex flex-col justify-between gap-1 font-medium sm:my-2 sm:gap-2 sm:text-sm">
+              <h3>Leeftijd</h3>
+              <span className="font-normal">{`${years} jaar, ${months} ${
+                months === 1 ? "maand" : "maanden"
+              }`}</span>
+            </div>
+            <div className="text-xs my-1 flex flex-col justify-between gap-1 font-medium sm:my-2 sm:gap-2 sm:text-sm">
+              <h3>Bijnaam</h3>
+              <span className="font-normal">{formattedNicknames}</span>
+            </div>
           </div>
-          <div className="text-xs my-1 flex flex-col justify-between gap-1 font-medium sm:my-2 sm:gap-2 sm:text-sm">
-            <h3>Bijnaam</h3>
-            <span className="font-normal">{formattedNicknames}</span>
-          </div>
-        </div>
+        </ViewTransition>
       )}
     </div>
   );

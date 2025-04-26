@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { ImageWithDimensions } from "@/types/types";
 import Image from "next/image";
 import ExtraInfo from "./ExtraInfo";
@@ -17,14 +18,13 @@ const GalleryItem = (props: Props) => {
   const { img, setSelectedImage, hasPriority } = props;
 
   const handleImageClick = () => {
-    if ("startViewTransition" in document) {
-      document.startViewTransition(() => {
-        document.getElementById("bio-content")?.classList.add("disable-viewtransition");
-        flushSync(() => setSelectedImage(img));
-      });
-    } else {
+    React.startTransition(() => {
+      //disable view transition for the bio content to prevent it from animating
+      document
+        .getElementById("bio-content")
+        ?.classList.add("disable-viewtransition");
       setSelectedImage(img);
-    }
+    });
   };
 
   //only show age at takenAt date if image has takenAt property and there is only one cat in the image

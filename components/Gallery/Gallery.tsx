@@ -13,6 +13,7 @@ import { useColumns } from "@/hooks/useColumns";
 import { useImages } from "@/hooks/useImages";
 import FetchMoreBtn from "./FetchMoreBtn";
 import { Cat } from "@/types/types";
+import { unstable_ViewTransition as ViewTransition } from "react";
 
 type Props = {
   cat: Cat | null;
@@ -61,6 +62,7 @@ const Gallery = ({ cat, isDetail }: Props) => {
   return (
     <>
       {selectedImage && (
+        <ViewTransition default="modal">
         <Modal ref={modalRef} onClose={handleClose}>
           <Image
             src={selectedImage.url}
@@ -69,6 +71,7 @@ const Gallery = ({ cat, isDetail }: Props) => {
             className="object-contain"
           />
         </Modal>
+        </ViewTransition>
       )}
 
       {isIndexPage && (
