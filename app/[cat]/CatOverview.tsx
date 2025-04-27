@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React from "react";
 import { Cat } from "@/types/types";
@@ -7,6 +7,7 @@ import useWindowSize from "@/hooks/useWindowSize";
 import Confetti from "react-confetti";
 import Bio from "@/components/Cat/Bio";
 import { checkBirthday } from "@/utils/checkBirthday";
+import { unstable_ViewTransition as ViewTransition } from "react";
 
 const CatOverview = ({
   cat,
@@ -32,7 +33,9 @@ const CatOverview = ({
     <>
       {showConfetti && <Confetti width={windowWidth} height={windowHeight} />}
       {cat && <Bio cat={cat} key={cat.name} />}
-      <Gallery cat={cat} isDetail={isDetail} />
+      <ViewTransition enter="fade-in-fast">
+        <Gallery cat={cat} isDetail={isDetail} />
+      </ViewTransition>
     </>
   );
 };
