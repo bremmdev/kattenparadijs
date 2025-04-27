@@ -63,23 +63,27 @@ const Gallery = ({ cat, isDetail }: Props) => {
     <>
       {selectedImage && (
         <ViewTransition enter="fade-in">
-        <Modal ref={modalRef} onClose={handleClose}>
-          <Image
-            src={selectedImage.url}
-            fill
-            alt="kat"
-            className="object-contain"
-          />
-        </Modal>
+          <Modal ref={modalRef} onClose={handleClose}>
+            <Image
+              src={selectedImage.url}
+              fill
+              alt="kat"
+              className="object-contain"
+            />
+          </Modal>
         </ViewTransition>
       )}
 
       {isIndexPage && (
-        <SelectRandomCat images={images} setSelectedImage={setSelectedImage} />
+          <SelectRandomCat
+            images={images}
+            setSelectedImage={setSelectedImage}
+          />
       )}
 
       {/*each column is an array of images that should be displayed as a flex column, 
       so we can use break-inside-avoid to prevent images from being taken out of their column*/}
+      <ViewTransition name="gallery"> 
       <div className="columns-2 gap-5 sm:columns-3 md:columns-4">
         {columns.map((column, idx) => (
           <div
@@ -97,6 +101,7 @@ const Gallery = ({ cat, isDetail }: Props) => {
           </div>
         ))}
       </div>
+      </ViewTransition>
       {hasNextPage && (
         <FetchMoreBtn
           isFetching={isFetching}

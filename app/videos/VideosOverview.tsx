@@ -31,7 +31,7 @@ const VideosOverview = () => {
     <>
       {/*each column is an array of videos that should be displayed as a flex column, 
       so we can use break-inside-avoid to prevent videos from being taken out of their column*/}
-      <ViewTransition enter="fade-in-fast">
+      <ViewTransition name="gallery">
       <div className="columns-1 gap-5 sm:columns-2 md:columns-3">
         {columns.map((column, idx) => (
           <div
