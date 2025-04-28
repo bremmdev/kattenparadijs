@@ -83,7 +83,7 @@ const Gallery = ({ cat, isDetail }: Props) => {
 
       {/*each column is an array of images that should be displayed as a flex column, 
       so we can use break-inside-avoid to prevent images from being taken out of their column*/}
-      <ViewTransition name="gallery"> 
+      <ViewTransition>
       <div className="columns-2 gap-5 sm:columns-3 md:columns-4">
         {columns.map((column, idx) => (
           <div
