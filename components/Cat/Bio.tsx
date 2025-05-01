@@ -76,7 +76,7 @@ const Bio = ({ cat }: Props) => {
             )}
             <div className="text-xs my-1 flex flex-col justify-between gap-1 font-medium sm:my-2 sm:gap-2 sm:text-sm">
               <h3>Leeftijd</h3>
-              <span className="font-normal">{`${years} jaar, ${months} ${
+              <span className="font-normal">{`${years ?? 0} jaar, ${months ?? 0} ${
                 months === 1 ? "maand" : "maanden"
               }`}</span>
             </div>
