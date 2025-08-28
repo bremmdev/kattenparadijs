@@ -98,7 +98,7 @@ const Bio = ({ cat }: Props) => {
         </div>
 
         {/* desktop bio is always visible and can't be toggled */}
-        <div className="hidden md:block">
+        <div className="hidden md:block py-1 mt-4">
           <BioContent />
         </div>
       </div>
@@ -107,6 +107,7 @@ const Bio = ({ cat }: Props) => {
         <Image
           src={banner}
           alt={`${cat.name} banner`}
+          priority
           className="rounded-lg w-full shrink md:max-w-xl"
         />
       )}
