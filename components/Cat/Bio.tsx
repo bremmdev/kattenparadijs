@@ -3,18 +3,17 @@
 import React, { unstable_ViewTransition as ViewTransition } from "react";
 import Image from "next/image";
 import { intervalToDuration } from "date-fns";
-import { useState } from "react";
 import { dancing_script } from "@/app/fonts";
 import { Cat } from "@/types/types";
 import PassingIcon from "./PassingIcon";
+import { getBanner } from "@/utils/banner";
 
 type Props = {
   cat: Cat;
 };
 
 const Bio = ({ cat }: Props) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-
+  const [isExpanded, setIsExpanded] = React.useState(false);
   const [year, month, day] = cat.birthDate.split("-");
   const formattedBirthDate = `${day}-${month}-${year}`;
 
@@ -32,60 +31,84 @@ const Bio = ({ cat }: Props) => {
 
   const formattedNicknames = cat.nicknames.join(", ");
 
+  const banner = getBanner(cat ?? undefined);
+
   function toggleExpanded() {
     React.startTransition(() => {
       setIsExpanded((prev) => !prev);
     });
   }
 
-  return (
-    <div className="flex flex-col justify-center relative max-w-xl p-2 mb-6 text-center mx-auto bg-theme-lightest rounded-lg sm:p-3 sm:mb-10">
-      <img
-        src="chevron.svg"
-        width="20px"
-        height="20px"
-        className={`absolute right-8 top-4 translate-y-1 transition-all cursor-pointer ${
-          isExpanded ? "rotate-180" : "rotate-0"
-        } hover:scale-105 hover:brightness-105 sm:top-6 sm:translate-y-0`}
-        onClick={toggleExpanded}
-      />
-      <div className="flex justify-center items-center gap-2 border-b border-b-theme-light pb-4">
-        <Image src={cat.iconUrl} alt="logo" width={32} height={32} />
-        <h2
-          className={`${dancing_script.className} tracking-wider text-center text-theme capitalize translate-y-1 text-2xl flex gap-1 items-center`}
-        >
-          {cat.name}
-          {cat.passingDate && <PassingIcon />}
-        </h2>
+  const BioContent = () => (
+    <>
+      <div className="text-xs my-1 flex flex-col justify-between gap-1 font-medium sm:my-2 sm:gap-2 sm:text-sm">
+        <h3>Geboortedatum</h3>
+        <span className="font-normal">{formattedBirthDate}</span>
       </div>
-      {isExpanded && (
-        <ViewTransition enter="slide-down" exit="slide-up">
-          <div id="bio-content" className="py-1">
-            <div className="text-xs my-1 flex flex-col justify-between gap-1 font-medium sm:my-2 sm:gap-2 sm:text-sm">
-              <h3>Geboortedatum</h3>
-              <span className="font-normal">{formattedBirthDate}</span>
-            </div>
-            {cat.passingDate && (
-              <div className="text-xs my-1 flex flex-col justify-between gap-1 font-medium sm:my-2 sm:gap-2 sm:text-sm">
-                <h3>Overlijdensdatum</h3>
-                <span className="font-normal flex gap-1 justify-center items-center">
-                  {formattedPassingDate}
-                  <PassingIcon />
-                </span>
-              </div>
-            )}
-            <div className="text-xs my-1 flex flex-col justify-between gap-1 font-medium sm:my-2 sm:gap-2 sm:text-sm">
-              <h3>Leeftijd</h3>
-              <span className="font-normal">{`${years ?? 0} jaar, ${months ?? 0} ${
-                months === 1 ? "maand" : "maanden"
-              }`}</span>
-            </div>
-            <div className="text-xs my-1 flex flex-col justify-between gap-1 font-medium sm:my-2 sm:gap-2 sm:text-sm">
-              <h3>Bijnaam</h3>
-              <span className="font-normal">{formattedNicknames}</span>
-            </div>
-          </div>
-        </ViewTransition>
+      {cat.passingDate && (
+        <div className="text-xs my-1 flex flex-col justify-between gap-1 font-medium sm:my-2 sm:gap-2 sm:text-sm">
+          <h3>Overlijdensdatum</h3>
+          <span className="font-normal flex gap-1 justify-center items-center">
+            {formattedPassingDate}
+            <PassingIcon />
+          </span>
+        </div>
+      )}
+      <div className="text-xs my-1 flex flex-col justify-between gap-1 font-medium sm:my-2 sm:gap-2 sm:text-sm">
+        <h3>Leeftijd</h3>
+        <span className="font-normal">{`${years ?? 0} jaar, ${months ?? 0} ${
+          months === 1 ? "maand" : "maanden"
+        }`}</span>
+      </div>
+      <div className="text-xs my-1 flex flex-col justify-between gap-1 font-medium sm:my-2 sm:gap-2 sm:text-sm">
+        <h3>Bijnaam</h3>
+        <span className="font-normal">{formattedNicknames}</span>
+      </div>
+    </>
+  );
+
+  return (
+    <div className="flex flex-col md:flex-row gap-8 mb-8">
+      <div className="flex flex-col justify-center relative p-2 text-center w-full flex-1/3 md:w-xs mx-auto bg-theme-lightest rounded-lg sm:p-4">
+        <div className="flex justify-center items-center gap-2 border-b border-b-theme-light pb-4">
+          <Image src={cat.iconUrl} alt="logo" width={32} height={32} />
+          <h2
+            className={`${dancing_script.className} tracking-wider text-center text-theme capitalize translate-y-1 text-2xl flex gap-1 items-center`}
+          >
+            {cat.name}
+            {cat.passingDate && <PassingIcon />}
+          </h2>
+          <img
+            src="chevron.svg"
+            width="20px"
+            height="20px"
+            className={`md:hidden absolute right-8 top-4 translate-y-1 transition-all cursor-pointer ${
+              isExpanded ? "rotate-180" : "rotate-0"
+            } hover:scale-105 hover:brightness-105`}
+            onClick={toggleExpanded}
+          />
+        </div>
+
+        {/* mobile bio is collapsed by default but can be toggled */}
+        <div
+          id="bio-content"
+          className={`md:hidden py-1 mt-4 ${isExpanded ? "block" : "hidden"}`}
+        >
+          <BioContent />
+        </div>
+
+        {/* desktop bio is always visible and can't be toggled */}
+        <div className="hidden md:block">
+          <BioContent />
+        </div>
+      </div>
+
+      {banner && (
+        <Image
+          src={banner}
+          alt={`${cat.name} banner`}
+          className="rounded-lg w-full shrink md:max-w-xl"
+        />
       )}
     </div>
   );

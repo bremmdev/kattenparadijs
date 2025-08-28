@@ -1,4 +1,4 @@
-import groq from "groq";
+import { groq } from "next-sanity";
 const PAGE_SIZE = 48;
 
 type GroqArgs = {
