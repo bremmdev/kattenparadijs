@@ -7,7 +7,6 @@ import Head from "next/head";
 import useBodyToViewportRatio from "@/hooks/useBodyToViewportRatio";
 import { poppins } from "@/app/fonts";
 
-
 export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
@@ -43,7 +42,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         className={`${poppins.className} font-sans min-h-screen bg-gray-50 pb-8`}
       >
         <Header />
-        <main className="max-w-6xl mx-auto py-6 px-8 sm:px-12 sm:py-8">
+        <main className="max-w-page-content mx-auto py-6 px-8 sm:px-12 sm:py-8">
           {children}
         </main>
         {showBackToTop && <BackToTop />}

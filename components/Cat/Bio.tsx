@@ -41,12 +41,12 @@ const Bio = ({ cat }: Props) => {
 
   const BioContent = () => (
     <>
-      <div className="text-xs my-1 flex flex-col justify-between gap-1 font-medium sm:my-2 sm:gap-2 sm:text-sm">
+      <div className="my-1 flex flex-col justify-between gap-1 font-medium sm:my-2 sm:gap-2">
         <h3>Geboortedatum</h3>
         <span className="font-normal">{formattedBirthDate}</span>
       </div>
       {cat.passingDate && (
-        <div className="text-xs my-1 flex flex-col justify-between gap-1 font-medium sm:my-2 sm:gap-2 sm:text-sm">
+        <div className="my-1 flex flex-col justify-between gap-1 font-medium sm:my-2 sm:gap-2">
           <h3>Overlijdensdatum</h3>
           <span className="font-normal flex gap-1 justify-center items-center">
             {formattedPassingDate}
@@ -54,13 +54,13 @@ const Bio = ({ cat }: Props) => {
           </span>
         </div>
       )}
-      <div className="text-xs my-1 flex flex-col justify-between gap-1 font-medium sm:my-2 sm:gap-2 sm:text-sm">
+      <div className="my-1 flex flex-col justify-between gap-1 font-medium sm:my-2 sm:gap-2">
         <h3>Leeftijd</h3>
         <span className="font-normal">{`${years ?? 0} jaar, ${months ?? 0} ${
           months === 1 ? "maand" : "maanden"
         }`}</span>
       </div>
-      <div className="text-xs my-1 flex flex-col justify-between gap-1 font-medium sm:my-2 sm:gap-2 sm:text-sm">
+      <div className="my-1 flex flex-col justify-between gap-1 font-medium sm:my-2 sm:gap-2">
         <h3>Bijnaam</h3>
         <span className="font-normal">{formattedNicknames}</span>
       </div>
@@ -69,20 +69,20 @@ const Bio = ({ cat }: Props) => {
 
   return (
     <div className="flex flex-col md:flex-row gap-8 mb-8">
-      <div className="flex flex-col justify-center relative p-2 text-center w-full flex-1/3 md:w-xs mx-auto bg-theme-lightest rounded-lg sm:p-4">
+      <div className="flex flex-col justify-center relative p-2 text-center w-full md:flex-1/3 md:min-w-xs mx-auto bg-theme-lightest rounded-lg sm:p-4 text-xs md:text-base">
         <div className="flex justify-center items-center gap-2 border-b border-b-theme-light pb-4">
-          <Image src={cat.iconUrl} alt="logo" width={32} height={32} />
+          <Image src={cat.iconUrl} alt="logo" width={36} height={36} />
           <h2
-            className={`${dancing_script.className} tracking-wider text-center text-theme capitalize translate-y-1 text-2xl flex gap-1 items-center`}
+            className={`${dancing_script.className} tracking-wider text-center text-theme capitalize text-3xl flex gap-1 items-center translate-y-0.5`}
           >
             {cat.name}
             {cat.passingDate && <PassingIcon />}
           </h2>
           <img
             src="chevron.svg"
-            width="20px"
-            height="20px"
-            className={`md:hidden absolute right-8 top-4 translate-y-1 transition-all cursor-pointer ${
+            width="24px"
+            height="24px"
+            className={`md:hidden absolute right-8 top-6 translate-y-1 transition-all cursor-pointer ${
               isExpanded ? "rotate-180" : "rotate-0"
             } hover:scale-105 hover:brightness-105`}
             onClick={toggleExpanded}
@@ -108,7 +108,7 @@ const Bio = ({ cat }: Props) => {
           src={banner}
           alt={`${cat.name} banner`}
           priority
-          className="rounded-lg w-full shrink md:max-w-xl"
+          className="rounded-lg w-full shrink md:max-w-2xl overflow-hidden"
         />
       )}
     </div>

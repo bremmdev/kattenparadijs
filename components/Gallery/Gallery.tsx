@@ -75,32 +75,29 @@ const Gallery = ({ cat, isDetail }: Props) => {
       )}
 
       {isIndexPage && (
-          <SelectRandomCat
-            images={images}
-            setSelectedImage={setSelectedImage}
-          />
+        <SelectRandomCat images={images} setSelectedImage={setSelectedImage} />
       )}
 
       {/*each column is an array of images that should be displayed as a flex column, 
       so we can use break-inside-avoid to prevent images from being taken out of their column*/}
       <ViewTransition>
-      <div className="columns-2 gap-5 sm:columns-3 md:columns-4">
-        {columns.map((column, idx) => (
-          <div
-            key={idx}
-            className="flex flex-col gap-3 items-center break-inside-avoid"
-          >
-            {column.map((img, idx) => (
-              <GalleryItem
-                hasPriority={idx < 3}
-                key={img.id}
-                img={img}
-                setSelectedImage={setSelectedImage}
-              />
-            ))}
-          </div>
-        ))}
-      </div>
+        <div className="columns-2 gap-5 sm:columns-3 md:columns-4">
+          {columns.map((column, idx) => (
+            <div
+              key={idx}
+              className="flex flex-col gap-3 items-center break-inside-avoid"
+            >
+              {column.map((img, idx) => (
+                <GalleryItem
+                  hasPriority={idx < 3}
+                  key={img.id}
+                  img={img}
+                  setSelectedImage={setSelectedImage}
+                />
+              ))}
+            </div>
+          ))}
+        </div>
       </ViewTransition>
       {hasNextPage && (
         <FetchMoreBtn
