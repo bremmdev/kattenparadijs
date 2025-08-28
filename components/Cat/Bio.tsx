@@ -69,20 +69,20 @@ const Bio = ({ cat }: Props) => {
 
   return (
     <div className="flex flex-col md:flex-row gap-8 mb-8">
-      <div className="flex flex-col justify-center relative p-2 text-center w-full md:flex-1/3 md:min-w-xs mx-auto bg-theme-lightest rounded-lg sm:p-4 text-xs md:text-base">
+      <div className="flex flex-col justify-center relative p-2 text-center w-full md:flex-1/3 md:min-w-xs mx-auto bg-theme-lightest rounded-lg md:p-4 text-xs md:text-base">
         <div className="flex justify-center items-center gap-2 border-b border-b-theme-light pb-4">
           <Image src={cat.iconUrl} alt="logo" width={36} height={36} />
           <h2
-            className={`${dancing_script.className} tracking-wider text-center text-theme capitalize text-3xl flex gap-1 items-center translate-y-0.5`}
+            className={`${dancing_script.className} tracking-wider text-center text-theme capitalize text-2xl md:text-3xl flex gap-1 items-center translate-y-1 md:translate-y-0.5`}
           >
             {cat.name}
             {cat.passingDate && <PassingIcon />}
           </h2>
           <img
             src="chevron.svg"
-            width="24px"
-            height="24px"
-            className={`md:hidden absolute right-8 top-6 translate-y-1 transition-all cursor-pointer ${
+            width="22px"
+            height="22px"
+            className={`md:hidden absolute right-8 top-4 translate-y-1 transition-all cursor-pointer ${
               isExpanded ? "rotate-180" : "rotate-0"
             } hover:scale-105 hover:brightness-105`}
             onClick={toggleExpanded}
