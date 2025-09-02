@@ -17,11 +17,9 @@ import { groq } from "next-sanity";
 import type { Metadata, ResolvingMetadata } from "next";
 import { CatName } from "@/types/types";
 
-type Props = {
-  params: Promise<{ cat: string }>;
-};
-
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps<"/[cat]">): Promise<Metadata> {
   const awaitedParams = await params;
 
   const cat = awaitedParams?.cat as string;
@@ -53,7 +51,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function CatDetailPage({ params }: Props) {
+export default async function CatDetailPage({ params }: PageProps<"/[cat]">) {
   const queryClient = new QueryClient();
   const awaitedParams = await params;
 
