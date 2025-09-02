@@ -7,7 +7,7 @@ import Head from "next/head";
 import useBodyToViewportRatio from "@/hooks/useBodyToViewportRatio";
 import { poppins } from "@/app/fonts";
 
-export default function Layout({ children }: LayoutProps<"/">) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   //only show back to top button when the body is longer than the viewport

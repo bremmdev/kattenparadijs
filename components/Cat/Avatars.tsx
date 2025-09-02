@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import PassingIcon from "./PassingIcon";
+import type { Route } from "next";
 
 const avatars = [
   { src: "/avatar/daantje.svg", path: "/daantje" },
@@ -16,10 +17,12 @@ const Avatars = () => {
     <div className="flex gap-3 justify-center my-2 sm:my-0 sm:ml-auto">
       {avatars.map((avatar, idx) => {
         return (
-          <Link key={idx} href={avatar.path} className="relative">
-            {avatar.passedAway && <PassingIcon className="absolute right-1 z-10"/>}
+          <Link key={idx} href={avatar.path as Route} className="relative">
+            {avatar.passedAway && (
+              <PassingIcon className="absolute right-1 z-10" />
+            )}
             <Image
-              className={`${avatar.passedAway ? 'opacity-50' : ''} transition-all duration-300 cursor-pointer hover:scale-110 hover:brightness-105`}
+              className={`${avatar.passedAway ? "opacity-50" : ""} transition-all duration-300 cursor-pointer hover:scale-110 hover:brightness-105`}
               src={avatar.src}
               alt="cat avatar"
               width="42"
