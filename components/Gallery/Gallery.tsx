@@ -4,7 +4,6 @@ import { ImageWithDimensions } from "@/types/types";
 import GalleryItem from "./GalleryItem";
 import React from "react";
 import Modal from "../Modal";
-import { usePathname } from "next/navigation";
 import SelectRandomCat from "./SelectRandomCat";
 import Image from "next/image";
 import useHandleClickOutsideImage from "@/hooks/useHandleClickOutsideImage";
@@ -33,8 +32,6 @@ const Gallery = ({ cat, isDetail }: Props) => {
   const images = data?.pages.flatMap((page) => page.images) ?? [];
   const catImageCount = data?.pages[0]?.count ?? 0;
 
-  const pathname = usePathname();
-
   /* STATE */
   const [selectedImage, setSelectedImage] =
     React.useState<ImageWithDimensions | null>(null);
@@ -45,7 +42,6 @@ const Gallery = ({ cat, isDetail }: Props) => {
   //determine how many columns to display based on screen width
   const columnCount = useColumns("images");
 
-  const isIndexPage = pathname === "/";
   const modalRef = React.useRef<HTMLDivElement>(null);
 
   const handleClose = (e: React.MouseEvent) => {
@@ -77,7 +73,7 @@ const Gallery = ({ cat, isDetail }: Props) => {
         </ViewTransition>
       )}
 
-      {isIndexPage && (
+      {!isDetail && (
         <>
           <SelectRandomCat
             images={images}
