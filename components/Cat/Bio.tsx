@@ -10,9 +10,10 @@ import { getBanner } from "@/utils/banner";
 
 type Props = {
   cat: Cat;
+  imageCount: number;
 };
 
-const Bio = ({ cat }: Props) => {
+const Bio = ({ cat, imageCount }: Props) => {
   const [isExpanded, setIsExpanded] = React.useState(false);
   const [year, month, day] = cat.birthDate.split("-");
   const formattedBirthDate = `${day}-${month}-${year}`;
@@ -50,19 +51,28 @@ const Bio = ({ cat }: Props) => {
           <h3>Overlijdensdatum</h3>
           <span className="font-normal flex gap-1 justify-center items-center">
             {formattedPassingDate}
+            <span className="font-normal">{`(${years ?? 0} jaar, ${months ?? 0} ${
+              months === 1 ? "maand" : "maanden"
+            })`}</span>
             <PassingIcon />
           </span>
         </div>
       )}
-      <div className="my-1 flex flex-col justify-between gap-1 font-medium sm:my-2 sm:gap-2">
-        <h3>Leeftijd</h3>
-        <span className="font-normal">{`${years ?? 0} jaar, ${months ?? 0} ${
-          months === 1 ? "maand" : "maanden"
-        }`}</span>
-      </div>
+      {!cat.passingDate && (
+        <div className="my-1 flex flex-col justify-between gap-1 font-medium sm:my-2 sm:gap-2">
+          <h3>Leeftijd</h3>
+          <span className="font-normal">{`${years ?? 0} jaar, ${months ?? 0} ${
+            months === 1 ? "maand" : "maanden"
+          }`}</span>
+        </div>
+      )}
       <div className="my-1 flex flex-col justify-between gap-1 font-medium sm:my-2 sm:gap-2">
         <h3>Bijnaam</h3>
         <span className="font-normal">{formattedNicknames}</span>
+      </div>
+      <div className="my-1 flex flex-col justify-between gap-1 font-medium sm:my-2 sm:gap-2">
+        <h3>Aantal foto's</h3>
+        <span className="font-normal">{imageCount}</span>
       </div>
     </>
   );

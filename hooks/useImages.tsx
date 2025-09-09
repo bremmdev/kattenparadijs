@@ -3,12 +3,17 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 
 export const PAGE_SIZE = 48;
 
+type ImagePageType = {
+  count: number;
+  images: Array<ImageWithDimensions>;
+};
+
 export const useImages = (cat?: string) => {
-  return useInfiniteQuery<Array<ImageWithDimensions>>({
+  return useInfiniteQuery<ImagePageType>({
     queryKey: ["images", { cat: cat }],
     queryFn: ({ pageParam }) => getImages(pageParam as number, cat),
     getNextPageParam: (lastPage, pages) => {
-      if (lastPage.length < PAGE_SIZE) {
+      if (lastPage.images.length < PAGE_SIZE) {
         return undefined;
       }
       return pages.length;

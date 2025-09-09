@@ -18,13 +18,13 @@ const SelectRandomCat = (props: Props) => {
     const randomImg = images[rndIdx];
 
     React.startTransition(() => {
-        setSelectedImage(randomImg);
+      setSelectedImage(randomImg);
     });
   };
 
   return (
     <button
-      className="flex justify-center items-center mb-6 transition-all duration-300 text-slate-600 text-3xl font-bold rounded-full mx-auto size-12 text-center bg-radial from-theme-lightest to-theme-light hover:scale-110 hover:brightness-105"
+      className="flex justify-center items-center mb-4 transition-all duration-300 text-slate-600 text-3xl font-bold rounded-full mx-auto size-12 text-center bg-radial from-theme-lightest to-theme-light hover:scale-110 hover:brightness-105"
       onClick={handleOnClick}
     >
       ?

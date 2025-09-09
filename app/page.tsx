@@ -8,7 +8,7 @@ import {
 import React from "react";
 import { sanityClient } from "@/sanity";
 import { imageGroqQuery } from "@/utils/queries";
-import CatsOverview from './CatsOverview'
+import CatsOverview from "./CatsOverview";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

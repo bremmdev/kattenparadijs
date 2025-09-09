@@ -15,15 +15,18 @@ export const imageGroqQuery = (args: GroqArgs) => {
       ? `[${page * PAGE_SIZE}...${(page + 1) * PAGE_SIZE}]`
       : "";
 
-  return groq`*[${queryFilter}] | order(_createdAt desc) {
+  return groq`{
+  "count": count(*[${queryFilter}]),  
+  "images":
+    *[${queryFilter}] | order(_createdAt desc)${range} {
     "cats": cat[]->{name, birthDate, passingDate, "iconUrl": icon.asset->url, nicknames},
     "id":_id,
     "url": img.asset->url,
     "width": img.asset->metadata.dimensions.width,
     "height": img.asset->metadata.dimensions.height,
     "blurData": img.asset->metadata.lqip,
-    takenAt
-  }${range}`;
+    takenAt,
+}}`;
 };
 
 export const catGroqQuery = groq`*[_type == "cat"]{

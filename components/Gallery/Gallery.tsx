@@ -14,6 +14,7 @@ import { useImages } from "@/hooks/useImages";
 import FetchMoreBtn from "./FetchMoreBtn";
 import { Cat } from "@/types/types";
 import { unstable_ViewTransition as ViewTransition } from "react";
+import CatCount from "./CatCount";
 
 type Props = {
   cat: Cat | null;
@@ -29,7 +30,9 @@ const Gallery = ({ cat, isDetail }: Props) => {
 
   const { data, isFetching, isFetchingNextPage, fetchNextPage, hasNextPage } =
     useImages(queryArg);
-  const images = data?.pages.flat() ?? [];
+  const images = data?.pages.flatMap((page) => page.images) ?? [];
+  const catImageCount = data?.pages[0]?.count ?? 0;
+
   const pathname = usePathname();
 
   /* STATE */
@@ -75,7 +78,13 @@ const Gallery = ({ cat, isDetail }: Props) => {
       )}
 
       {isIndexPage && (
-        <SelectRandomCat images={images} setSelectedImage={setSelectedImage} />
+        <>
+          <SelectRandomCat
+            images={images}
+            setSelectedImage={setSelectedImage}
+          />
+          <CatCount count={catImageCount} />
+        </>
       )}
 
       {/*each column is an array of images that should be displayed as a flex column, 
