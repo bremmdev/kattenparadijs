@@ -4,7 +4,6 @@ import React from "react";
 import { ImageWithDimensions } from "@/types/types";
 import Image from "next/image";
 import ExtraInfo from "./ExtraInfo";
-import { flushSync } from "react-dom";
 
 type Props = {
   img: ImageWithDimensions;
@@ -12,10 +11,11 @@ type Props = {
     React.SetStateAction<ImageWithDimensions | null>
   >;
   hasPriority?: boolean;
+  isLCP?: boolean;
 };
 
 const GalleryItem = (props: Props) => {
-  const { img, setSelectedImage, hasPriority } = props;
+  const { img, setSelectedImage, hasPriority, isLCP } = props;
 
   const handleImageClick = () => {
     React.startTransition(() => {
@@ -49,6 +49,7 @@ const GalleryItem = (props: Props) => {
           className="rounded-xl"
           blurDataURL={img.blurData}
           priority={hasPriority}
+          fetchPriority={isLCP ? "high" : "auto"}
         />
       </button>
     </div>

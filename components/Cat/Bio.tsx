@@ -118,6 +118,7 @@ const Bio = ({ cat, imageCount }: Props) => {
           src={banner}
           alt={`${cat.name} banner`}
           priority
+          fetchPriority="high"
           className="rounded-lg w-full shrink md:max-w-2xl overflow-hidden"
         />
       )}

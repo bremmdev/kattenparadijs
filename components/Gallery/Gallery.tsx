@@ -58,6 +58,38 @@ const Gallery = ({ cat, isDetail }: Props) => {
     setColumns(columns);
   }, [data, columnCount]);
 
+  /* 
+    LOGIC TO DETERMINE LCP IMAGE
+    1. Get all images in the first 3 rows of each column (to account for different image heights)
+    2. Check if any of these images are in the first row
+    3. If yes, pick the first one that is in the first row, if no, pick the first image from the candidates
+    4. If no candidates, pick the very first image in the gallery
+  */
+
+  let LCPImageCandidates: Array<ImageWithDimensions> = [];
+  let hasLCPImage = false;
+  let LCPImage = null;
+  // only on home page or all cats page
+  if (!isDetail || queryArg === "all") {
+    LCPImageCandidates = columns
+      .map((c) => c.slice(0, 3))
+      .flat()
+      .filter((img) => img.height > img.width);
+
+    hasLCPImage = LCPImageCandidates.length > 0;
+
+    const topRow = columns.map((c) => c[0]);
+    const isLCPInTopRow = LCPImageCandidates.some((img) =>
+      topRow.includes(img)
+    );
+
+    LCPImage = hasLCPImage
+      ? isLCPInTopRow
+        ? LCPImageCandidates.find((img) => topRow.includes(img))!
+        : LCPImageCandidates[0]
+      : images[0];
+  }
+
   return (
     <>
       {selectedImage && (
@@ -97,6 +129,7 @@ const Gallery = ({ cat, isDetail }: Props) => {
                   hasPriority={idx < 3}
                   key={img.id}
                   img={img}
+                  isLCP={img.id === LCPImage?.id}
                   setSelectedImage={setSelectedImage}
                 />
               ))}

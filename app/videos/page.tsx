@@ -12,6 +12,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Kattenparadijs | Videos",
+  description: "Bekijk alle video's van onze katten",
 };
 
 export default async function VideosPage() {

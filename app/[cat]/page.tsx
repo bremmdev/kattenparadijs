@@ -38,6 +38,7 @@ export async function generateMetadata({
 
   return {
     title: `Kattenparadijs | ${cat[0].toUpperCase() + cat.slice(1)}`,
+    description: `Bekijk alle foto's van ${cat === "all" ? "onze katten" : cat[0].toUpperCase() + cat.slice(1)}`,
     openGraph: {
       images: [
         {

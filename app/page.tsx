@@ -13,6 +13,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Kattenparadijs",
+  description: "Foto's van al onze katten",
   openGraph: {
     images: [
       {
