@@ -12,7 +12,7 @@ import { useColumns } from "@/hooks/useColumns";
 import { useImages } from "@/hooks/useImages";
 import FetchMoreBtn from "./FetchMoreBtn";
 import { Cat } from "@/types/types";
-import { unstable_ViewTransition as ViewTransition } from "react";
+import { ViewTransition } from "react";
 import CatCount from "./CatCount";
 
 type Props = {

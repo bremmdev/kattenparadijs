@@ -11,17 +11,17 @@
     "@tanstack/react-query": "^5.17.15",
     "@tanstack/react-query-devtools": "^5.17.15",
     "date-fns": "^3.2.0",
-    "next": "^15.5.2",
-    "next-sanity": "^10.0.15",
-    "react": "^19.0.0",
+    "next": "^16.0.3",
+    "next-sanity": "^11.6.8",
+    "react": "^19.2.0",
     "react-confetti": "^6.1.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.2.0"
   },
   "devDependencies": {
     "@types/node": "^24.3.0",
     "@types/probe-image-size": "^7.2.0",
-    "@types/react": "^19.0.1",
-    "@types/react-dom": "^19.0.2",
+    "@types/react": "^19.2.6",
+    "@types/react-dom": "^19.2.3",
     "autoprefixer": "^10.4.7",
     "postcss": "^8.4.14",
     "tailwindcss": "^4.0.8",

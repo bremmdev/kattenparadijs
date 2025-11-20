@@ -1,6 +1,6 @@
 "use client";
 
-import React, { unstable_ViewTransition as ViewTransition } from "react";
+import React from "react";
 import Image from "next/image";
 import { intervalToDuration } from "date-fns";
 import { dancing_script } from "@/app/fonts";
