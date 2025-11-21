@@ -19,7 +19,7 @@ const VideosOverview = () => {
   );
 
   //determine how many columns to display based on screen width
-  const columnCount = useColumns("videos");
+  const columnCount = useColumns();
 
   React.useEffect(() => {
     const columns = sortVideosIntoColumns(videos, columnCount);

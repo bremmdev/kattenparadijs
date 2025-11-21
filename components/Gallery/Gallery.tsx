@@ -8,7 +8,6 @@ import SelectRandomCat from "./SelectRandomCat";
 import Image from "next/image";
 import useHandleClickOutsideImage from "@/hooks/useHandleClickOutsideImage";
 import { sortImagesIntoColumns } from "@/utils/sortIntoColumns";
-import { useColumns } from "@/hooks/useColumns";
 import { useImages } from "@/hooks/useImages";
 import FetchMoreBtn from "./FetchMoreBtn";
 import { Cat } from "@/types/types";
@@ -35,12 +34,13 @@ const Gallery = ({ cat, isDetail }: Props) => {
   /* STATE */
   const [selectedImage, setSelectedImage] =
     React.useState<ImageWithDimensions | null>(null);
-  const [columns, setColumns] = React.useState<
+  const [columnsMobile, setColumnsMobile] = React.useState<
+    Array<Array<ImageWithDimensions>>
+  >(() => sortImagesIntoColumns(images, 2));
+
+  const [columnsDesktop, setColumnsDesktop] = React.useState<
     Array<Array<ImageWithDimensions>>
   >(() => sortImagesIntoColumns(images, 4));
-
-  //determine how many columns to display based on screen width
-  const columnCount = useColumns("images");
 
   const modalRef = React.useRef<HTMLDivElement>(null);
 
@@ -54,41 +54,31 @@ const Gallery = ({ cat, isDetail }: Props) => {
   };
 
   React.useEffect(() => {
-    const columns = sortImagesIntoColumns(images, columnCount);
-    setColumns(columns);
-  }, [data, columnCount]);
+    const columnsMobile = sortImagesIntoColumns(images, 2);
+    setColumnsMobile(columnsMobile);
+    const columnsDesktop = sortImagesIntoColumns(images, 4);
+    setColumnsDesktop(columnsDesktop);
+  }, [data]);
 
-  /* 
-    LOGIC TO DETERMINE LCP IMAGE
-    1. Get all images in the first 3 rows of each column (to account for different image heights)
-    2. Check if any of these images are in the first row
-    3. If yes, pick the first one that is in the first row, if no, pick the first image from the candidates
-    4. If no candidates, pick the very first image in the gallery
-  */
+  // only on home page or all cats page as other pages have banner images
+  const useLCPImage = !isDetail || queryArg === "all";
 
-  let LCPImageCandidates: Array<ImageWithDimensions> = [];
-  let hasLCPImage = false;
-  let LCPImage = null;
-  // only on home page or all cats page
-  if (!isDetail || queryArg === "all") {
-    LCPImageCandidates = columns
-      .map((c) => c.slice(0, 3))
-      .flat()
-      .filter((img) => img.height > img.width);
+  // get the top row and find the tallest image among them
+  function getLCPImageId(columns: Array<Array<ImageWithDimensions>>) {
+    let topRowImages: Array<ImageWithDimensions> = columns
+      .map((c) => c.slice(0, 1))
+      .flat();
+    if (topRowImages.length === 0) return null;
 
-    hasLCPImage = LCPImageCandidates.length > 0;
+    const lcpImage = topRowImages.reduce((max, current) => {
+      return current.height > max.height ? current : max;
+    }, topRowImages[0]); // Default to the first one if all else fails
 
-    const topRow = columns.map((c) => c[0]);
-    const isLCPInTopRow = LCPImageCandidates.some((img) =>
-      topRow.includes(img)
-    );
-
-    LCPImage = hasLCPImage
-      ? isLCPInTopRow
-        ? LCPImageCandidates.find((img) => topRow.includes(img))!
-        : LCPImageCandidates[0]
-      : images[0];
+    return lcpImage.id;
   }
+
+  const mobileLCPImageId = getLCPImageId(columnsMobile);
+  const desktopLCPImageId = getLCPImageId(columnsDesktop);
 
   return (
     <>
@@ -115,11 +105,15 @@ const Gallery = ({ cat, isDetail }: Props) => {
         </>
       )}
 
-      {/*each column is an array of images that should be displayed as a flex column, 
-      so we can use break-inside-avoid to prevent images from being taken out of their column*/}
+      {/* 
+        Each column is an array of images that should be displayed as a flex column, 
+        so we can use break-inside-avoid to prevent images from being taken out of their column
+        We render the layout twice, once for small screens (2 columns) and once for large screens (4 columns)
+        This way we don't have any layout shifts on page load and the images are displayed immediately without loading indicator 
+      */}
       <ViewTransition>
-        <div className="columns-2 gap-5 sm:columns-3 md:columns-4">
-          {columns.map((column, idx) => (
+        <div className="columns-2 gap-5 md:hidden">
+          {columnsMobile.map((column, idx) => (
             <div
               key={idx}
               className="flex flex-col gap-3 items-center break-inside-avoid"
@@ -129,7 +123,30 @@ const Gallery = ({ cat, isDetail }: Props) => {
                   hasPriority={idx < 3}
                   key={img.id}
                   img={img}
-                  isLCP={img.id === LCPImage?.id}
+                  isLCP={img.id === mobileLCPImageId && useLCPImage}
+                  setSelectedImage={setSelectedImage}
+                />
+              ))}
+            </div>
+          ))}
+        </div>
+      </ViewTransition>
+
+      {/*each column is an array of images that should be displayed as a flex column, 
+      so we can use break-inside-avoid to prevent images from being taken out of their column*/}
+      <ViewTransition>
+        <div className="columns-4 gap-5 hidden md:block">
+          {columnsDesktop.map((column, idx) => (
+            <div
+              key={idx}
+              className="flex flex-col gap-3 items-center break-inside-avoid"
+            >
+              {column.map((img, idx) => (
+                <GalleryItem
+                  hasPriority={idx < 3}
+                  key={img.id}
+                  img={img}
+                  isLCP={img.id === desktopLCPImageId && useLCPImage}
                   setSelectedImage={setSelectedImage}
                 />
               ))}
