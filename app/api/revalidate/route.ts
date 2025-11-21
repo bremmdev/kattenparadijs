@@ -26,17 +26,16 @@ export async function POST(request: NextRequest) {
 
     switch (_type) {
       case "catimage":
-        //always revalidate main page when an image is added
+        // always revalidate main page when an image is added
         revalidatePath(`/`);
 
-        //check length of 'cats'
+        // cat can be "all" or a specific cat name
         if (cat.length > 1) {
-          // await res.revalidate(`/all`);
           revalidatePath(`/all`);
           return Response.json({ message: `Revalidated page for all cats` });
         }
 
-        //revalidate page for specific cat
+        // revalidate page for specific cat
         revalidatePath(`/${cat[0]}`);
         return Response.json({ message: `Revalidated page for ${cat[0]}` });
       case "catvideo":

@@ -1,9 +1,10 @@
 import React from "react";
 import throttle from "@/utils/throttle";
+import { usePathname } from "next/navigation";
 
-//this hook determines the ratio between the body height and the viewport height
-//accepts a dependency to re-run on change
-const useBodyToViewportRatio = <T,>(dependency: T) => {
+const useBodyToViewportRatio = () => {
+  const pathname = usePathname();
+
   const [bodyToViewportRatio, setBodyToViewportRatio] = React.useState<
     number | null
   >(null);
@@ -20,7 +21,7 @@ const useBodyToViewportRatio = <T,>(dependency: T) => {
     window.addEventListener("resize", listenToResize);
 
     return () => window.removeEventListener("resize", listenToResize);
-  }, [dependency]);
+  }, [pathname]);
 
   return { bodyToViewportRatio };
 };

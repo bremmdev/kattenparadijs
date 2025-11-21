@@ -5,7 +5,6 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
-import React from "react";
 import { sanityClient } from "@/sanity";
 import { imageGroqQuery } from "@/utils/queries";
 import CatsOverview from "./CatsOverview";
