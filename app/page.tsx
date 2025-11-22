@@ -7,7 +7,7 @@ import {
 } from "@tanstack/react-query";
 import { sanityClient } from "@/sanity";
 import { imageGroqQuery } from "@/utils/queries";
-import CatsOverview from "./CatsOverview";
+import Gallery from "@/components/Gallery/Gallery";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -33,17 +33,14 @@ export default async function CatsPage() {
   await queryClient.prefetchInfiniteQuery({
     queryKey: ["images", {}],
     queryFn: async () => await sanityClient.fetch(query),
-    staleTime: 1000 * 60 * 5,
+    staleTime: Infinity, // data is always fresh as we revalidate when data in Sanity changes
     initialPageParam: 0,
   });
 
   return (
-    // Neat! Serialization is now as easy as passing props.
-    // HydrationBoundary is a Client Component, so hydration will happen there.
-    <>
-      <HydrationBoundary state={dehydrate(queryClient)}>
-        <CatsOverview />
-      </HydrationBoundary>
-    </>
+    // Pass dehydrated state to the HydrationBoundary to hydrate the client cache with the prefetched data
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <Gallery cat={null} />;
+    </HydrationBoundary>
   );
 }

@@ -14,7 +14,6 @@ export const useVideos = () => {
       return pages.length;
     },
     initialPageParam: 0,
-    staleTime: 1000 * 60 * 5,
   });
 };
 

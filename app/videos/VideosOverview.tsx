@@ -8,6 +8,7 @@ import { useColumns } from "@/hooks/useColumns";
 import { Video } from "@/types/types";
 import ExtraInfo from "@/components/Gallery/ExtraInfo";
 import { ViewTransition } from "react";
+
 const VideosOverview = () => {
   const { data, isFetching, isFetchingNextPage, fetchNextPage, hasNextPage } =
     useVideos();

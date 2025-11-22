@@ -19,7 +19,6 @@ export const useImages = (cat?: string) => {
       return pages.length;
     },
     initialPageParam: 0,
-    staleTime: 1000 * 60 * 5,
   });
 };
 
