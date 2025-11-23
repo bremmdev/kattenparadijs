@@ -8,7 +8,6 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
-import React from "react";
 import { sanityClient } from "@/sanity";
 import { Cat } from "@/types/types";
 import { catGroqQuery, imageGroqQuery } from "@/utils/queries";
@@ -70,7 +69,7 @@ export default async function CatDetailPage({ params }: PageProps<"/[cat]">) {
 
   //prefetch the first page of images
   await queryClient.prefetchInfiniteQuery({
-    queryKey: ["images", { cat: catParam }],
+    queryKey: ["images", catParam],
     queryFn: async () => await sanityClient.fetch(query),
     staleTime: Infinity, // data is always fresh as we revalidate when data in Sanity changes
     initialPageParam: 0,

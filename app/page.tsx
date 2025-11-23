@@ -31,7 +31,7 @@ export default async function CatsPage() {
 
   //prefetch the first page of images
   await queryClient.prefetchInfiniteQuery({
-    queryKey: ["images", {}],
+    queryKey: ["images"],
     queryFn: async () => await sanityClient.fetch(query),
     staleTime: Infinity, // data is always fresh as we revalidate when data in Sanity changes
     initialPageParam: 0,
