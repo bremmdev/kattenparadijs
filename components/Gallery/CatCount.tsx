@@ -1,5 +1,3 @@
-import React from "react";
-
 import { dancing_script } from "@/app/fonts";
 
 export default function CatCount({ count }: { count: number }) {
