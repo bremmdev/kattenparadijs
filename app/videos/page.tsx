@@ -13,6 +13,16 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Kattenparadijs | Videos",
   description: "Bekijk alle video's van onze katten",
+  openGraph: {
+    images: [
+      {
+        url: "https://user-images.githubusercontent.com/76665118/210135017-7d48fad3-49db-47da-9ac3-d45d5b358174.png",
+        width: 1920,
+        height: 1080,
+        alt: "Kattenparadijs",
+      },
+    ],
+  },
 };
 
 export default async function VideosPage() {
