@@ -4,13 +4,13 @@ const cspHeader = `
     default-src 'self';
     script-src 'self' 'unsafe-inline'; 
     style-src 'self' 'unsafe-inline';
-    img-src 'self' blob: data: https://cdn.sanity.io;
+    img-src 'self' https://cdn.sanity.io;
     font-src 'self';
     object-src 'none';
     base-uri 'self';
     form-action 'self';
+    frame-src 'none';
     frame-ancestors 'none';
-    block-all-mixed-content;
     upgrade-insecure-requests;
 `;
 
