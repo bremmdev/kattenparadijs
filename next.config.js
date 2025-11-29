@@ -5,6 +5,7 @@ const cspHeader = `
     script-src 'self' 'unsafe-inline'; 
     style-src 'self' 'unsafe-inline';
     img-src 'self' https://cdn.sanity.io;
+    media-src 'self' https://cdn.sanity.io;
     font-src 'self';
     object-src 'none';
     base-uri 'self';
