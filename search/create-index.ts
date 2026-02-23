@@ -3,16 +3,16 @@ const INDEX_NAME = "cat-photos";
 const schema = {
     name: INDEX_NAME,
     fields: [
-        { name: "id", type: "Edm.String", key: true, filterable: true }, // unique id for the document
-        { name: "sanityId", type: "Edm.String", retrievable: true }, // id of the document in sanity
-        { name: "imageUrl", type: "Edm.String", retrievable: true },
-        { name: "catName", type: "Edm.String", retrievable: true },
+        { name: "id", type: "Edm.String", key: true, filterable: true, facetable: false }, // unique id for the document
+        { name: "sanityId", type: "Edm.String", retrievable: true, filterable: false, facetable: false }, // id of the document in sanity
+        { name: "imageUrl", type: "Edm.String", retrievable: true, filterable: false, facetable: false },
+        { name: "catName", type: "Edm.String", retrievable: true, filterable: true, facetable: false },
         {
             name: "imageVector",
             type: "Collection(Edm.Single)",
             searchable: true,
             retrievable: false, // don't send 1024 floats back to client
-            dimensions: 1024,
+            dimensions: 1024, // number of dimensions in the vector, must match Azure's dimensions
             vectorSearchProfile: "hnsw-profile",
         },
     ],
