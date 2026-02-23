@@ -3,7 +3,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "deploy:infra": "az deployment sub create --location westeurope --template-file infra/main.bicep --parameters infra/parameters-main.json"
   },
   "dependencies": {
     "@sanity/webhook": "^4.0.0",
