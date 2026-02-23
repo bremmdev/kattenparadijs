@@ -13,7 +13,7 @@ import { Cat } from "@/types/types";
 import { catGroqQuery, imageGroqQuery } from "@/utils/queries";
 import CatOverview from "./CatOverview";
 import { groq } from "next-sanity";
-import type { Metadata, ResolvingMetadata } from "next";
+import type { Metadata } from "next";
 import { CatName } from "@/types/types";
 
 export async function generateMetadata({

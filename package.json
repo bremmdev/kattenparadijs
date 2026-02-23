@@ -4,7 +4,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "deploy:infra": "az deployment sub create --location westeurope --template-file infra/main.bicep --parameters infra/parameters-main.json"
+    "deploy:infra": "az deployment sub create --location westeurope --template-file infra/main.bicep --parameters infra/parameters-main.json",
+    "vectorize:images": "npx tsx --env-file .env.local search/vectorize-images.ts",
+    "create:index": "npx tsx --env-file .env.local search/create-index.ts"
   },
   "dependencies": {
     "@sanity/webhook": "^4.0.0",
