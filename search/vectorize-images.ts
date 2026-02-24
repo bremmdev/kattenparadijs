@@ -1,4 +1,4 @@
-
+const INDEX_NAME = "cat-photos";
 import { groq, createClient } from "next-sanity";
 
 type Image = {
@@ -77,14 +77,60 @@ async function vectorizeImage(image: Image): Promise<number[]> {
     }
 }
 
+async function indexImage(image: Image) {
+    const vector = await vectorizeImage(image);
+    console.log(vector);
+
+    try {
+        const res = await fetch(
+            `${process.env.AZURE_SEARCH_ENDPOINT}/indexes/${INDEX_NAME}/docs/index?api-version=2025-09-01`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "api-key": process.env.AZURE_SEARCH_ADMIN_KEY!,
+                },
+                body: JSON.stringify({
+                    value: [
+                        {
+                            "@search.action": "upload",
+                            id: crypto.randomUUID(),
+                            sanityId: image.sanityId,
+                            imageUrl: image.imageUrl,
+                            catName: image.catName,
+                            imageVector: vector,
+                        },
+                    ],
+                }),
+            }
+        );
+        const data = await res.text();
+        console.log(data);
+    } catch (error) {
+        console.error(`Failed to index ${image.imageUrl}:`, error);
+    }
+}
+
+async function countDocuments() {
+    const res = await fetch(
+        `${process.env.AZURE_SEARCH_ENDPOINT}/indexes/${INDEX_NAME}/docs/$count?api-version=2025-09-01`,
+        {
+            headers: { "api-key": process.env.AZURE_SEARCH_ADMIN_KEY! },
+        }
+    );
+    const count = await res.text();
+    console.log(`Documents in index: ${count}`);
+}
 
 async function indexImages() {
     const images: ImageResp = (await getImages("cffff72f-9ee2-4c64-8c0b-81d05262ef3e")) as ImageResp;
     console.log(images.images);
 
     for (const image of images.images) {
-        await vectorizeImage(image);
+        await indexImage(image);
     }
+
+    await countDocuments();
 }
 
 indexImages();
