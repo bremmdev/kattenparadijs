@@ -93,9 +93,8 @@ async function indexImage(image: Image) {
                 body: JSON.stringify({
                     value: [
                         {
-                            "@search.action": "upload",
-                            id: crypto.randomUUID(),
-                            sanityId: image.sanityId,
+                            "@search.action": "mergeOrUpload",
+                            id: image.sanityId,
                             imageUrl: image.imageUrl,
                             catName: image.catName,
                             imageVector: vector,

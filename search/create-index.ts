@@ -3,8 +3,7 @@ const INDEX_NAME = "cat-photos";
 const schema = {
     name: INDEX_NAME,
     fields: [
-        { name: "id", type: "Edm.String", key: true, filterable: true, facetable: false }, // unique id for the document
-        { name: "sanityId", type: "Edm.String", retrievable: true, filterable: false, facetable: false }, // id of the document in sanity
+        { name: "id", type: "Edm.String", key: true, filterable: true, facetable: false }, // unique id for the document, same as sanityId
         { name: "imageUrl", type: "Edm.String", retrievable: true, filterable: false, facetable: false },
         { name: "catName", type: "Edm.String", retrievable: true, filterable: true, facetable: false },
         {
