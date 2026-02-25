@@ -50,7 +50,6 @@ export async function POST(request: NextRequest) {
         // newly created images need to be indexed in the search index
         if (operation === "create") {
           const vector = await vectorizeImage(body.imageUrl);
-          console.log("vector", vector);
 
           try {
             await syncVectorToSearchIndex({

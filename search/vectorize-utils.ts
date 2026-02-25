@@ -60,3 +60,17 @@ export function syncVectorToSearchIndex(image: {
         }
     );
 }
+
+// Run this if sync failed and you want to manually vectorize and index an image
+export async function syncVectorToSearchIndexManually() {
+    const imageUrl = "https://cdn.sanity.io/images/e991dsae/production/f67001263c6453fd68ff83ab4e7908980d231992-1023x768.jpg";
+    const sanityId = "201664f5-47b6-4e90-bf3d-f7a21ba157cf";
+    const catName = "norris";
+    const vector = await vectorizeImage(imageUrl);
+    return syncVectorToSearchIndex({
+        sanityId: sanityId,
+        imageUrl: imageUrl,
+        catName: catName,
+        vector: vector,
+    });
+}
