@@ -7,9 +7,17 @@ const secret = process.env.SANITY_WEBHOOK_SECRET as string;
 
 export async function POST(request: NextRequest) {
   const { isValidSignature, body } = await parseBody<{
+    sanityId: string;
+    imageUrl: string;
     _type: string;
     cat: string;
   }>(request, secret);
+
+  console.log("body", body);
+
+
+  // list all headers
+  console.log("headers", request.headers);
 
   if (!isValidSignature) {
     return Response.json(
