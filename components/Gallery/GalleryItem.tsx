@@ -3,7 +3,7 @@
 import React from "react";
 import { ImageWithDimensions } from "@/types/types";
 import Image from "next/image";
-import ExtraInfo from "./ExtraInfo";
+import GalleryActions from "./GalleryActions";
 
 type Props = {
   img: ImageWithDimensions;
@@ -27,19 +27,13 @@ const GalleryItem = (props: Props) => {
     });
   };
 
-  //only show age at takenAt date if image has takenAt property and there is only one cat in the image
-  const hasExtraInfo = Boolean(img.takenAt);
   const hasMultipleCats = img.cats.length > 1;
 
-  return (
-    <div className="relative cursor-pointer hover:opacity-95 hover:scale-105 transition-all duration-300">
-      {hasExtraInfo && (
-        <ExtraInfo
-          birthDate={hasMultipleCats ? undefined : img.cats[0].birthDate}
-          takenAt={img.takenAt as string}
-        />
-      )}
 
+  return (
+    <div className="group relative cursor-pointer hover:opacity-95 hover:scale-105 transition-all duration-300">
+
+      <GalleryActions takenAt={img.takenAt as string} isVideo={false} birthDate={hasMultipleCats ? undefined : img.cats[0].birthDate} isMultipleCats={hasMultipleCats} />
       <button onClick={handleImageClick}>
         <Image
           src={img.url}

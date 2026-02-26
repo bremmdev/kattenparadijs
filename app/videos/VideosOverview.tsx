@@ -6,8 +6,8 @@ import FetchMoreBtn from "@/components/Gallery/FetchMoreBtn";
 import { sortVideosIntoColumns } from "@/utils/sortIntoColumns";
 import { useColumns } from "@/hooks/useColumns";
 import { Video } from "@/types/types";
-import ExtraInfo from "@/components/Gallery/ExtraInfo";
 import { ViewTransition } from "react";
+import GalleryActions from "@/components/Gallery/GalleryActions";
 
 const VideosOverview = () => {
   const { data, isFetching, isFetchingNextPage, fetchNextPage, hasNextPage } =
@@ -36,12 +36,12 @@ const VideosOverview = () => {
           {columns.map((column, idx) => (
             <div
               key={idx}
-              className="flex flex-col gap-3 items-center break-inside-avoid"
+              className="group flex flex-col gap-3 items-center break-inside-avoid"
             >
               {column.map((video, idx) => (
                 <div key={video.id} className="relative">
                   {video.takenAt && (
-                    <ExtraInfo takenAt={video.takenAt} isVideo={true} />
+                    <GalleryActions takenAt={video.takenAt} isVideo={true} />
                   )}
                   <video
                     width={video.width}
