@@ -1,15 +1,18 @@
 'use client';
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { intervalToDuration } from "date-fns";
 import { differenceInCalendarDays } from "date-fns";
-import { Info, X, Sparkles } from "lucide-react";
+import { Info, Sparkles } from "lucide-react";
+import { getSimilarCatPhotos } from "@/app/_actions/similar-cats";
 
 type Props = {
     takenAt: string;
     birthDate?: string;
     isVideo?: boolean;
     isMultipleCats?: boolean;
+    imageUrl?: string;
+    id?: string;
 };
 
 //determine the age of the cat using the birthdate and the takenAt date
@@ -34,16 +37,21 @@ const determineAge = (takenAt: string, birthDate: string) => {
 
 
 export default function GalleryActions(props: Props) {
-    const { takenAt, birthDate, isVideo, isMultipleCats } = props;
+    const { takenAt, birthDate, isVideo, isMultipleCats, imageUrl, id } = props;
 
     const [showInfo, setShowInfo] = useState<boolean>(false);
+
+    const handleFindSimilarImages = async () => {
+        if (!imageUrl || !id) return;
+        const similarPhotos = await getSimilarCatPhotos(imageUrl, id);
+        console.log(similarPhotos);
+    }
 
     //format date and determine age
     //formattedAge is bogus when birthDate is null but it's not used in that case
     const [year, month, day] = takenAt?.split("-") ?? [];
     const formattedTakenAt = `${day}-${month}-${year}`;
     const formattedAge = determineAge(takenAt, birthDate || "");
-    console.log(formattedAge);
 
     const resourceType = isVideo ? "video" : "image";
 
@@ -63,7 +71,7 @@ export default function GalleryActions(props: Props) {
             ) : (
                 <span className="flex items-center gap-2 justify-center">
                     {!takenAt ? null : <button aria-label="Show extra information" onClick={() => setShowInfo(true)}><Info className="transition-all hover:scale-105 size-6" /></button>}
-                    {!isVideo && !isMultipleCats && <button aria-label="Find similar images"><Sparkles className="transition-all hover:scale-105 size-6" /></button>}</span>
+                    {!isVideo && !isMultipleCats && <button aria-label="Find similar images" onClick={handleFindSimilarImages}><Sparkles className="transition-all hover:scale-105 size-6" /></button>}</span>
             )}
         </div>
     )

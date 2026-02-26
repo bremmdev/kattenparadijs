@@ -26,13 +26,13 @@ export async function getSimilarImages({ url, id }: { url: string, id: string })
         }
     );
     const data = await res.json();
-    console.log(data);
+    return data;
 }
 
-getSimilarImages({
-    url: "https://cdn.sanity.io/images/e991dsae/production/a6fd19d450ee0f549aee1ca8e41bb018106a34c0-1023x768.jpg",
-    id: "b5aea061-2b93-4940-bc19-4a6feb3a9504"
-}).catch((err) => {
-    console.error(err);
-    process.exit(1);
-});
+// getSimilarImages({
+//     url: "https://cdn.sanity.io/images/e991dsae/production/a6fd19d450ee0f549aee1ca8e41bb018106a34c0-1023x768.jpg",
+//     id: "b5aea061-2b93-4940-bc19-4a6feb3a9504"
+// }).catch((err) => {
+//     console.error(err);
+//     process.exit(1);
+// });

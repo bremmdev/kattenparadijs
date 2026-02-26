@@ -33,7 +33,7 @@ const GalleryItem = (props: Props) => {
   return (
     <div className="group relative cursor-pointer hover:opacity-95 hover:scale-105 transition-all duration-300">
 
-      <GalleryActions takenAt={img.takenAt as string} isVideo={false} birthDate={hasMultipleCats ? undefined : img.cats[0].birthDate} isMultipleCats={hasMultipleCats} />
+      <GalleryActions takenAt={img.takenAt as string} isVideo={false} birthDate={hasMultipleCats ? undefined : img.cats[0].birthDate} isMultipleCats={hasMultipleCats} imageUrl={img.url} id={img.id as string} />
       <button onClick={handleImageClick}>
         <Image
           src={img.url}
