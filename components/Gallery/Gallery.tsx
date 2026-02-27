@@ -143,7 +143,6 @@ const Gallery = ({ cat, isDetail }: Props) => {
             >
               {column.map((img, idx) => (
                 <GalleryItem
-                  cat={cat?.name}
                   hasPriority={idx < 3}
                   key={img.id}
                   img={img}
@@ -168,7 +167,6 @@ const Gallery = ({ cat, isDetail }: Props) => {
             >
               {column.map((img, idx) => (
                 <GalleryItem
-                  cat={cat?.name}
                   hasPriority={idx < 3}
                   key={img.id}
                   img={img}

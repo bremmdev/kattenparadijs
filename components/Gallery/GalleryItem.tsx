@@ -15,11 +15,10 @@ type Props = {
   onSimilarImages?: React.Dispatch<
     React.SetStateAction<Array<SimilarCatPhotoWithDimensions>>
   >;
-  cat?: string;
 };
 
 const GalleryItem = (props: Props) => {
-  const { img, setSelectedImage, hasPriority, isLCP, onSimilarImages, cat } = props;
+  const { img, setSelectedImage, hasPriority, isLCP, onSimilarImages } = props;
 
   const handleImageClick = () => {
     React.startTransition(() => {
@@ -33,10 +32,9 @@ const GalleryItem = (props: Props) => {
 
   const hasMultipleCats = img.cats.length > 1;
 
-
   return (
     <div className="group relative cursor-pointer hover:opacity-95 hover:scale-105 transition-all duration-300">
-      <GalleryActions takenAt={img.takenAt as string} cat={cat} isVideo={false} birthDate={hasMultipleCats ? undefined : img.cats[0].birthDate} onSimilarImages={onSimilarImages} isMultipleCats={hasMultipleCats} imageUrl={img.url} id={img.id as string} />
+      <GalleryActions takenAt={img.takenAt as string} cat={img.cats[0].name} isVideo={false} birthDate={hasMultipleCats ? undefined : img.cats[0].birthDate} onSimilarImages={onSimilarImages} isMultipleCats={hasMultipleCats} imageUrl={img.url} id={img.id as string} />
       <button onClick={handleImageClick}>
         <Image
           src={img.url}

@@ -16,6 +16,14 @@ const Modal = (props: Props) => {
     window.addEventListener("keydown", handleEscapeKey);
   }, [props.onClose]);
 
+  // Prevent scrolling on modal open
+  React.useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, []);
+
   return (
     <div
       id="modal_overlay"
