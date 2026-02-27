@@ -12,9 +12,12 @@
 
   --spacing-page-content: 90rem;
 
-  --color-theme: oklch(64.5% 0.246 16.439); /* rose-500 */
-  --color-theme-light: oklch(81% 0.117 11.638); /* rose-300 */
-  --color-theme-lightest: oklch(96.9% 0.015 12.422); /* rose-50 */
+  --color-theme: oklch(64.5% 0.246 16.439);
+  /* rose-500 */
+  --color-theme-light: oklch(81% 0.117 11.638);
+  /* rose-300 */
+  --color-theme-lightest: oklch(96.9% 0.015 12.422);
+  /* rose-50 */
 
   --inset-1\/8: 12.5%;
 
@@ -26,6 +29,7 @@
     0% {
       opacity: 0;
     }
+
     100% {
       opacity: 1;
     }
@@ -41,6 +45,7 @@
   color utility to any element that depends on these defaults.
 */
 @layer base {
+
   *,
   ::after,
   ::before,
@@ -52,6 +57,16 @@
 
 button {
   cursor: pointer;
+}
+
+*:focus {
+  outline: none;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--color-theme);
+  outline-offset: 2px;
+  border-radius: 0.5rem;
 }
 
 .disable-viewtransition {
@@ -85,9 +100,11 @@ button {
     height: 100%;
     opacity: 1;
   }
+
   25% {
     opacity: 0;
   }
+
   100% {
     height: 0;
     opacity: 0;
@@ -99,10 +116,12 @@ button {
     height: 0;
     opacity: 0;
   }
+
   50% {
     height: 50%;
     opacity: 0;
   }
+
   100% {
     height: 100%;
     opacity: 1;
@@ -126,9 +145,11 @@ button {
 
 ::-webkit-scrollbar-thumb {
   border-radius: 9999px;
-  background-image: linear-gradient(
-    to bottom,
-    oklch(89.2% 0.058 10.001) 0% /* rose-200 */,
-    oklch(71.2% 0.194 13.428) 100% /* rose-400 */
-  );
+  background-image: linear-gradient(to bottom,
+      oklch(89.2% 0.058 10.001) 0%
+      /* rose-200 */
+      ,
+      oklch(71.2% 0.194 13.428) 100%
+      /* rose-400 */
+    );
 }
