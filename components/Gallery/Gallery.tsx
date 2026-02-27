@@ -6,6 +6,7 @@ import React from "react";
 import Modal from "../Modal";
 import SelectRandomCat from "./SelectRandomCat";
 import Image from "next/image";
+import SimilarCatsModal from "../SimilarCatsModal";
 import useHandleClickOutsideImage from "@/hooks/useHandleClickOutsideImage";
 import { sortImagesIntoColumns } from "@/utils/sortIntoColumns";
 import { useImages } from "@/hooks/useImages";
@@ -109,13 +110,7 @@ const Gallery = ({ cat, isDetail }: Props) => {
       )}
 
       {similarImages.length > 0 && (
-        <Modal ref={modalRef} onClose={handleClearSimilarImages}>
-          <div className="grid grid-cols-2 gap-4" onClick={(e) => e.stopPropagation()}>
-            {similarImages.map((img) => (
-              <Image className={`rounded-xl ${img.chosen ? "shadow-[0_0_20px_4px_rgba(255,255,255,0.7)]" : ""}`} key={img.id} src={img.imageUrl} alt="kat" width={img.width} height={img.height} />
-            ))}
-          </div>
-        </Modal>
+        <SimilarCatsModal images={similarImages} onClose={handleClearSimilarImages} />
       )}
 
       {!isDetail && (

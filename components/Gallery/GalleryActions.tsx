@@ -51,13 +51,11 @@ export default function GalleryActions(props: Props) {
         if (!imageUrl || !id || !cat) return;
         const similarPhotos = await getSimilarCatPhotos(imageUrl, cat);
 
-        // format the similar photos and sort them by height/width ratio
-        const formattedSimilarPhotos = similarPhotos.value.map((photo: SimilarCatPhoto, index: number) => ({
+        const formattedSimilarPhotos = similarPhotos.value.map((photo: SimilarCatPhoto) => ({
             ...photo,
             width: getImageDimensions(photo.imageUrl)?.width,
             height: getImageDimensions(photo.imageUrl)?.height,
-            chosen: index === 0,
-        })).sort((a: SimilarCatPhotoWithDimensions, b: SimilarCatPhotoWithDimensions) => (b.height / b.width) - (a.height / a.width));
+        }))
 
         onSimilarImages?.(formattedSimilarPhotos);
     }

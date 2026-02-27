@@ -35,5 +35,4 @@ export interface SimilarCatPhoto {
 export interface SimilarCatPhotoWithDimensions extends SimilarCatPhoto {
   width: number;
   height: number;
-  chosen: boolean;
 }
