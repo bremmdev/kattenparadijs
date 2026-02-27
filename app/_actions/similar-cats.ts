@@ -3,7 +3,7 @@
 import { getSimilarImages } from "@/search/similar-images";
 import { cookies } from "next/headers";
 
-export async function getSimilarCatPhotos(url: string, id: string) {
+export async function getSimilarCatPhotos(url: string, cat: string) {
     const cookieStore = await cookies();
     const AUTH_KEY = cookieStore.get("KATTENPARADIJS_AUTH")?.value ?? "";
 
@@ -13,7 +13,16 @@ export async function getSimilarCatPhotos(url: string, id: string) {
         }
     }
 
-    const similarPhotos = await getSimilarImages({ url, id });
-    return similarPhotos;
+    console.log("cat", cat);
+
+    try {
+        const similarPhotos = await getSimilarImages({ url, cat });
+        return similarPhotos;
+    } catch (error) {
+        console.error(error);
+        return {
+            error: "Failed to get similar cat photos"
+        }
+    }
 }
 

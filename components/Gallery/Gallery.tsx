@@ -1,6 +1,6 @@
 "use client";
 
-import { ImageWithDimensions } from "@/types/types";
+import { ImageWithDimensions, SimilarCatPhotoWithDimensions } from "@/types/types";
 import GalleryItem from "./GalleryItem";
 import React from "react";
 import Modal from "../Modal";
@@ -34,6 +34,9 @@ const Gallery = ({ cat, isDetail }: Props) => {
   /* STATE */
   const [selectedImage, setSelectedImage] =
     React.useState<ImageWithDimensions | null>(null);
+
+  const [similarImages, setSimilarImages] = React.useState<Array<SimilarCatPhotoWithDimensions>>([]);
+
   const [columnsMobile, setColumnsMobile] = React.useState<
     Array<Array<ImageWithDimensions>>
   >(() => sortImagesIntoColumns(images, 2));
@@ -44,9 +47,14 @@ const Gallery = ({ cat, isDetail }: Props) => {
 
   const modalRef = React.useRef<HTMLDivElement>(null);
 
-  const handleClose = (e: React.MouseEvent) => {
+  const handleClose = (e: React.MouseEvent | KeyboardEvent) => {
+    if (e instanceof KeyboardEvent && e.key === "Escape") {
+      setSelectedImage(null);
+      return;
+    }
+
     const img = modalRef.current?.querySelector("img")!;
-    const hasClickedOutsideOfImage = useHandleClickOutsideImage(e, img);
+    const hasClickedOutsideOfImage = useHandleClickOutsideImage(e as React.MouseEvent, img);
 
     if (hasClickedOutsideOfImage) {
       setSelectedImage(null);
@@ -80,6 +88,11 @@ const Gallery = ({ cat, isDetail }: Props) => {
   const mobileLCPImageId = getLCPImageId(columnsMobile);
   const desktopLCPImageId = getLCPImageId(columnsDesktop);
 
+
+  const handleClearSimilarImages = () => {
+    setSimilarImages([]);
+  }
+
   return (
     <>
       {selectedImage && (
@@ -93,6 +106,16 @@ const Gallery = ({ cat, isDetail }: Props) => {
             />
           </Modal>
         </ViewTransition>
+      )}
+
+      {similarImages.length > 0 && (
+        <Modal ref={modalRef} onClose={handleClearSimilarImages}>
+          <div className="grid grid-cols-2 gap-4" onClick={(e) => e.stopPropagation()}>
+            {similarImages.map((img) => (
+              <Image className={`rounded-xl ${img.chosen ? "shadow-[0_0_20px_4px_rgba(255,255,255,0.7)]" : ""}`} key={img.id} src={img.imageUrl} alt="kat" width={img.width} height={img.height} />
+            ))}
+          </div>
+        </Modal>
       )}
 
       {!isDetail && (
@@ -120,11 +143,13 @@ const Gallery = ({ cat, isDetail }: Props) => {
             >
               {column.map((img, idx) => (
                 <GalleryItem
+                  cat={cat?.name}
                   hasPriority={idx < 3}
                   key={img.id}
                   img={img}
                   isLCP={img.id === mobileLCPImageId && useLCPImage}
                   setSelectedImage={setSelectedImage}
+                  onSimilarImages={setSimilarImages}
                 />
               ))}
             </div>
@@ -143,11 +168,13 @@ const Gallery = ({ cat, isDetail }: Props) => {
             >
               {column.map((img, idx) => (
                 <GalleryItem
+                  cat={cat?.name}
                   hasPriority={idx < 3}
                   key={img.id}
                   img={img}
                   isLCP={img.id === desktopLCPImageId && useLCPImage}
                   setSelectedImage={setSelectedImage}
+                  onSimilarImages={setSimilarImages}
                 />
               ))}
             </div>

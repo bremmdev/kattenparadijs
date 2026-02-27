@@ -26,3 +26,14 @@ export interface Video {
 }
 
 export type CatName = "moos" | "norris" | "daantje" | "flynn";
+
+export interface SimilarCatPhoto {
+  id: string;
+  imageUrl: string;
+}
+
+export interface SimilarCatPhotoWithDimensions extends SimilarCatPhoto {
+  width: number;
+  height: number;
+  chosen: boolean;
+}

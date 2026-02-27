@@ -1,10 +1,21 @@
 import React from "react";
 
 type Props = React.ComponentPropsWithRef<"div"> & {
-  onClose: (e: React.MouseEvent) => void;
+  onClose: (e: React.MouseEvent | KeyboardEvent) => void;
 };
 
 const Modal = (props: Props) => {
+
+  // close on escape key
+  React.useEffect(() => {
+    const handleEscapeKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        props.onClose(e);
+      }
+    };
+    window.addEventListener("keydown", handleEscapeKey);
+  }, [props.onClose]);
+
   return (
     <div
       id="modal_overlay"

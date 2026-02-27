@@ -8,3 +8,15 @@ export function getContainedSize(img: HTMLImageElement) {
   }
   return [imageWidth, imageHeight];
 }
+
+export const getImageDimensions = (url: string) => {
+  const regex = /-(\d+)x(\d+)\.(jpg|jpeg|png|webp|gif)$/i;
+  const match = url.match(regex);
+  if (!match) {
+    return null;
+  }
+  return {
+    width: parseInt(match[1], 10),
+    height: parseInt(match[2], 10),
+  };
+}

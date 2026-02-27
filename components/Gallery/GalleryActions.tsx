@@ -5,6 +5,9 @@ import { intervalToDuration } from "date-fns";
 import { differenceInCalendarDays } from "date-fns";
 import { Info, Sparkles } from "lucide-react";
 import { getSimilarCatPhotos } from "@/app/_actions/similar-cats";
+import { SimilarCatPhoto, SimilarCatPhotoWithDimensions } from "@/types/types";
+import { getImageDimensions } from "@/utils/images";
+
 
 type Props = {
     takenAt: string;
@@ -13,6 +16,10 @@ type Props = {
     isMultipleCats?: boolean;
     imageUrl?: string;
     id?: string;
+    cat?: string;
+    onSimilarImages?: React.Dispatch<
+        React.SetStateAction<Array<SimilarCatPhotoWithDimensions>>
+    >;
 };
 
 //determine the age of the cat using the birthdate and the takenAt date
@@ -35,16 +42,24 @@ const determineAge = (takenAt: string, birthDate: string) => {
     return `${numberOfYears}${months} ${months === 1 ? "maand" : "maanden"}`;
 };
 
-
 export default function GalleryActions(props: Props) {
-    const { takenAt, birthDate, isVideo, isMultipleCats, imageUrl, id } = props;
+    const { takenAt, birthDate, isVideo, isMultipleCats, imageUrl, id, onSimilarImages, cat } = props;
 
     const [showInfo, setShowInfo] = useState<boolean>(false);
 
     const handleFindSimilarImages = async () => {
-        if (!imageUrl || !id) return;
-        const similarPhotos = await getSimilarCatPhotos(imageUrl, id);
-        console.log(similarPhotos);
+        if (!imageUrl || !id || !cat) return;
+        const similarPhotos = await getSimilarCatPhotos(imageUrl, cat);
+
+        // format the similar photos and sort them by height/width ratio
+        const formattedSimilarPhotos = similarPhotos.value.map((photo: SimilarCatPhoto, index: number) => ({
+            ...photo,
+            width: getImageDimensions(photo.imageUrl)?.width,
+            height: getImageDimensions(photo.imageUrl)?.height,
+            chosen: index === 0,
+        })).sort((a: SimilarCatPhotoWithDimensions, b: SimilarCatPhotoWithDimensions) => (b.height / b.width) - (a.height / a.width));
+
+        onSimilarImages?.(formattedSimilarPhotos);
     }
 
     //format date and determine age
