@@ -10,6 +10,16 @@ type Props = {
 };
 
 const SimilarCatsModal = ({ images, onClose }: Props) => {
+  const [allLoaded, setAllLoaded] = React.useState(false);
+  const loadedCount = React.useRef(0);
+
+  const handleImageLoad = () => {
+    loadedCount.current += 1;
+    if (loadedCount.current >= images.length) {
+      setAllLoaded(true);
+    }
+  };
+
   React.useEffect(() => {
     const handleEscapeKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -27,7 +37,7 @@ const SimilarCatsModal = ({ images, onClose }: Props) => {
 
   return (
     <div
-      className="fixed z-50 inset-0 bg-black/80 flex justify-center items-center"
+      className={`fixed z-50 inset-0 bg-black/80 flex justify-center items-center transition-opacity duration-300 ${allLoaded ? "opacity-100" : "opacity-0"}`}
       onClick={onClose}
     >
       <div
@@ -44,6 +54,7 @@ const SimilarCatsModal = ({ images, onClose }: Props) => {
               alt="kat"
               fill
               className="object-cover"
+              onLoad={handleImageLoad}
             />
           </div>
         ))}

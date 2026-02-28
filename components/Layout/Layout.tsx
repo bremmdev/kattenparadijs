@@ -5,6 +5,7 @@ import BackToTop from "@/components//UI/BackToTop";
 import useBodyToViewportRatio from "@/hooks/useBodyToViewportRatio";
 import { poppins } from "@/app/fonts";
 import type { Metadata } from "next";
+import Toaster from "@/components/UI/Toaster";
 
 export const metadata: Metadata = {
   icons: {
@@ -31,6 +32,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         {children}
       </main>
       {showBackToTop && <BackToTop />}
+      <Toaster />
     </div>
   );
 }

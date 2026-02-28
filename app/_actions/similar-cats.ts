@@ -9,19 +9,22 @@ export async function getSimilarCatPhotos(url: string, cat: string) {
 
     if (AUTH_KEY !== process.env.KATTENPARADIJS_AUTH) {
         return {
+            data: null,
             error: "Unauthorized"
         }
     }
 
-    console.log("cat", cat);
-
     try {
         const similarPhotos = await getSimilarImages({ url, cat });
-        return similarPhotos;
+        return {
+            data: similarPhotos,
+            error: null
+        }
     } catch (error) {
         console.error(error);
         return {
-            error: "Failed to get similar cat photos"
+            data: null,
+            error: error instanceof Error ? error.message : "Failed to get similar cat photos"
         }
     }
 }

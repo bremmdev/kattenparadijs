@@ -7,7 +7,7 @@ import { Info, Sparkles } from "lucide-react";
 import { getSimilarCatPhotos } from "@/app/_actions/similar-cats";
 import { SimilarCatPhoto, SimilarCatPhotoWithDimensions } from "@/types/types";
 import { getImageDimensions } from "@/utils/images";
-
+import { toast } from "@/utils/toast";
 
 type Props = {
     takenAt: string;
@@ -49,7 +49,12 @@ export default function GalleryActions(props: Props) {
 
     const handleFindSimilarImages = async () => {
         if (!imageUrl || !id || !cat) return;
-        const similarPhotos = await getSimilarCatPhotos(imageUrl, cat);
+        const { data: similarPhotos, error } = await getSimilarCatPhotos(imageUrl, cat);
+
+        if (error) {
+            toast.error(error);
+            return;
+        }
 
         const formattedSimilarPhotos = similarPhotos.value.map((photo: SimilarCatPhoto) => ({
             ...photo,
