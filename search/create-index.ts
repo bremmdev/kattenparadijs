@@ -45,7 +45,6 @@ async function createIndex() {
         }
     );
     const data = await res.json();
-    console.log(res.status, data);
 }
 
 createIndex();
