@@ -50,12 +50,15 @@ export default function GalleryActions(props: Props) {
 
     const handleFindSimilarImages = async () => {
         if (!imageUrl || !id || !cat || isMultipleCats) return;
+        const loadingId = toast.loading("Finding similar cat images...");
         const { data: similarPhotos, error } = await getSimilarCatPhotos(imageUrl, cat);
 
         if (error) {
             toast.error(error);
             return;
         }
+
+        toast.remove(loadingId);
 
         const formattedSimilarPhotos = similarPhotos.value.map((photo: SimilarCatPhoto) => ({
             ...photo,

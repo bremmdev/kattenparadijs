@@ -8,9 +8,9 @@ export default function Toaster() {
     useEffect(() => subscribe(setToasts), []);
 
     return (
-        <div className="fixed bottom-8 right-8 z-50 flex flex-col gap-2">
+        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2">
             {toasts.map((t) => (
-                <Toast key={t.id} message={t.message} type="error" />
+                <Toast key={t.id} message={t.message} type={t.type} />
             ))}
         </div>
     );

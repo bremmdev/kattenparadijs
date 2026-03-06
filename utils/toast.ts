@@ -23,6 +23,7 @@ const add = (message: string, type: ToastType) => {
     toasts = [...toasts, { id, message, type }];
     notify();
     setTimeout(() => remove(id), 3000);
+    return id;
 };
 
 export const subscribe = (listener: Listener) => {
@@ -34,4 +35,6 @@ export const subscribe = (listener: Listener) => {
 
 export const toast = {
     error: (message: string) => add(message, "error"),
+    loading: (message: string) => add(message, "loading"),
+    remove: (id: string) => remove(id),
 };
