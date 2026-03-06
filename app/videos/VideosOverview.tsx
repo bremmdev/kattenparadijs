@@ -41,7 +41,7 @@ const VideosOverview = () => {
               {column.map((video, idx) => (
                 <div key={video.id} className="relative">
                   {video.takenAt && (
-                    <GalleryActions takenAt={video.takenAt} isVideo={true} />
+                    <GalleryActions isLongPress={false} takenAt={video.takenAt} isVideo={true} />
                   )}
                   <video
                     width={video.width}
