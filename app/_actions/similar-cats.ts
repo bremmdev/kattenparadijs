@@ -6,12 +6,8 @@ import { headers } from "next/headers";
 
 export async function getSimilarCatPhotos(url: string, cat: string) {
     const cookieStore = await cookies();
-
     const ip = (await headers()).get("x-forwarded-for") ?? "";
-
-    console.log("ip", ip);
     const AUTH_KEY = cookieStore.get("KATTENPARADIJS_AUTH")?.value ?? "";
-
     const isAuthed = AUTH_KEY === process.env.KATTENPARADIJS_AUTH || ip === process.env.ALLOWED_IPV4 || ip === process.env.ALLOWED_IPV6;
 
     if (!isAuthed) {
