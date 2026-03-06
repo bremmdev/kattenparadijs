@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { intervalToDuration } from "date-fns";
 import { differenceInCalendarDays } from "date-fns";
 import { Info, Sparkles } from "lucide-react";
@@ -10,6 +10,7 @@ import { getImageDimensions } from "@/utils/images";
 import { toast } from "@/utils/toast";
 
 type Props = {
+    isLongPress: boolean;
     takenAt: string;
     birthDate?: string;
     isVideo?: boolean;
@@ -43,12 +44,12 @@ const determineAge = (takenAt: string, birthDate: string) => {
 };
 
 export default function GalleryActions(props: Props) {
-    const { takenAt, birthDate, isVideo, isMultipleCats, imageUrl, id, onSimilarImages, cat } = props;
+    const { isLongPress, takenAt, birthDate, isVideo, isMultipleCats, imageUrl, id, onSimilarImages, cat } = props;
 
     const [showInfo, setShowInfo] = useState<boolean>(false);
 
     const handleFindSimilarImages = async () => {
-        if (!imageUrl || !id || !cat) return;
+        if (!imageUrl || !id || !cat || isMultipleCats) return;
         const { data: similarPhotos, error } = await getSimilarCatPhotos(imageUrl, cat);
 
         if (error) {
@@ -77,6 +78,12 @@ export default function GalleryActions(props: Props) {
         "image": "absolute bottom-6 left-4 right-4",
         "video": "absolute bottom-12 left-4 right-4",
     }
+
+    // Find similar images on long press
+    React.useEffect(() => {
+        if (!isLongPress) return;
+        handleFindSimilarImages();
+    }, [isLongPress]);
 
     return (
         <div onMouseLeave={() => setShowInfo(false)} className={`flex opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity duration-300 delay-0 group-hover:delay-700 justify-center items-center w-fit rounded-full mx-auto min-w-10 px-4 min-h-10 z-10 bg-white/70 ${position[resourceType]}`}>
