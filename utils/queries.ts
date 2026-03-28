@@ -1,5 +1,5 @@
 import { groq } from "next-sanity";
-const PAGE_SIZE = 48;
+import { PAGE_SIZE, VIDEO_PAGE_SIZE } from "@/utils/constants";
 
 type GroqArgs = {
   filter?: string;
@@ -42,7 +42,7 @@ export const videoGroqQuery = (args: GroqArgs) => {
 
   const range =
     page || page === 0
-      ? `[${page * PAGE_SIZE}...${(page + 1) * PAGE_SIZE}]`
+      ? `[${page * VIDEO_PAGE_SIZE}...${(page + 1) * VIDEO_PAGE_SIZE}]`
       : "";
 
   return groq`*[_type == "catvideo"] | order(_createdAt desc) {

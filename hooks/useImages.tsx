@@ -1,7 +1,6 @@
 import { ImageWithDimensions } from "@/types/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
-
-export const PAGE_SIZE = 48;
+import { PAGE_SIZE } from "@/utils/constants";
 
 type ImagePageType = {
   count: number;

@@ -1,14 +1,13 @@
 import { Video } from "@/types/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
-
-export const PAGE_SIZE = 48;
+import { VIDEO_PAGE_SIZE } from "@/utils/constants";
 
 export const useVideos = () => {
   return useInfiniteQuery<Array<Video>>({
     queryKey: ["videos"],
     queryFn: ({ pageParam }) => getVideos(pageParam as number),
     getNextPageParam: (lastPage, pages) => {
-      if (lastPage.length < PAGE_SIZE) {
+      if (lastPage.length < VIDEO_PAGE_SIZE) {
         return undefined;
       }
       return pages.length;
