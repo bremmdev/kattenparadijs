@@ -43,14 +43,6 @@ const determineAge = (takenAt: string, birthDate: string) => {
     return `${numberOfYears}${months} ${months === 1 ? "maand" : "maanden"}`;
 };
 
-// preload similar images to avoid layout shift
-const preloadImage = (src: string) =>
-    new Promise<void>((resolve) => {
-        const image = new Image();
-        image.onload = () => resolve();
-        image.onerror = () => resolve();
-        image.src = src;
-    });
 
 export default function GalleryActions(props: Props) {
     const { isLongPress, takenAt, birthDate, isVideo, isMultipleCats, imageUrl, id, onSimilarImages, cat } = props;
@@ -63,6 +55,7 @@ export default function GalleryActions(props: Props) {
         const { data: similarPhotos, error } = await getSimilarCatPhotos(imageUrl, cat);
 
         if (error) {
+            toast.remove(loadingId);
             toast.error(error);
             return;
         }
@@ -73,9 +66,7 @@ export default function GalleryActions(props: Props) {
             height: getImageDimensions(photo.imageUrl)?.height,
         }))
 
-        await Promise.all(
-            formattedSimilarPhotos.map((photo: SimilarCatPhotoWithDimensions) => preloadImage(photo.imageUrl))
-        );
+
 
         onSimilarImages?.(formattedSimilarPhotos);
         toast.remove(loadingId);
