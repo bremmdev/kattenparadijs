@@ -22,7 +22,10 @@ const add = (message: string, type: ToastType) => {
     const id = Math.random().toString(36).slice(2);
     toasts = [...toasts, { id, message, type }];
     notify();
-    setTimeout(() => remove(id), 3000);
+    // remove toast after 3 seconds unless it's a loading toast
+    if (type !== "loading") {
+        setTimeout(() => remove(id), 3000);
+    }
     return id;
 };
 
