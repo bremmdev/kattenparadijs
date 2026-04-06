@@ -1,30 +1,14 @@
 const INDEX_NAME = "cat-photos";
 import { vectorizeImage } from "./vectorize-utils";
 
-const TIMEOUT_ERROR = "Timed out while fetching similar cat photos";
-
-function throwIfDeadlineReached(deadlineAt?: number) {
-    if (deadlineAt !== undefined && Date.now() >= deadlineAt) {
-        throw new Error(TIMEOUT_ERROR);
-    }
-}
-
 export async function getSimilarImages({
     url,
     cat,
-    signal,
-    deadlineAt,
 }: {
     url: string;
     cat: string;
-    signal?: AbortSignal;
-    deadlineAt?: number;
 }) {
-    throwIfDeadlineReached(deadlineAt);
-
-    const vector = await vectorizeImage(url, { signal });
-
-    throwIfDeadlineReached(deadlineAt);
+    const vector = await vectorizeImage(url);
 
     try {
         const res = await fetch(
@@ -46,19 +30,13 @@ export async function getSimilarImages({
                         },
                     ],
                 }),
-                signal,
             }
         );
 
-        throwIfDeadlineReached(deadlineAt);
         const data = await res.json();
         return data;
     } catch (error) {
         console.error(error);
-        if (signal?.aborted || error instanceof Error && error.message === TIMEOUT_ERROR) {
-            throw new Error(TIMEOUT_ERROR);
-        }
-
         throw new Error("Failed to get similar images from Search Index");
     }
 }
