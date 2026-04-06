@@ -1,7 +1,10 @@
 const INDEX_NAME = "cat-photos";
 
-export async function vectorizeImage(imageUrl: string): Promise<number[]> {
-    const imageRes = await fetch(imageUrl);
+export async function vectorizeImage(
+    imageUrl: string,
+    { signal }: { signal?: AbortSignal } = {}
+): Promise<number[]> {
+    const imageRes = await fetch(imageUrl, { signal });
     if (!imageRes.ok) throw new Error(`Failed to fetch image: ${imageUrl}`);
 
     const buffer = await imageRes.arrayBuffer();
@@ -23,6 +26,7 @@ export async function vectorizeImage(imageUrl: string): Promise<number[]> {
                     input: [{ image: dataUrl }],
                     dimensions: 1024,
                 }),
+                signal,
             }
         );
 
