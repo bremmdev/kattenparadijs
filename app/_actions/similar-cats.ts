@@ -4,7 +4,7 @@ import { getSimilarImages } from "@/search/similar-images";
 import { cookies } from "next/headers";
 import { headers } from "next/headers";
 
-const MAX_RUNTIME_MS = 10_000;
+const MAX_RUNTIME_MS = 30_000;
 const SAFETY_BUFFER_MS = 1_000;
 const TIMEOUT_ERROR = "Timed out while fetching similar cat photos";
 
