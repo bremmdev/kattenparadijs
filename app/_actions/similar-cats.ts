@@ -1,5 +1,7 @@
 'use server';
 
+export const maxDuration = 25;
+
 import { getSimilarImages } from "@/search/similar-images";
 import { cookies } from "next/headers";
 import { headers } from "next/headers";
