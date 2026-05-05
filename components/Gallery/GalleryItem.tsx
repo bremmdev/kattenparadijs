@@ -70,7 +70,7 @@ const GalleryItem = (props: Props) => {
           width={img.width / 2}
           height={img.height / 2}
           alt="kat"
-          className="rounded-xl"
+          className="rounded-xl animate-fade"
           blurDataURL={img.blurData}
           priority={hasPriority}
           fetchPriority={isLCP ? "high" : "auto"}
