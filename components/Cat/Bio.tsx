@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import { intervalToDuration } from "date-fns";
+import { Temporal } from "@js-temporal/polyfill";
 import { dancing_script } from "@/app/fonts";
 import { Cat } from "@/types/types";
 import PassingIcon from "./PassingIcon";
@@ -25,10 +25,11 @@ const Bio = ({ cat, imageCount }: Props) => {
   }
 
   //calculate age based on birthdate and passing date if available
-  const { years, months } = intervalToDuration({
-    start: Date.parse(cat.birthDate),
-    end: cat.passingDate ? Date.parse(cat.passingDate) : new Date(),
-  });
+  const birthDate = Temporal.PlainDate.from(cat.birthDate);
+  const endDate = cat.passingDate
+    ? Temporal.PlainDate.from(cat.passingDate)
+    : Temporal.Now.plainDateISO();
+  const age = birthDate.until(endDate, { largestUnit: "year" });
 
   const formattedNicknames = cat.nicknames.join(", ");
 
@@ -51,9 +52,8 @@ const Bio = ({ cat, imageCount }: Props) => {
           <h3>Overlijdensdatum</h3>
           <span className="font-normal flex gap-1 justify-center items-center">
             {formattedPassingDate}
-            <span className="font-normal">{`(${years ?? 0} jaar, ${months ?? 0} ${
-              months === 1 ? "maand" : "maanden"
-            })`}</span>
+            <span className="font-normal">{`(${age.years ?? 0} jaar, ${age.months ?? 0} ${age.months === 1 ? "maand" : "maanden"
+              })`}</span>
             <PassingIcon />
           </span>
         </div>
@@ -61,9 +61,8 @@ const Bio = ({ cat, imageCount }: Props) => {
       {!cat.passingDate && (
         <div className="my-1 flex flex-col justify-between gap-1 font-medium sm:my-2 sm:gap-2">
           <h3>Leeftijd</h3>
-          <span className="font-normal">{`${years ?? 0} jaar, ${months ?? 0} ${
-            months === 1 ? "maand" : "maanden"
-          }`}</span>
+          <span className="font-normal">{`${age.years ?? 0} jaar, ${age.months ?? 0} ${age.months === 1 ? "maand" : "maanden"
+            }`}</span>
         </div>
       )}
       <div className="my-1 flex flex-col justify-between gap-1 font-medium sm:my-2 sm:gap-2">
@@ -92,9 +91,8 @@ const Bio = ({ cat, imageCount }: Props) => {
             src="chevron.svg"
             width="22px"
             height="22px"
-            className={`md:hidden absolute right-8 top-4 translate-y-1 transition-all cursor-pointer ${
-              isExpanded ? "rotate-180" : "rotate-0"
-            } hover:scale-105 hover:brightness-105`}
+            className={`md:hidden absolute right-8 top-4 translate-y-1 transition-all cursor-pointer ${isExpanded ? "rotate-180" : "rotate-0"
+              } hover:scale-105 hover:brightness-105`}
             onClick={toggleExpanded}
           />
         </div>

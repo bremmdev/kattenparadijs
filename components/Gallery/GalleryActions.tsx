@@ -1,13 +1,12 @@
 'use client';
 
 import React, { useState } from "react";
-import { intervalToDuration } from "date-fns";
-import { differenceInCalendarDays } from "date-fns";
 import { Info, Sparkles } from "lucide-react";
 import { getSimilarCatPhotos } from "@/app/_actions/similar-cats";
 import { SimilarCatPhoto, SimilarCatPhotoWithDimensions } from "@/types/types";
 import { getImageDimensions } from "@/utils/images";
 import { toast } from "@/utils/toast";
+import { Temporal } from "@js-temporal/polyfill";
 
 type Props = {
     isLongPress: boolean;
@@ -25,22 +24,11 @@ type Props = {
 
 //determine the age of the cat using the birthdate and the takenAt date
 const determineAge = (takenAt: string, birthDate: string) => {
-    const { years, months = 0 } = intervalToDuration({
-        start: Date.parse(birthDate),
-        end: Date.parse(takenAt),
-    });
-
-    //calculate age in weeks when younger than 3 months
-    if (years === 0 && months && months < 3) {
-        const ageInDays =
-            differenceInCalendarDays(Date.parse(takenAt), Date.parse(birthDate)) + 1;
-        const ageInWeeks = Math.floor(ageInDays / 7);
-        return `${ageInWeeks} weken`;
-    }
-
-    //return age in months and years when older than 3 months
-    const numberOfYears = years && years > 0 ? `${years} jaar, ` : "";
-    return `${numberOfYears}${months} ${months === 1 ? "maand" : "maanden"}`;
+    if (!birthDate || !takenAt) return "";
+    const birthDateTemporal = Temporal.PlainDate.from(birthDate);
+    const takenAtTemporal = Temporal.PlainDate.from(takenAt);
+    const age = birthDateTemporal.until(takenAtTemporal, { largestUnit: "year" });
+    return `${age.years ?? 0} jaar, ${age.months ?? 0} ${age.months === 1 ? "maand" : "maanden"}`;
 };
 
 
