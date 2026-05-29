@@ -4,7 +4,7 @@ import Loading from "@/public/loading.svg";
 type Props = {
   width?: number;
   height?: number;
-}
+};
 
 const Spinner = ({ width, height }: Props) => {
 

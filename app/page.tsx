@@ -40,7 +40,7 @@ export default async function CatsPage() {
   return (
     // Pass dehydrated state to the HydrationBoundary to hydrate the client cache with the prefetched data
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Gallery cat={null} />;
+      <Gallery cat={null} />
     </HydrationBoundary>
   );
 }

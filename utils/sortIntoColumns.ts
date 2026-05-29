@@ -5,7 +5,7 @@ export const sortImagesIntoColumns = (
   columnCount: number
 ) => {
   //divide images into columns for masonry layout
-  const columns: Array<Array<ImageWithDimensions>> = [[], [], [], []];
+  const columns: Array<Array<ImageWithDimensions>> = Array.from({ length: columnCount }, () => []);
 
   images.forEach((img, idx) => {
     columns[idx % columnCount].push(img);
@@ -20,7 +20,7 @@ export const sortVideosIntoColumns = (
   columnCount: number
 ) => {
   //divide images into columns for masonry layout
-  const columns: Array<Array<Video>> = [[], [], []];
+  const columns: Array<Array<Video>> = Array.from({ length: columnCount }, () => []);
 
   videos.forEach((video, idx) => {
     columns[idx % columnCount].push(video);
