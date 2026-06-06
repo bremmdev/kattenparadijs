@@ -4,7 +4,7 @@ import PassingIcon from "./PassingIcon";
 import type { Route } from "next";
 
 const avatars = [
-  { src: "/avatar/daantje.svg", path: "/daantje" },
+  { src: "/avatar/daantje.svg", path: "/daantje", passedAway: true },
   { src: "/avatar/flynn.svg", path: "/flynn", passedAway: true },
   { src: "/avatar/moos.svg", path: "/moos", passedAway: true },
   { src: "/avatar/norris.svg", path: "/norris" },
